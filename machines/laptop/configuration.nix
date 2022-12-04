@@ -7,7 +7,7 @@
 {
   imports =
     [ # Include the results of the hardware scan.
-    ./hardware-configuration.nix
+    /etc/nixos/hardware-configuration.nix
     ];
 
 # Bootloader.
@@ -95,6 +95,9 @@
       syncthing
       ncdu
       git
+      lazygit
+      kitty
+      starship
       appimage-run
   ];
 
