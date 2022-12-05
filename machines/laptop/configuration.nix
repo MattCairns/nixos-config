@@ -6,7 +6,7 @@
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [ 
     /etc/nixos/hardware-configuration.nix
     ];
 
@@ -17,10 +17,6 @@
 
   networking.hostName = "laptop"; # Define your hostname.
 # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-# Configure network proxy if necessary
-# networking.proxy.default = "http://user:password@proxy:port/";
-# networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
 # Enable networking
     networking.networkmanager.enable = true;
@@ -75,9 +71,9 @@
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
       firefox
-      zoom-us
-      teams
-      qgroundcontrol
+        zoom-us
+        teams
+        qgroundcontrol
     ];
   };
 
@@ -90,16 +86,29 @@
     neovim 
       wget
       curl
+      fzf
+      ripgrep
+      fd
       tmux
       tailscale
       syncthing
       ncdu
-      git
-      lazygit
       kitty
-      starship
       appimage-run
-  ];
+      starship
+      zsh
+      oh-my-zsh
+
+# dev
+      git
+      python3
+      ccache
+      gcc12
+      cmake
+      gnumake
+      lazygit
+
+      ];
 
 # NeoVim setup
   environment.variables.EDITOR = "nvim";
@@ -114,6 +123,13 @@
 
   services.xserver = {
     xkbOptions = "caps:swapescape";
+  };
+
+  programs.zsh.enable = true;
+  users.defaultUserShell = pkgs.zsh;
+  programs.zsh.ohMyZsh = {
+    enable = true;
+    plugins = ["git" "tmux"];
   };
 
 #  services = {
