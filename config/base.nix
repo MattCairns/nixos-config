@@ -54,9 +54,5 @@
 # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  services.xserver = {
-    xkbOptions = "caps:swapescape";
-  };
-
   system.stateVersion = "22.11"; 
 }
