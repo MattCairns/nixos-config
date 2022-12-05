@@ -2,7 +2,7 @@
 {
   imports =
     [ 
-    /etc/nixos/hardware-configuration.nix
+      ./hardware-configuration.nix
       ../../config/base.nix
       ../../config/users.nix
       ../../pkgs/essentials.nix
@@ -16,4 +16,12 @@
 
 # Enable touchpad support 
   services.xserver.libinput.enable = true;
+
+  nix = {
+  	package = pkgs.nixFlakes;
+	extraOptions = "experimental-features = nix-command flakes";
+
+  };
+
+
 }
