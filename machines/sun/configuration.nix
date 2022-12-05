@@ -16,4 +16,9 @@
 
 # Enable touchpad support 
   services.xserver.libinput.enable = true;
+
+  nix = {
+  	package = pkgs.nixFlakes;
+  	extraOptions = "experimental-features = nix-command flakes";
+  };
 }
