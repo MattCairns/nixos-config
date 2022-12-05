@@ -5,7 +5,6 @@
       polybar
       sxhkd
       picom
-      rofi
   ];
 }
 

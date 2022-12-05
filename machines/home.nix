@@ -22,8 +22,6 @@
       curl
       tmux
       ncdu
-      /* kitty */
-      starship
 
       # Video/Audio
       feh               # Image Viewer
@@ -50,9 +48,21 @@
     stateVersion = "22.11";
   };
 
+  ## WM Configs
+  programs = {
+    rofi = {
+      enable = true;
+      theme = "gruvbox-dark-hard";
+    };
+  };
 
+  ## Terminal Configs
   programs = {
     home-manager.enable = true;
+    starship = {
+      enable = true;
+      enableZshIntegration = true;
+    };
     kitty = {
       enable = true;
       font.name = "DankMono";
@@ -61,9 +71,18 @@
     };
     /* hyprland.enable = true; */
     zsh.enable = true;
+    zsh.enableAutosuggestions = true;
     zsh.oh-my-zsh = {
       enable = true;
-      plugins = ["git" "tmux"];
+      plugins = [
+        "git" 
+        "tmux"
+        "colorize"
+        "cp"
+        "vi-mode"
+        "last-working-dir"
+        "fancy-ctrl-z"
+        ];
     };
   };
 
