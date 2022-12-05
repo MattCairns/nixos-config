@@ -26,25 +26,26 @@ in
       hyprland.nixosModules.default
       ./sun/configuration.nix
 
-      /* home-manager.nixosModules.home-manager {         
+      home-manager.nixosModules.home-manager {         
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
         home-manager.extraSpecialArgs = {
           inherit user;
           host = {
             hostName = "sun";     
-            mainMonitor = "HDMI-A-3"; #HDMIA3         | HDMI-A-1
-            secondMonitor = "DP-1";   #DP1            | DisplayPort-1
+            mainMonitor = "DP-1"; 
+            secondMonitor = "DP-2";   
           };
-        };                                                  # Pass flake variable
+        };                                                  
         home-manager.users.${user} = {
-          imports = [(import ./home.nix)] ++ [(import ./desktop/home.nix)];
+          /* imports = [(import ./home.nix)] ++ [(import ./desktop/home.nix)]; */
+          imports = [(import ./home.nix)];
         };
-      } */
+      }
     ];
   };
 
-  laptop = lib.nixosSystem {                                # Laptop profile
+  laptop = lib.nixosSystem {                                
     inherit system;
     specialArgs = {
       inherit inputs user location hyprland;
@@ -56,7 +57,7 @@ in
     modules = [
       hyprland.nixosModules.default
       ./laptop/configuration.nix
-/*
+
       home-manager.nixosModules.home-manager {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
@@ -68,9 +69,10 @@ in
           };
         };
         home-manager.users.${user} = {
-          imports = [(import ./home.nix)] ++ [(import ./laptop/home.nix)];
+          /* imports = [(import ./home.nix)] ++ [(import ./laptop/home.nix)]; */
+          imports = [(import ./home.nix)] ;
         };
-      } */
+      }
     ];
   };
 }

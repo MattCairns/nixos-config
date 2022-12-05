@@ -53,6 +53,21 @@
     pulse.enable = true;
   };
 
+  services.syncthing = {
+    enable = true;
+    openDefaultPorts = true;
+    configDir = "/home/matthew/.config/syncthing";
+    user = "matthew";
+    group = "users";
+  };
+
+  services.openssh.enable = true;
+  services.tailscale.enable = true;
+  services.zerotierone.enable = true;
+
+
+  users.defaultUserShell = pkgs.zsh;
+
 # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
