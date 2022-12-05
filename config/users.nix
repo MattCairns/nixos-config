@@ -10,6 +10,7 @@
         zoom-us
         teams
         qgroundcontrol
+        slack
     ];
   };
 }

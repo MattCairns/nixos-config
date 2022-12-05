@@ -8,13 +8,10 @@
       ripgrep
       fd
       tmux
-      tailscale
-      syncthing
       ncdu
       kitty
       appimage-run
       starship
-      zsh
       oh-my-zsh
       mpv
       vlc
@@ -22,6 +19,7 @@
       scrot
       feh
       nitrogen
+      autorandr
       ];
 
   programs.zsh.enable = true;
