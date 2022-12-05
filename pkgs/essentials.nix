@@ -16,6 +16,12 @@
       starship
       zsh
       oh-my-zsh
+      mpv
+      vlc
+      xclip
+      scrot
+      feh
+      nitrogen
   ];
 
   programs.zsh.enable = true;
