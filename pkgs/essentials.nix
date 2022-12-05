@@ -22,6 +22,7 @@
       autorandr
       ];
 
+  programs.hyprland.enable = true;
   programs.zsh.enable = true;
   users.defaultUserShell = pkgs.zsh;
   programs.zsh.ohMyZsh = {
@@ -39,5 +40,6 @@
 
   services.openssh.enable = true;
   services.tailscale.enable = true;
+  services.zerotierone.enable = true;
 }
 
