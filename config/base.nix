@@ -21,13 +21,18 @@
 
 # Enable the X11 windowing system.
   services.xserver.enable = true;
+  services.xserver.videoDrivers = [ "nvidia" ];
+  hardware.opengl.enable = true;
+  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
 
 # Enable the GNOME Desktop Environment.
   services.xserver = {
-    displayManager.gdm.enable = true;
+    displayManager = {
+      gdm.enable = true;
+      defaultSession = "hyprland";
+    };
     desktopManager.gnome.enable = true;
     windowManager.bspwm.enable = true;
-    displayManager.defaultSession = "none+bspwm";
     windowManager.bspwm.configFile = "/home/matthew/.config/bspwm/bspwmrc";
     windowManager.bspwm.sxhkd.configFile= "/home/matthew/.config/sxhkd/sxhkdrc";
     desktopManager.xterm.enable = false;

@@ -1,10 +1,10 @@
 { config, lib, pkgs, user, ... }:
 
 { 
-  imports = [ 
-    ../pkgs/neovim.nix
-    ../pkgs/bspwm.nix
-    ];
+  imports =  
+    [(import ../pkgs/neovim.nix)] ++
+    [(import ../pkgs/bspwm.nix)] ++
+    [(import ../modules/desktop/hyprland/home.nix)];
 
   home = {
     username = "${user}";
@@ -69,7 +69,6 @@
       font.size = 12;
       theme = "kanagawabones";
     };
-    /* hyprland.enable = true; */
     zsh.enable = true;
     zsh.enableAutosuggestions = true;
     zsh.oh-my-zsh = {
