@@ -11,6 +11,10 @@
   networking.networkmanager.enable = true;
   networking.firewall.checkReversePath = "loose";
 
+# Syncthing ports
+  networking.firewall.allowedTCPPorts = [ 8384 22000];
+  networking.firewall.allowedUDPPorts = [ 22000 21027];
+
 # Set your time zone.
   time.timeZone = "America/Vancouver";
 
