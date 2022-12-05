@@ -2,7 +2,7 @@
 {
   imports =
     [ 
-    /etc/nixos/hardware-configuration.nix
+      ./hardware-configuration.nix
       ../../config/base.nix
       ../../config/users.nix
       ../../pkgs/essentials.nix
