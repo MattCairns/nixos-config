@@ -38,6 +38,7 @@
       unrar             # Rar Files
 
 
+      killall
       xfontsel
       xclip
       scrot
@@ -93,5 +94,4 @@
         ];
     };
   };
-
 }
