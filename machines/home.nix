@@ -64,6 +64,8 @@
     fade = true;
     fadeDelta = 6;
     fadeSteps = [ 0.03 0.03 ];
+    backend = "xrender";
+    vSync = true;
   };
 
   ## Terminal Configs
