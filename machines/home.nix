@@ -38,6 +38,7 @@
       unrar             # Rar Files
 
 
+      xfontsel
       xclip
       scrot
       feh
@@ -64,7 +65,6 @@
     fadeSteps = [ 0.03 0.03 ];
   };
 
-
   ## Terminal Configs
   programs = {
     home-manager.enable = true;
@@ -74,7 +74,7 @@
     };
     kitty = {
       enable = true;
-      font.name = "DankMono";
+      font.name = "DankMono-Regular";
       font.size = 12;
       theme = "kanagawabones";
     };

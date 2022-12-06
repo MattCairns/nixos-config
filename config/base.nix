@@ -35,6 +35,12 @@
     windowManager.bspwm.sxhkd.configFile= "/home/matthew/.config/sxhkd/sxhkdrc";
     desktopManager.xterm.enable = false;
   };
+  
+  fonts.fonts = with pkgs; [
+    font-awesome
+    siji
+    (nerdfonts.override { fonts = [ "SourceCodePro" ]; })
+  ];
 
 # Configure keymap in X11
   services.xserver = {
@@ -49,14 +55,11 @@
 
 # Enable sound with pipewire.
   sound.enable = true;
-  hardware.pulseaudio.enable = false;
-  security.rtkit.enable = true;
-  services.pipewire = {
+  hardware.pulseaudio = {
     enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
+    support32Bit = true;
   };
+  security.rtkit.enable = true;
 
   services.syncthing = {
     enable = true;

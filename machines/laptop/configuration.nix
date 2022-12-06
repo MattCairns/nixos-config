@@ -9,6 +9,7 @@
     ];
 
   networking.hostName = "laptop"; 
+  hardware.bluetooth.enable = true;
 
 # Enable touchpad support 
   services.xserver.libinput.enable = true;
