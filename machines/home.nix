@@ -55,18 +55,15 @@
     };
   };
 
-  wayland.windowManager.sway = {
+  services.picom = {
     enable = true;
-    config = rec {
-      modifier = "Mod4";
-      # Use kitty as default terminal
-      terminal = "kitty"; 
-      startup = [
-        # Launch Firefox on start
-        {command = "firefox";}
-      ];
-    };
+    menuOpacity = 0.8;
+    inactiveOpacity = 0.99;
+    fade = true;
+    fadeDelta = 6;
+    fadeSteps = [ 0.03 0.03 ];
   };
+
 
   ## Terminal Configs
   programs = {
