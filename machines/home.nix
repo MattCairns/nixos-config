@@ -3,8 +3,7 @@
 { 
   imports =  
     [(import ../pkgs/neovim.nix)] ++
-    [(import ../pkgs/bspwm.nix)] ++
-    [(import ../modules/desktop/hyprland/home.nix)];
+    [(import ../pkgs/bspwm.nix)];
 
   home = {
     username = "${user}";
@@ -53,6 +52,19 @@
     rofi = {
       enable = true;
       theme = "gruvbox-dark-hard";
+    };
+  };
+
+  wayland.windowManager.sway = {
+    enable = true;
+    config = rec {
+      modifier = "Mod4";
+      # Use kitty as default terminal
+      terminal = "kitty"; 
+      startup = [
+        # Launch Firefox on start
+        {command = "firefox";}
+      ];
     };
   };
 

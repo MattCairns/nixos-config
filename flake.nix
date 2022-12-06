@@ -7,14 +7,9 @@
         url = "github:nix-community/home-manager";
         inputs.nixpkgs.follows = "nixpkgs";
       };
-
-      hyprland = {
-        url = "github:vaxerski/Hyprland";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
     };
 
-  outputs = inputs @ { self, nixpkgs, home-manager, hyprland, ... }:   
+  outputs = inputs @ { self, nixpkgs, home-manager, ... }:   
     let                                                                     
       user = "matthew";
       location = "$HOME/.setup";
@@ -23,7 +18,7 @@
       nixosConfigurations = (                                               
         import ./machines {                                                    
           inherit (nixpkgs) lib;
-          inherit inputs nixpkgs home-manager user location hyprland;   
+          inherit inputs nixpkgs home-manager user location;   
         }
       );
 

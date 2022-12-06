@@ -6,7 +6,6 @@
       ../../config/base.nix
       ../../config/users.nix
       ../../pkgs/dev.nix
-      ../../modules/desktop/hyprland/default.nix
     ];
 
   networking.hostName = "sun"; 

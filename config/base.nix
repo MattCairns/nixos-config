@@ -27,7 +27,7 @@
   services.xserver = {
     displayManager = {
       gdm.enable = true;
-      defaultSession = "hyprland";
+      defaultSession = "none+bspwm";
     };
     desktopManager.gnome.enable = true;
     windowManager.bspwm.enable = true;
@@ -44,6 +44,8 @@
 
 # Enable CUPS to print documents.
   services.printing.enable = true;
+
+  security.polkit.enable = true;
 
 # Enable sound with pipewire.
   sound.enable = true;

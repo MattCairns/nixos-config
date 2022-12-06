@@ -1,4 +1,4 @@
-{ lib, inputs, nixpkgs, home-manager, user, location, hyprland, ... }:
+{ lib, inputs, nixpkgs, home-manager, user, location, ... }:
 
 let
   system = "x86_64-linux";                                  
@@ -23,7 +23,6 @@ in
       };
     };                                                      
     modules = [                                             
-      hyprland.nixosModules.default
       ./sun/configuration.nix
 
       home-manager.nixosModules.home-manager {         
@@ -48,14 +47,13 @@ in
   laptop = lib.nixosSystem {                                
     inherit system;
     specialArgs = {
-      inherit inputs user location hyprland;
+      inherit inputs user location;
       host = {
         hostName = "desktop";
         mainMonitor = "eDP-1";
       };
     };
     modules = [
-      hyprland.nixosModules.default
       ./laptop/configuration.nix
 
       home-manager.nixosModules.home-manager {

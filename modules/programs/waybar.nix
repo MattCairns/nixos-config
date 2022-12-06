@@ -110,8 +110,6 @@
           tray = { spacing = 5; };
           #modules-center = [ "clock" ];
           modules-left = with config; 
-            if programs.hyprland.enable == true then 
-              [ "custom/menu" "wlr/workspaces" ] 
             else if programs.sway.enable == true then
               [ "sway/workspaces" "sway/window" "sway/mode" ]
             else [];
