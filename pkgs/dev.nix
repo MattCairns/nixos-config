@@ -7,6 +7,6 @@
       cmake
       gnumake
       lazygit
-      pkgconfig
+      pkg-config
   ];
 }
