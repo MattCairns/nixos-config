@@ -26,7 +26,10 @@
 # Enable the GNOME Desktop Environment.
   services.xserver = {
     displayManager = {
-      lightdm.enable = true;
+      lightdm = {
+        enable = true;
+        greeters.slick.enable = true;
+      };
       defaultSession = "none+bspwm";
     };
     desktopManager.gnome.enable = true;
