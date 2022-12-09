@@ -3,7 +3,8 @@
 { 
   imports =  
     [(import ../pkgs/neovim.nix)] ++
-    [(import ../pkgs/bspwm.nix)];
+    [(import ../pkgs/bspwm.nix)] ++
+    [(import ../pkgs/sxhkd.nix)];
 
   home = {
     username = "${user}";
@@ -36,7 +37,6 @@
       rsync             # Syncer - $ ssync -r dir1/ dir2/
       unzip             # Zip Files
       unrar             # Rar Files
-
 
       killall
       xfontsel

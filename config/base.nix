@@ -4,6 +4,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
 # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -11,7 +12,7 @@
   networking.networkmanager.enable = true;
   networking.firewall.checkReversePath = "loose";
 
-  networking.firewall.allowedUDPPorts = [ 14550 ];
+  networking.firewall.allowedUDPPorts = [ 14550 14520 ];
 
 # Set your time zone.
   time.timeZone = "America/Vancouver";
@@ -35,7 +36,7 @@
     desktopManager.gnome.enable = true;
     windowManager.bspwm.enable = true;
     windowManager.bspwm.configFile = "/home/matthew/.config/bspwm/bspwmrc";
-    windowManager.bspwm.sxhkd.configFile= "/home/matthew/.config/sxhkd/sxhkdrc";
+    /* windowManager.bspwm.sxhkd.configFile= "/home/matthew/.config/sxhkd/sxhkdrc"; */
     desktopManager.xterm.enable = false;
   };
   
@@ -73,6 +74,7 @@
   };
 
   services.openssh.enable = true;
+  programs.ssh.startAgent = true;
   services.tailscale.enable = true;
   services.zerotierone.enable = true;
 
