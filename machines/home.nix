@@ -68,6 +68,8 @@
     vSync = true;
   };
 
+  xdg.configFile."bspwm/bspwmrc".source = ../dots/bspwm/bspwmrc;
+
   ## Terminal Configs
   programs = {
     home-manager.enable = true;
