@@ -7,10 +7,11 @@
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
       firefox
-        zoom-us
-        teams
-        qgroundcontrol
-        slack
+      zoom-us
+      teams
+      qgroundcontrol
+      slack
+      signal-desktop
     ];
   };
 }

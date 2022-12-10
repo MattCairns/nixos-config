@@ -22,6 +22,7 @@
       curl
       tmux
       ncdu
+      tree
 
       # Video/Audio
       feh               # Image Viewer
@@ -39,12 +40,10 @@
       unrar             # Rar Files
 
       killall
-      xfontsel
       xclip
       scrot
       feh
       nitrogen
-      autorandr
     ];
     stateVersion = "22.11";
   };
@@ -68,7 +67,8 @@
     vSync = true;
   };
 
-  xdg.configFile."bspwm/bspwmrc".source = ../dots/bspwm/bspwmrc;
+  xdg.configFile."bspwm".source = ../dots/bspwm;
+  xdg.configFile."polybar".source = ../dots/polybar;
 
   ## Terminal Configs
   programs = {

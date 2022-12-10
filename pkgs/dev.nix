@@ -10,7 +10,7 @@
       gnumake
       lazygit
       pkg-config
-      brightnessctl
       rnix-lsp
+      brightnessctl
   ];
 }
