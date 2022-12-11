@@ -36,7 +36,6 @@
     desktopManager.gnome.enable = true;
     windowManager.bspwm.enable = true;
     windowManager.bspwm.configFile = "/home/matthew/.config/bspwm/bspwmrc";
-    /* windowManager.bspwm.sxhkd.configFile= "/home/matthew/.config/sxhkd/sxhkdrc"; */
     desktopManager.xterm.enable = false;
   };
   

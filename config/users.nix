@@ -12,6 +12,7 @@
       qgroundcontrol
       slack
       signal-desktop
+      obsidian
     ];
   };
 }
