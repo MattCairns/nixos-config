@@ -51,7 +51,7 @@ in
   nuc = lib.nixosSystem {                                
     inherit system;
     specialArgs = { inherit inputs user location; };
-    modules = [ ./laptop/configuration.nix
+    modules = [ ./nuc/configuration.nix
       home-manager.nixosModules.home-manager {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
