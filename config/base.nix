@@ -40,6 +40,7 @@
   };
   
   fonts.fonts = with pkgs; [
+    nerdfonts
     font-awesome
     siji
     (nerdfonts.override { fonts = [ "SourceCodePro" ]; })
