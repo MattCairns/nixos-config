@@ -7,11 +7,17 @@
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
       firefox
+
+      # Communication
       zoom-us
       teams
-      qgroundcontrol
+      tdesktop
       slack
       signal-desktop
+      discord
+
+      # Misc
+      qgroundcontrol
       obsidian
       qjackctl
     ];
