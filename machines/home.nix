@@ -56,15 +56,21 @@
     };
   };
 
-  services.picom = {
-    enable = true;
-    menuOpacity = 0.8;
-    inactiveOpacity = 0.99;
-    fade = true;
-    fadeDelta = 6;
-    fadeSteps = [ 0.03 0.03 ];
-    backend = "xrender";
-    vSync = true;
+  services = {
+    picom = {
+      enable = true;
+      menuOpacity = 0.8;
+      inactiveOpacity = 0.99;
+      fade = true;
+      fadeDelta = 6;
+      fadeSteps = [ 0.03 0.03 ];
+      backend = "xrender";
+      vSync = true;
+    };
+    betterlockscreen = {
+      enable = true;
+    };
+    dunst.enable = true;
   };
 
   xdg.configFile."bspwm".source = ../dots/bspwm;
