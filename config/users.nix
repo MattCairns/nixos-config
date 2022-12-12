@@ -13,6 +13,7 @@
       slack
       signal-desktop
       obsidian
+      qjackctl
     ];
   };
 }
