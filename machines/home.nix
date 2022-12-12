@@ -75,6 +75,7 @@
 
   xdg.configFile."bspwm".source = ../dots/bspwm;
   xdg.configFile."polybar".source = ../dots/polybar;
+  xdg.configFile."tmux".source = ../dots/tmux;
 
   ## Terminal Configs
   programs = {
