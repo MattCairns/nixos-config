@@ -20,6 +20,7 @@
       qgroundcontrol
       obsidian
       qjackctl
+      libnotify
     ];
   };
 }

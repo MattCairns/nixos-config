@@ -27,10 +27,17 @@ elif [ "$pcid" = "$desktopid" ]; then
   bspc rule -a Slack desktop='^5'
 
 elif [ "$pcid" = "$oorid" ]; then
+  notify-send "Loaded OOR Nuc"
+  xrandr --output DisplayPort-2 --off \
+        --output DisplayPort-3 --mode 1920x1080 --pos 4000x1480 --rotate normal \
+        --output DisplayPort-4 --mode 2560x1440 --pos 0x0 --rotate right \
+        --output DisplayPort-5 --off \
+        --output HDMI-A-3 --off \
+        --output HDMI-A-4 --mode 2560x1440 --pos 1440x485 --rotate normal
   setxkbmap -option caps:swapescape
-  bspc monitor DisplayPort-2 -d I II
-  bspc monitor HDMI-A-1 -d III IV 
-  bspc monitor DisplayPort-1 -d V VI 
+  bspc monitor DisplayPort-4 -d I II
+  bspc monitor HDMI-A-4 -d III IV 
+  bspc monitor DisplayPort-3 -d V VI 
 
   bspc rule -a Slack desktop='^1'
   bspc rule -a firefox desktop='^2'
