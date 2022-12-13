@@ -23,6 +23,10 @@
       tmux
       ncdu
       tree
+      hexyl
+      zoxide
+      bat
+      lsd
 
       # Video/Audio
       feh               # Image Viewer
