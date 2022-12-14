@@ -94,19 +94,25 @@
       font.size = 12;
       theme = "kanagawabones";
     };
-    zsh.enable = true;
-    zsh.enableAutosuggestions = true;
-    zsh.oh-my-zsh = {
+    zsh = {
       enable = true;
-      plugins = [
-        "git" 
-        "tmux"
-        "colorize"
-        "cp"
-        "vi-mode"
-        "last-working-dir"
-        "fancy-ctrl-z"
-        ];
+      shellAliases =
+      {
+        ls = "lsd";
+      };
+      enableAutosuggestions = true;
+      oh-my-zsh = {
+        enable = true;
+        plugins = [
+          "git" 
+          "tmux"
+          "colorize"
+          "cp"
+          "vi-mode"
+          "last-working-dir"
+          "fancy-ctrl-z"
+          ];
+      };
     };
   };
 }
