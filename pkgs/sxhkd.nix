@@ -98,6 +98,8 @@
     "XF86AudioMicMute" = "amixer set Capture toggle";
     "XF86Display" = "";
     "XF86Favorites" = "";
+
+    "super + shift + d" = "if [ $(dunstctl is-paused) = \"false\" ]; then dunstctl set-paused true; else dunstctl set-paused false && notify-send \"Dunst\" \"Turning ON notifications.\"; fi";
     };
   };
 }

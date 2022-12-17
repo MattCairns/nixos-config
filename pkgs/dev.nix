@@ -4,7 +4,7 @@
       git
       python3
       gcc12
-      clang
+      clang_14
       cppcheck
       cmake
       gnumake
