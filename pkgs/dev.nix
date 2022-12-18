@@ -5,6 +5,7 @@
       python3
       gcc12
       clang_14
+      clang-tools_14
       cppcheck
       cmake
       gnumake
