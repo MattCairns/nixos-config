@@ -25,11 +25,13 @@
 
 
 # Enable the GNOME Desktop Environment.
+  boot.plymouth.enable = true;
   services.xserver = {
     displayManager = {
       lightdm = {
         enable = true;
         greeters.slick.enable = true;
+        /* background = "/home/matthew/.config/wallpapers/camilo-contreras-b9iRx947hzY-unsplash.jpg"; */
       };
       defaultSession = "none+bspwm";
     };
