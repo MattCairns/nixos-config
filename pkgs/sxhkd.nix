@@ -26,7 +26,7 @@
     "super + {_,shift + }w" =	"bspc node -{c,k}";
 
     # Lock screen
-    "super + shift + l" =  "betterlockscreen -l";
+    "super + shift + l" =  "betterlockscreen -l blur";
 
     # alternate between the tiled and monocle layout
     "super + m" =	"bspc desktop -l next";
