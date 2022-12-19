@@ -10,7 +10,6 @@ let
 
   lib = nixpkgs.lib;
 in
-
 {
   sun = lib.nixosSystem {                               
     inherit system;

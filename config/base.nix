@@ -1,4 +1,5 @@
-{ config, pkgs, ... }:
+{ inputs, config, pkgs, ... }:
+
 {
 # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -25,7 +26,11 @@
 
 
 # Enable the GNOME Desktop Environment.
-  boot.plymouth.enable = true;
+  boot.plymouth = {
+    enable = true;
+    themePackages = [ inputs.mrcpkgs.legacyPackages.x86_64-linux.adi1090x-plymouth ];
+    theme = "lone";
+  };
   services.xserver = {
     displayManager = {
       lightdm = {

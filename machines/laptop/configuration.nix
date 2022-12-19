@@ -1,9 +1,9 @@
-{ config, pkgs, ... }:
+{ inputs, config, pkgs, ... }:
 {
   imports =
     [ 
       ./hardware-configuration.nix
-      ../../config/base.nix
+      ../../config/base.nix 
       ../../config/users.nix
       ../../pkgs/dev.nix
     ];
