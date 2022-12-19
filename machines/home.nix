@@ -27,6 +27,8 @@
       zoxide
       bat
       lsd
+      btop
+      neofetch
 
       # Video/Audio
       feh               # Image Viewer
