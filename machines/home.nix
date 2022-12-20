@@ -66,7 +66,6 @@
     picom = {
       enable = true;
       menuOpacity = 0.8;
-      inactiveOpacity = 0.99;
       fade = true;
       fadeDelta = 6;
       fadeSteps = [ 0.03 0.03 ];
