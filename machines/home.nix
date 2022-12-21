@@ -74,6 +74,7 @@
     };
     betterlockscreen = {
       enable = true;
+      arguments = [ "blur" ];
     };
     dunst = {
       enable = true;
