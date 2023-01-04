@@ -29,11 +29,11 @@ elif [ "$pcid" = "$desktopid" ]; then
 elif [ "$pcid" = "$oorid" ]; then
   notify-send "Loaded OOR Nuc"
   xrandr --output DisplayPort-2 --off \
-        --output DisplayPort-3 --mode 1920x1080 --pos 4000x1480 --rotate normal \
-        --output DisplayPort-4 --mode 2560x1440 --pos 0x0 --rotate right \
-        --output DisplayPort-5 --off \
-        --output HDMI-A-3 --off \
-        --output HDMI-A-4 --mode 2560x1440 --pos 1440x485 --rotate normal
+         --output DisplayPort-3 --mode 1920x1080 --pos 4000x1322 --rotate normal \
+         --output DisplayPort-4 --mode 2560x1440 --pos 0x0 --rotate right \
+         --output DisplayPort-5 --off \
+         --output HDMI-A-3 --off \
+         --output HDMI-A-4 --mode 2560x1440 --pos 1440x287 --rotate normal
   setxkbmap -option caps:swapescape
   bspc monitor DisplayPort-4 -d I II
   bspc monitor HDMI-A-4 -d III IV 
