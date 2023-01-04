@@ -120,6 +120,7 @@
       shellAliases =
       {
         ls = "lsd";
+        nd = "nix develop";
       };
       enableAutosuggestions = true;
       oh-my-zsh = {
