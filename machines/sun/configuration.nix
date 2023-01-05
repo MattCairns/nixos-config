@@ -17,14 +17,15 @@
   hardware.opengl = {
     enable = true;
     extraPackages = with pkgs; [
-      intel-media-driver # LIBVA_DRIVER_NAME=iHD
-      vaapiIntel         # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
       vaapiVdpau
       libvdpau-va-gl
+      nvidia-vaapi-driver
     ];
   };
+
   hardware.nvidia = {
     package = config.boot.kernelPackages.nvidiaPackages.beta;
+    modesetting.enable = true;
     open = true;
   };
 
@@ -33,6 +34,12 @@
     remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
     dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
   };
+
+  environment.systemPackages = with pkgs; [
+    moonlight-qt
+    sunshine
+  ];
+
 
   nix = {
   	package = pkgs.nixFlakes;

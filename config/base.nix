@@ -13,7 +13,24 @@
   networking.networkmanager.enable = true;
   networking.firewall.checkReversePath = "loose";
 
-  networking.firewall.allowedUDPPorts = [ 14550 14520 ];
+  networking.firewall.allowedUDPPorts = [ 
+    14550 
+    14520 
+
+    # Sunshine ports
+    47998
+    47999
+    48000
+    48002
+    48010
+  ];
+
+  networking.firewall.allowedTCPPorts = [ 
+    # Sunshine
+    47984
+    47989
+    48010
+  ];
 
 # Set your time zone.
   time.timeZone = "America/Vancouver";
