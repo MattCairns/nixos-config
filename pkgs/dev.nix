@@ -13,5 +13,7 @@
       pkg-config
       rnix-lsp
       brightnessctl
+      wally-cli
+      pinentry
   ];
 }

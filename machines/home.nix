@@ -39,6 +39,7 @@
       # Apps
       appimage-run      # Runs AppImages on NixOS
       firefox           # Browser
+      veracrypt
 
       # File Management
       rsync             # Syncer - $ ssync -r dir1/ dir2/

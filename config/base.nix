@@ -81,6 +81,12 @@
 
   security.polkit.enable = true;
 
+  services.pcscd.enable = true;
+  programs.gnupg.agent = {
+     enable = true;
+  };
+  services.dbus.packages = [ pkgs.gcr ];
+
 # Enable sound with pipewire.
   sound.enable = true;
   hardware.pulseaudio.enable = false;
