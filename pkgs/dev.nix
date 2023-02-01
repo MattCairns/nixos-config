@@ -1,27 +1,31 @@
-{ config, pkgs, ... }:
 {
+  config,
+  pkgs,
+  ...
+}: {
   environment.systemPackages = with pkgs; [
-      git
-      python3
-      gcc12
-      clang_14
-      clang-tools_14
-      cmake
+    git
+    python3
+    gcc12
+    clang_14
+    clang-tools_14
+    cmake
 
-      ## Cpp Analysis
-      pre-commit
-      cppcheck
-      cpplint
-      uncrustify
-      include-what-you-use
+    ## Cpp Analysis
+    pre-commit
+    cppcheck
+    cpplint
+    uncrustify
+    include-what-you-use
 
-      gnumake
-      lazygit
-      pkg-config
-      rnix-lsp
-      brightnessctl
-      wally-cli
-      pinentry
+    gnumake
+    lazygit
+    pkg-config
+    rnix-lsp
+    brightnessctl
+    wally-cli
+    pinentry
+    nixpkgs-fmt
   ];
 
   virtualisation.docker.enable = true;

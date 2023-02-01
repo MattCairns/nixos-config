@@ -1,34 +1,37 @@
 {
   description = "Matthews System Flake";
 
-  inputs =                                                                  
-    {
-      nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-      mrcpkgs.url = "github:MattCairns/nix-overlays";
-      home-manager = {                                                     
-        url = "github:nix-community/home-manager";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    mrcpkgs.url = "github:MattCairns/nix-overlays";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
+  };
 
-  outputs = inputs @ { self, nixpkgs, home-manager, ... }:   
-    let                                                                     
-      user = "matthew";
-      location = "$HOME/.setup";
-    in                                                                      
-    {
-      nixosConfigurations = (                                               
-        import ./machines {                                                    
-          inherit (nixpkgs) lib;
-          inherit inputs nixpkgs home-manager user location;   
-        }
-      );
+  outputs = inputs @ {
+    self,
+    nixpkgs,
+    home-manager,
+    ...
+  }: let
+    user = "matthew";
+    location = "$HOME/.setup";
+  in {
+    nixosConfigurations = (
+      import ./machines {
+        inherit (nixpkgs) lib;
+        inherit inputs nixpkgs home-manager user location;
+      }
+    );
 
-      homeConfigurations = (                                               
-        import ./nix {
-          inherit (nixpkgs) lib;
-          inherit inputs nixpkgs home-manager user;
-        }
-      );
-    };
+    homeConfigurations = (
+      import ./nix {
+        inherit (nixpkgs) lib;
+        inherit inputs nixpkgs home-manager user;
+      }
+    );
+    formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
+  };
 }

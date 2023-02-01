@@ -1,10 +1,14 @@
-{ config, lib, pkgs, user, ... }:
-
-{ 
-  imports =  
-    [(import ../pkgs/neovim.nix)] ++
-    [(import ../pkgs/bspwm.nix)] ++
-    [(import ../pkgs/sxhkd.nix)];
+{
+  config,
+  lib,
+  pkgs,
+  user,
+  ...
+}: {
+  imports =
+    [(import ../pkgs/neovim.nix)]
+    ++ [(import ../pkgs/bspwm.nix)]
+    ++ [(import ../pkgs/sxhkd.nix)];
 
   home = {
     username = "${user}";
@@ -12,9 +16,9 @@
 
     packages = with pkgs; [
       # Terminal
-      htop              
-      pfetch            
-      ranger            
+      htop
+      pfetch
+      ranger
       ripgrep
       fzf
       fd
@@ -31,20 +35,20 @@
       neofetch
 
       # Video/Audio
-      feh               # Image Viewer
-      mpv               # Media Player
-      pavucontrol       # Audio Control
-      vlc               # Media Player
+      feh # Image Viewer
+      mpv # Media Player
+      pavucontrol # Audio Control
+      vlc # Media Player
 
       # Apps
-      appimage-run      # Runs AppImages on NixOS
-      firefox           # Browser
+      appimage-run # Runs AppImages on NixOS
+      firefox # Browser
       veracrypt
 
       # File Management
-      rsync             # Syncer - $ ssync -r dir1/ dir2/
-      unzip             # Zip Files
-      unrar             # Rar Files
+      rsync # Syncer - $ ssync -r dir1/ dir2/
+      unzip # Zip Files
+      unrar # Rar Files
 
       killall
       xclip
@@ -69,13 +73,13 @@
       menuOpacity = 0.8;
       fade = true;
       fadeDelta = 6;
-      fadeSteps = [ 0.03 0.03 ];
+      fadeSteps = [0.03 0.03];
       backend = "xrender";
       vSync = true;
     };
     betterlockscreen = {
       enable = true;
-      arguments = [ "blur" ];
+      arguments = ["blur"];
     };
     dunst = {
       enable = true;
@@ -118,8 +122,7 @@
     };
     zsh = {
       enable = true;
-      shellAliases =
-      {
+      shellAliases = {
         ls = "lsd";
         nd = "nix develop";
       };
@@ -127,14 +130,14 @@
       oh-my-zsh = {
         enable = true;
         plugins = [
-          "git" 
+          "git"
           "tmux"
           "colorize"
           "cp"
           "vi-mode"
           "last-working-dir"
           "fancy-ctrl-z"
-          ];
+        ];
       };
     };
   };

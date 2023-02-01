@@ -1,19 +1,22 @@
-{ config, pkgs, user, ... }:
 {
-  imports =
-    [ 
-      ./hardware-configuration.nix
-      ../../config/base.nix
-      ../../config/users.nix
-      ../../pkgs/dev.nix
-    ];
+  config,
+  pkgs,
+  user,
+  ...
+}: {
+  imports = [
+    ./hardware-configuration.nix
+    ../../config/base.nix
+    ../../config/users.nix
+    ../../pkgs/dev.nix
+  ];
 
-  networking.hostName = "sun"; 
+  networking.hostName = "sun";
 
-# Enable touchpad support 
+  # Enable touchpad support
   services.xserver.libinput.enable = true;
 
-  services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver.videoDrivers = ["nvidia"];
   hardware.opengl = {
     enable = true;
     extraPackages = with pkgs; [
@@ -40,9 +43,8 @@
     sunshine
   ];
 
-
   nix = {
-  	package = pkgs.nixFlakes;
-  	extraOptions = "experimental-features = nix-command flakes";
+    package = pkgs.nixFlakes;
+    extraOptions = "experimental-features = nix-command flakes";
   };
 }

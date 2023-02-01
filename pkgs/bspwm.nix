@@ -1,10 +1,12 @@
-{ config, pkgs, ... }:
 {
+  config,
+  pkgs,
+  ...
+}: {
   home.packages = with pkgs; [
-      polybarFull
-      pywal
-      calc
-      networkmanager_dmenu
+    polybarFull
+    pywal
+    calc
+    networkmanager_dmenu
   ];
 }
-
