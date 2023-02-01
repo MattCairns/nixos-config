@@ -1,0 +1,18 @@
+require('plugins')
+require('mappings')
+require('options')
+require('setup/cmp')
+
+-- Plugins
+require('setup/treesitter')
+require('setup/lspconfig')
+require('setup/luasnip')
+require('setup/trouble')
+require('setup/telescope')
+require('setup/kommentary')
+require('setup/lualine')
+require('setup/fidget')
+require('setup/lint')
+require('setup/leap')
+require('setup/gitsigns')
+require('setup/clangd_extensions')
