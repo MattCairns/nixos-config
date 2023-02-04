@@ -106,6 +106,7 @@
   xdg.configFile."polybar".source = ../dots/polybar;
   xdg.configFile."tmux".source = ../dots/tmux;
   xdg.configFile."wallpapers".source = ../dots/wallpapers;
+  xdg.configFile."bin".source = ../dots/bin;
 
   ## Terminal Configs
   programs = {

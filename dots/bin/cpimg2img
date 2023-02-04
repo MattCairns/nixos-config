@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+
+mount_img_part() {
+  local IMG=$1
+  local MNT_DIR=$2
+  local PART_CHOICE=$3
+
+  echo "Looping ${IMG}"
+  declare -a PARTS
+  for PART in $(sudo kpartx -av "${IMG}" 2>&1 | grep -owE '(loop[0-9]+p[0-9]+)')
+    do
+      PARTS+=("/dev/mapper/$PART")
+      i=$((${i:-0}+1))
+  done
+
+  echo "Mounting part ${PART_CHOICE} to ${MNT_DIR}"
+  echo "part ${PARTS[${PART_CHOICE}]}"
+  ERRSTR=$(sudo mount "${PARTS[${PART_CHOICE}]}" ${MNT_DIR})
+  if [[ $? -ne 0 ]]; then
+    echo "Failed to mount ${IMG} to ${MNT_DIR}"
+    sudo umount ${MNT_DIR}
+    sudo kpartx -dv ${IMG}
+    exit -1
+  fi
+}
+
+umount_img_part() {
+  sudo umount $2
+  sudo kpartx -dv $1
+}
+
+main() {
+  FROM=$1
+  TO=$2
+
+  FROM_MNT="/tmp/from_mnt"
+  TO_MNT="/tmp/to_mnt"
+
+  mkdir -p ${FROM_MNT}
+  mkdir -p ${TO_MNT}
+
+  echo "Copying files from ${FROM} to ${TO}"
+  mount_img_part ${FROM} ${FROM_MNT} 0 
+  mount_img_part ${TO} ${TO_MNT} 0 
+
+  ERRSTR=$(sudo rsync -rlptgov --progress ${FROM_MNT}/ ${TO_MNT})
+  if [[ $? -ne 0 ]]; then
+    echo "Failed to rsync data to khadas img"
+  fi
+
+  umount_img_part ${FROM} ${FROM_MNT} 
+  umount_img_part ${TO} ${TO_MNT} 
+}
+
+main $@
