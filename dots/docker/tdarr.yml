@@ -1,0 +1,16 @@
+version: '3.4'
+services:
+  tdarr-node:
+    container_name: tdarr-node
+    image: 'ghcr.io/haveagitgat/tdarr_node:latest'
+    restart: unless-stopped
+    network_mode: 'service:tdarr'
+  environment:
+    - nodeID=Sun
+    - serverIP=192.168.1.10
+    - serverPort=8266
+  # volumes:
+  #   - '/docker/tdarr/configs:/app/configs'
+  #   - '/docker/tdarr/logs:/app/logs'
+  #   - '/media:/media'
+  #   - '/transcode_cache:/temp'

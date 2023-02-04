@@ -1,8 +1,7 @@
-{
-  config,
-  pkgs,
-  user,
-  ...
+{ config
+, pkgs
+, user
+, ...
 }: {
   imports = [
     ./hardware-configuration.nix
@@ -16,7 +15,7 @@
   # Enable touchpad support
   services.xserver.libinput.enable = true;
 
-  services.xserver.videoDrivers = ["nvidia"];
+  services.xserver.videoDrivers = [ "nvidia" ];
   hardware.opengl = {
     enable = true;
     extraPackages = with pkgs; [
@@ -42,6 +41,14 @@
     moonlight-qt
     sunshine
   ];
+
+  systemd.services.tdarr = {
+    script = ''
+      docker-compose -f ${/home/matthew/.config/docker/tdarr.yml}
+    '';
+    wantedBy = [ "multi-user.target" ];
+    after = ["docker.service" "docker.socket"];
+  };
 
   nix = {
     package = pkgs.nixFlakes;
