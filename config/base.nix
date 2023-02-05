@@ -1,14 +1,13 @@
-{
-  inputs,
-  config,
-  pkgs,
-  ...
+{ inputs
+, config
+, pkgs
+, ...
 }: {
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
-  boot.binfmt.emulatedSystems = ["aarch64-linux"];
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -29,7 +28,7 @@
 
   boot.plymouth = {
     enable = true;
-    themePackages = [inputs.mrcpkgs.legacyPackages.x86_64-linux.adi1090x-plymouth];
+    themePackages = [ inputs.mrcpkgs.legacyPackages.x86_64-linux.adi1090x-plymouth ];
     theme = "lone";
   };
 
@@ -37,7 +36,17 @@
     displayManager = {
       lightdm = {
         enable = true;
-        greeters.slick.enable = true;
+        greeters.mini = {
+          enable = true;
+          user = "matthew";
+          extraConfig = ''
+            [greeter]
+            show-password-label = false
+            [greeter-theme]
+            window-color = "#37353a"
+            border-color = "#967b5e"
+          '';
+        };
       };
       defaultSession = "none+bspwm";
     };
@@ -51,7 +60,7 @@
     nerdfonts
     font-awesome
     siji
-    (nerdfonts.override {fonts = ["SourceCodePro"];})
+    (nerdfonts.override { fonts = [ "SourceCodePro" ]; })
   ];
 
   # Configure keymap in X11
@@ -69,7 +78,7 @@
   programs.gnupg.agent = {
     enable = true;
   };
-  services.dbus.packages = [pkgs.gcr];
+  services.dbus.packages = [ pkgs.gcr ];
 
   # Enable sound with pipewire.
   sound.enable = true;
