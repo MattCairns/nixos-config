@@ -1,6 +1,7 @@
-{ config
-, pkgs
-, ...
+{
+  config,
+  pkgs,
+  ...
 }: {
   environment.systemPackages = with pkgs; [
     git
@@ -23,5 +24,5 @@
   ];
 
   virtualisation.docker.enable = true;
-  users.users.matthew.extraGroups = [ "docker" ];
+  users.users.matthew.extraGroups = ["docker"];
 }

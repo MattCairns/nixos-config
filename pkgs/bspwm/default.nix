@@ -9,4 +9,6 @@
     calc
     networkmanager_dmenu
   ];
+
+  xdg.configFile."bspwm".source = config/bspwm;
 }

@@ -1,13 +1,15 @@
-{ config
-, lib
-, pkgs
-, user
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  user,
+  ...
 }: {
   imports =
-    [ (import ../pkgs/neovim) ]
-    ++ [ (import ../pkgs/bspwm.nix) ]
-    ++ [ (import ../pkgs/sxhkd.nix) ];
+    [(import ../pkgs/neovim)]
+    ++ [(import ../pkgs/bspwm)]
+    ++ [(import ../pkgs/tmux)]
+    ++ [(import ../pkgs/sxhkd)];
 
   home = {
     username = "${user}";
@@ -23,7 +25,6 @@
       fd
       wget
       curl
-      tmux
       ncdu
       tree
       hexyl
@@ -72,13 +73,13 @@
       menuOpacity = 0.8;
       fade = true;
       fadeDelta = 6;
-      fadeSteps = [ 0.03 0.03 ];
+      fadeSteps = [0.03 0.03];
       backend = "xrender";
       vSync = true;
     };
     betterlockscreen = {
       enable = true;
-      arguments = [ "blur" ];
+      arguments = ["blur"];
     };
     dunst = {
       enable = true;
@@ -101,9 +102,7 @@
     };
   };
 
-  xdg.configFile."bspwm".source = ../dots/bspwm;
   xdg.configFile."polybar".source = ../dots/polybar;
-  xdg.configFile."tmux".source = ../dots/tmux;
   xdg.configFile."wallpapers".source = ../dots/wallpapers;
   xdg.configFile."bin".source = ../dots/bin;
 
