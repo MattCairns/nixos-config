@@ -42,21 +42,21 @@
 
       extraConfig = ''
         lua << EOF
-        ${builtins.readFile ../dots/nvim/lua/mappings.lua}
-        ${builtins.readFile ../dots/nvim/lua/options.lua}
-        ${builtins.readFile ../dots/nvim/lua/setup/cmp.lua}
-        ${builtins.readFile ../dots/nvim/lua/setup/treesitter.lua}
-        ${builtins.readFile ../dots/nvim/lua/setup/lspconfig.lua}
-        ${builtins.readFile ../dots/nvim/lua/setup/luasnip.lua}
-        ${builtins.readFile ../dots/nvim/lua/setup/trouble.lua}
-        ${builtins.readFile ../dots/nvim/lua/setup/telescope.lua}
-        ${builtins.readFile ../dots/nvim/lua/setup/kommentary.lua}
-        ${builtins.readFile ../dots/nvim/lua/setup/lualine.lua}
-        ${builtins.readFile ../dots/nvim/lua/setup/fidget.lua}
-        ${builtins.readFile ../dots/nvim/lua/setup/lint.lua}
-        ${builtins.readFile ../dots/nvim/lua/setup/leap.lua}
-        ${builtins.readFile ../dots/nvim/lua/setup/gitsigns.lua}
-        ${builtins.readFile ../dots/nvim/lua/setup/clangd_extensions.lua}
+        ${builtins.readFile config/mappings.lua}
+        ${builtins.readFile config/options.lua}
+        ${builtins.readFile config/setup/cmp.lua}
+        ${builtins.readFile config/setup/treesitter.lua}
+        ${builtins.readFile config/setup/lspconfig.lua}
+        ${builtins.readFile config/setup/luasnip.lua}
+        ${builtins.readFile config/setup/trouble.lua}
+        ${builtins.readFile config/setup/telescope.lua}
+        ${builtins.readFile config/setup/kommentary.lua}
+        ${builtins.readFile config/setup/lualine.lua}
+        ${builtins.readFile config/setup/fidget.lua}
+        ${builtins.readFile config/setup/lint.lua}
+        ${builtins.readFile config/setup/leap.lua}
+        ${builtins.readFile config/setup/gitsigns.lua}
+        ${builtins.readFile config/setup/clangd_extensions.lua}
       '';
       enable = true;
       viAlias = true;

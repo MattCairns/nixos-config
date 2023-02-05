@@ -10,29 +10,12 @@
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
   boot.binfmt.emulatedSystems = ["aarch64-linux"];
 
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
   # Enable networking
   networking.networkmanager.enable = true;
   networking.firewall.checkReversePath = "loose";
 
   networking.firewall.allowedUDPPorts = [
-    14550
-    14520
-
-    # Sunshine ports
-    47998
-    47999
-    48000
-    48002
-    48010
-  ];
-
-  networking.firewall.allowedTCPPorts = [
-    # Sunshine
-    47984
-    47989
-    48010
+    14550 # Mavlink
   ];
 
   # Set your time zone.
@@ -44,20 +27,17 @@
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
-  # Enable the GNOME Desktop Environment.
   boot.plymouth = {
     enable = true;
     themePackages = [inputs.mrcpkgs.legacyPackages.x86_64-linux.adi1090x-plymouth];
     theme = "lone";
   };
+
   services.xserver = {
     displayManager = {
       lightdm = {
         enable = true;
         greeters.slick.enable = true;
-        /*
-        background = "/home/matthew/.config/wallpapers/camilo-contreras-b9iRx947hzY-unsplash.jpg";
-        */
       };
       defaultSession = "none+bspwm";
     };

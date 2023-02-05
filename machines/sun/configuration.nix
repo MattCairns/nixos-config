@@ -44,7 +44,7 @@
 
   systemd.services.tdarr = {
     script = ''
-      docker-compose -f ${/home/matthew/.config/docker/tdarr.yml}
+      docker-compose -f ${HOME}/.config/docker/tdarr.yml
     '';
     wantedBy = [ "multi-user.target" ];
     after = ["docker.service" "docker.socket"];

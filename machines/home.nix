@@ -1,14 +1,13 @@
-{
-  config,
-  lib,
-  pkgs,
-  user,
-  ...
+{ config
+, lib
+, pkgs
+, user
+, ...
 }: {
   imports =
-    [(import ../pkgs/neovim.nix)]
-    ++ [(import ../pkgs/bspwm.nix)]
-    ++ [(import ../pkgs/sxhkd.nix)];
+    [ (import ../pkgs/neovim) ]
+    ++ [ (import ../pkgs/bspwm.nix) ]
+    ++ [ (import ../pkgs/sxhkd.nix) ];
 
   home = {
     username = "${user}";
@@ -73,13 +72,13 @@
       menuOpacity = 0.8;
       fade = true;
       fadeDelta = 6;
-      fadeSteps = [0.03 0.03];
+      fadeSteps = [ 0.03 0.03 ];
       backend = "xrender";
       vSync = true;
     };
     betterlockscreen = {
       enable = true;
-      arguments = ["blur"];
+      arguments = [ "blur" ];
     };
     dunst = {
       enable = true;

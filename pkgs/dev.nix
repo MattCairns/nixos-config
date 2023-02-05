@@ -1,7 +1,6 @@
-{
-  config,
-  pkgs,
-  ...
+{ config
+, pkgs
+, ...
 }: {
   environment.systemPackages = with pkgs; [
     git
@@ -14,20 +13,15 @@
     ## Cpp Analysis
     pre-commit
     cppcheck
-    cpplint
-    uncrustify
-    include-what-you-use
 
-    gnumake
     lazygit
     pkg-config
     rnix-lsp
-    brightnessctl
-    wally-cli
-    pinentry
     nixpkgs-fmt
+    brightnessctl
+    pinentry
   ];
 
   virtualisation.docker.enable = true;
-  users.users.matthew.extraGroups = ["docker"];
+  users.users.matthew.extraGroups = [ "docker" ];
 }
