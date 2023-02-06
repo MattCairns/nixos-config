@@ -8,6 +8,7 @@
   imports =
     [(import ../pkgs/neovim)]
     ++ [(import ../pkgs/bspwm)]
+    ++ [(import ../pkgs/polybar)]
     ++ [(import ../pkgs/tmux)]
     ++ [(import ../pkgs/sxhkd)];
 
@@ -102,7 +103,6 @@
     };
   };
 
-  xdg.configFile."polybar".source = ../dots/polybar;
   xdg.configFile."wallpapers".source = ../dots/wallpapers;
   xdg.configFile."bin".source = ../dots/bin;
 

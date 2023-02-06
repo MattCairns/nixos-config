@@ -1,14 +1,12 @@
-{
-  config,
-  pkgs,
-  ...
+{ config
+, pkgs
+, ...
 }: {
   home.packages = with pkgs; [
-    polybarFull
     pywal
     calc
     networkmanager_dmenu
   ];
 
-  xdg.configFile."bspwm".source = config/bspwm;
+  xdg.configFile."bspwm".source = ./config;
 }

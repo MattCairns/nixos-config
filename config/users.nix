@@ -9,8 +9,6 @@
     description = "Matthew Cairns";
     extraGroups = ["networkmanager" "wheel"];
     packages = with pkgs; [
-      firefox
-
       # Communication
       zoom-us
       teams
