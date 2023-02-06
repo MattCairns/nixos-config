@@ -43,13 +43,13 @@
     sunshine
   ];
 
-  systemd.services.tdarr = {
+  /* systemd.services.tdarr = {
     script = ''
       docker-compose -f ${HOME}/.config/docker/tdarr.yml
     '';
     wantedBy = ["multi-user.target"];
     after = ["docker.service" "docker.socket"];
-  };
+  }; */
 
   nix = {
     package = pkgs.nixFlakes;

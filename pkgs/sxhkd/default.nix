@@ -10,7 +10,8 @@
     keybindings = {
       # Quick Open Hotkeys
       "super + ctrl + f" = "kitty -e vifm";
-      "alt + shift + ctrl + w" = "firefox";
+      "super + shift + w" = "firefox -P work";
+      "super + shift + h" = "firefox -P home";
       "alt + shift + ctrl + c" = "kitty -e slack";
 
       # terminal emulator

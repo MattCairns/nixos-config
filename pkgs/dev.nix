@@ -21,6 +21,7 @@
     nixpkgs-fmt
     brightnessctl
     pinentry
+
   ];
 
   virtualisation.docker.enable = true;

@@ -19,14 +19,14 @@ elif [ "$pcid" = "$desktopid" ]; then
          --output DP-3 --off \
          --output DP-4 --mode 2560x1440 --pos 2560x0 --rotate right \
          --output DP-5 --off
-  bspc monitor DP-4 -d I II III
-  bspc monitor DP-2 -d IV V 
+  bspc monitor DP-2 -d I II III
+  bspc monitor DP-4 -d IV V VI
 
   feh --bg-fill --no-xinerama ~/.config/wallpapers/6304411213_c2fc1f7e26_o.jpg
 
   bspc rule -a Obsidian='^3'
   bspc rule -a firefox desktop='^4'
-  bspc rule -a Slack desktop='^5'
+  bspc rule -a Slack desktop='^6'
 
 elif [ "$pcid" = "$oorid" ]; then
   notify-send "Loaded OOR Nuc"
