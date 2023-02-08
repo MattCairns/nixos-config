@@ -22,6 +22,8 @@
     brightnessctl
     pinentry
 
+    distrobox
+
   ];
 
   virtualisation.docker.enable = true;

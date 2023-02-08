@@ -45,6 +45,7 @@
             [greeter-theme]
             window-color = "#37353a"
             border-color = "#967b5e"
+            background-image-size = fill
           '';
         };
       };
