@@ -93,7 +93,7 @@
       "super + {Left,Down,Up,Right}" = "bspc node -v {-20 0,0 20,0 -20,20 0}";
 
       # Connect to bluetooth headphones
-      "super + shift + b" = "bluetoothctl connect F8:4E:17:2E:77:05";
+      "super + shift + b" = "bluetoothctl connect 88:C9:E8:44:61:64";
 
       "XF86MonBrightnessDown " = "brightnessctl set 5%-";
       "XF86MonBrightnessUp " = "brightnessctl set 5%+";

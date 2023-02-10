@@ -21,9 +21,4 @@
   services.fprintd.enable = true;
   security.pam.services.login.fprintAuth = true;
   security.pam.services.xscreensaver.fprintAuth = true;
-
-  nix = {
-    package = pkgs.nixFlakes;
-    extraOptions = "experimental-features = nix-command flakes";
-  };
 }

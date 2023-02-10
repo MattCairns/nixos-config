@@ -29,9 +29,4 @@
   boot.initrd.kernelModules = ["acpi_call"];
   boot.kernelModules = ["kvm-amd"];
   boot.extraModulePackages = with config.boot.kernelPackages; [acpi_call];
-
-  nix = {
-    package = pkgs.nixFlakes;
-    extraOptions = "experimental-features = nix-command flakes";
-  };
 }

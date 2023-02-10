@@ -51,8 +51,4 @@
     after = ["docker.service" "docker.socket"];
   }; */
 
-  nix = {
-    package = pkgs.nixFlakes;
-    extraOptions = "experimental-features = nix-command flakes";
-  };
 }
