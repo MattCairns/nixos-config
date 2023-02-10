@@ -30,9 +30,6 @@ in
           inherit user;
         };
         home-manager.users.${user} = {
-          /*
-          imports = [(import ./home.nix)] ++ [(import ./desktop/home.nix)];
-          */
           imports = [ (import ./home.nix) ];
         };
       }
@@ -52,9 +49,6 @@ in
           inherit user;
         };
         home-manager.users.${user} = {
-          /*
-          imports = [(import ./home.nix)] ++ [(import ./laptop/home.nix)];
-          */
           imports = [ (import ./home.nix) ];
         };
       }
@@ -74,9 +68,6 @@ in
           inherit user;
         };
         home-manager.users.${user} = {
-          /*
-          imports = [(import ./home.nix)] ++ [(import ./nuc/home.nix)];
-          */
           imports = [ (import ./home.nix) ];
         };
       }
