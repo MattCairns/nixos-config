@@ -103,7 +103,7 @@
     };
   };
 
-  xdg.configFile."wallpapers".source = ../dots/wallpapers;
+  xdg.configFile."wallpapers".source = ../assets/wallpapers;
   xdg.configFile."bin".source = ../dots/bin;
 
   ## Terminal Configs
