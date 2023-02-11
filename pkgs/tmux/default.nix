@@ -21,7 +21,7 @@
             bind-key K run-shell 'tmux switch-client -n \; kill-session -t "$(tmux display-message -p "#S")" || tmux kill-s'
 
       # Projects
-            bind-key -r N run-shell "/home/$USER/.config/bin/tmux-sessionizer /home/$USER/.config/nvim/"
+            bind-key -r N run-shell "/home/$USER/.config/bin/tmux-sessionizer /home/$USER/nixos-config/"
             bind-key -r J run-shell "/home/$USER/.config/bin/tmux-sessionizer /home/$USER/dev/oor/core/subsystems/ipc/"
             bind-key -r T run-shell "/home/$USER/.config/bin/tmux-sessionizer /home/$USER/dev/oor/ && tmux send-keys -t oor 'sure testbed' C-m"
 

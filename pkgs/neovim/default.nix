@@ -1,8 +1,11 @@
-{
-  config,
-  pkgs,
-  ...
+{ config
+, pkgs
+, ...
 }: {
+  home.packages = with pkgs; [
+    vscode-extensions.vadimcn.vscode-lldb
+    vscode-extensions.ms-vscode.cpptools
+  ];
   programs = {
     neovim = {
       plugins = [
@@ -38,6 +41,10 @@
         pkgs.vimPlugins.leap-nvim
         pkgs.vimPlugins.vim-repeat
         pkgs.vimPlugins.kanagawa-nvim
+        ## Debugging
+        pkgs.vimPlugins.nvim-dap
+        pkgs.vimPlugins.nvim-dap-ui
+        pkgs.vimPlugins.nvim-dap-virtual-text
       ];
 
       extraConfig = ''
@@ -57,6 +64,7 @@
         ${builtins.readFile config/setup/leap.lua}
         ${builtins.readFile config/setup/gitsigns.lua}
         ${builtins.readFile config/setup/clangd_extensions.lua}
+        ${builtins.readFile config/setup/dap.lua}
       '';
       enable = true;
       viAlias = true;
