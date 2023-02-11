@@ -1,8 +1,16 @@
+function dirLookup(dir)
+   -- Return first result from find
+   local p = io.popen('find '..dir..' -maxdepth 0 -type d | head -n 1')  
+   for file in p:lines() do 
+       return file
+   end
+end
+
 local dap = require('dap')
 dap.adapters.cppdbg = {
   id = 'cppdbg',
   type = 'executable',
-  command = '/nix/store/kmcb9167bpjnvniwh2fqk3jkjgz8rrkq-vscode-extension-ms-vscode-cpptools-1.11.0/share/vscode/extensions/ms-vscode.cpptools/debugAdapters/bin/OpenDebugAD7',
+  command = dirLookup('/nix/store/*vscode-extension-ms-vscode-cpptools*')..'/share/vscode/extensions/ms-vscode.cpptools/debugAdapters/bin/OpenDebugAD7',
 }
 
 dap.configurations.cpp = {

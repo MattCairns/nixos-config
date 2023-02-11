@@ -3,25 +3,29 @@
 , ...
 }: {
   home.packages = with pkgs; [
-    vscode-extensions.vadimcn.vscode-lldb
     vscode-extensions.ms-vscode.cpptools
   ];
   programs = {
     neovim = {
       plugins = [
+        ## Treesitter
         pkgs.vimPlugins.nvim-treesitter
         pkgs.vimPlugins.nvim-treesitter.withAllGrammars
         pkgs.vimPlugins.nvim-treesitter-textobjects
+        pkgs.vimPlugins.nvim-lspconfig
+
         pkgs.vimPlugins.trouble-nvim
         pkgs.vimPlugins.plenary-nvim
         pkgs.vimPlugins.telescope-nvim
         pkgs.vimPlugins.telescope-fzf-native-nvim
-        pkgs.vimPlugins.nvim-lspconfig
         pkgs.vimPlugins.fidget-nvim
+
+        ## cmp
         pkgs.vimPlugins.nvim-cmp
         pkgs.vimPlugins.cmp-nvim-lsp
         pkgs.vimPlugins.cmp-buffer
         pkgs.vimPlugins.cmp-cmdline
+
         pkgs.vimPlugins.clangd_extensions-nvim
         pkgs.vimPlugins.luasnip
         pkgs.vimPlugins.cmp_luasnip
@@ -41,6 +45,7 @@
         pkgs.vimPlugins.leap-nvim
         pkgs.vimPlugins.vim-repeat
         pkgs.vimPlugins.kanagawa-nvim
+
         ## Debugging
         pkgs.vimPlugins.nvim-dap
         pkgs.vimPlugins.nvim-dap-ui
