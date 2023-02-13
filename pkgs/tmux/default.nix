@@ -1,11 +1,13 @@
-{
-  config,
-  pkgs,
-  user,
-  ...
+{ config
+, pkgs
+, user
+, ...
 }: {
   programs.tmux = {
     enable = true;
+    plugins = with pkgs; [
+      tmuxPlugins.power-theme
+    ];
     extraConfig = ''
             set -g default-terminal "screen-256color"
             set-window-option -g mode-keys vi
