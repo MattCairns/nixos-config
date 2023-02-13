@@ -1,9 +1,7 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-
 { config, pkgs, lib, ... }:
-
 {
   imports =
     [
@@ -14,13 +12,15 @@
   services.nix-serve = {
     enable = true;
     secretKeyFile = "/var/cache-priv-key.pem";
+    openFirewall = true;
     port = 8312;
   };
 
-  /* services.nginx = {
+  services.nginx = {
     enable = true;
     virtualHosts = {
-      "nixpkgs.matthewcairns.com" = {
+      # ... existing hosts config etc. ...
+      "cache.matthewcairns.com" = {
         serverAliases = [ "binarycache" ];
         locations."/".extraConfig = ''
           proxy_pass http://localhost:${toString config.services.nix-serve.port};
@@ -31,7 +31,7 @@
       };
     };
   };
- */
+
   boot.kernel.sysctl."net.ipv4.ip_forward" = true; # 1
   virtualisation.docker.enable = true;
   services.gitlab-runner = {
