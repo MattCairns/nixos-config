@@ -11,23 +11,16 @@
       ./hardware-configuration.nix
     ];
 
-  nix = {
-    settings = {
-      trusted-public-keys = [
-        "cache.example.com-1:rU3wS6gjo1iUEu2lVuUtgbXcsBAuV5T4Sd08hediJuM="
-      ];
-    };
-  };
-
   services.nix-serve = {
     enable = true;
     secretKeyFile = "/var/cache-priv-key.pem";
+    port = 8312;
   };
 
-  services.nginx = {
+  /* services.nginx = {
     enable = true;
     virtualHosts = {
-      "cache.matthewcairns.com" = {
+      "nixpkgs.matthewcairns.com" = {
         serverAliases = [ "binarycache" ];
         locations."/".extraConfig = ''
           proxy_pass http://localhost:${toString config.services.nix-serve.port};
@@ -38,7 +31,7 @@
       };
     };
   };
-
+ */
   boot.kernel.sysctl."net.ipv4.ip_forward" = true; # 1
   virtualisation.docker.enable = true;
   services.gitlab-runner = {
