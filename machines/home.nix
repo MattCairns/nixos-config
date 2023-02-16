@@ -11,6 +11,7 @@
     ++ [ (import ../pkgs/sxhkd) ]
     ++ [ (import ../pkgs/polybar) ]
     ++ [ (import ../pkgs/tmux) ]
+    ++ [ (import ../pkgs/git) ]
     ++ [ (import ../pkgs/firefox) ];
 
   home = {

@@ -128,5 +128,8 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
+  # Cache deply
+  services.cachix-agent.enable = true;
+
   system.stateVersion = "22.11";
 }

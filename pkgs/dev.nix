@@ -4,7 +4,6 @@
   ...
 }: {
   environment.systemPackages = with pkgs; [
-    git
     python3
     gcc12
     clang_14
@@ -23,6 +22,9 @@
     pinentry
 
     distrobox
+
+    #nix 
+    cachix
 
   ];
 
