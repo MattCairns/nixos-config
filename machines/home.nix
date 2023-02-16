@@ -17,6 +17,7 @@
   home = {
     username = "${user}";
     homeDirectory = "/home/${user}";
+    sessionPath = [ "/home/${user}/.config/bin" ];
 
     packages = with pkgs; [
       home-manager
