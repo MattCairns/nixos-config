@@ -2,6 +2,7 @@
 , inputs
 , nixpkgs
 , home-manager
+, mrcpkgs
 , user
 , location
 , ...
@@ -10,6 +11,11 @@ let
   system = "x86_64-linux";
 
   pkgs = import nixpkgs {
+    inherit system;
+    config.allowUnfree = true;
+  };
+
+  mrc = import mrcpkgs {
     inherit system;
     config.allowUnfree = true;
   };
@@ -27,7 +33,7 @@ in
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
         home-manager.extraSpecialArgs = {
-          inherit user;
+          inherit user mrc;
         };
         home-manager.users.${user} = {
           imports = [ (import ./home.nix) ];
@@ -46,7 +52,7 @@ in
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
         home-manager.extraSpecialArgs = {
-          inherit user;
+          inherit user mrc;
         };
         home-manager.users.${user} = {
           imports = [ (import ./home.nix) ];
@@ -65,7 +71,7 @@ in
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
         home-manager.extraSpecialArgs = {
-          inherit user;
+          inherit user mrc;
         };
         home-manager.users.${user} = {
           imports = [ (import ./home.nix) ];

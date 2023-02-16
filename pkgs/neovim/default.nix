@@ -1,5 +1,6 @@
 { config
 , pkgs
+, mrc
 , ...
 }: {
   home.packages = with pkgs; [
@@ -45,6 +46,7 @@
         pkgs.vimPlugins.leap-nvim
         pkgs.vimPlugins.vim-repeat
         pkgs.vimPlugins.kanagawa-nvim
+        mrc.vimPlugins.no-neck-pain-nvim
 
         ## Debugging
         pkgs.vimPlugins.nvim-dap

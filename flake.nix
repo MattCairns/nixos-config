@@ -3,7 +3,8 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    mrcpkgs.url = "github:MattCairns/nix-overlays";
+    mrcoverlays.url = "github:MattCairns/nix-overlays";
+    mrcpkgs.url = "github:MattCairns/nixpkgs"; 
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -13,6 +14,7 @@
   outputs = inputs @ {
     self,
     nixpkgs,
+    mrcpkgs,
     home-manager,
     ...
   }: let
@@ -22,16 +24,10 @@
     nixosConfigurations = (
       import ./machines {
         inherit (nixpkgs) lib;
-        inherit inputs nixpkgs home-manager user location;
+        inherit inputs nixpkgs mrcpkgs home-manager user location;
       }
     );
 
-    homeConfigurations = (
-      import ./nix {
-        inherit (nixpkgs) lib;
-        inherit inputs nixpkgs home-manager user;
-      }
-    );
     formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
   };
 }

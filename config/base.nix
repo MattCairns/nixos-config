@@ -33,7 +33,7 @@
 
   boot.plymouth = {
     enable = true;
-    themePackages = [ inputs.mrcpkgs.legacyPackages.x86_64-linux.adi1090x-plymouth ];
+    themePackages = [ inputs.mrcoverlays.legacyPackages.x86_64-linux.adi1090x-plymouth ];
     theme = "lone";
   };
 
