@@ -6,13 +6,17 @@
 , ...
 }: {
   imports =
-    [ (import ../pkgs/neovim) ]
-    ++ [ (import ../pkgs/bspwm) ]
-    ++ [ (import ../pkgs/sxhkd) ]
-    ++ [ (import ../pkgs/polybar) ]
-    ++ [ (import ../pkgs/tmux) ]
-    ++ [ (import ../pkgs/git) ]
-    ++ [ (import ../pkgs/firefox) ];
+    [ (import ../modules/dev/neovim) ]
+    ++ [ (import ../modules/dev/git) ]
+    ++ [ (import ../modules/desktop/bspwm) ]
+    ++ [ (import ../modules/desktop/sxhkd) ]
+    ++ [ (import ../modules/desktop/polybar) ]
+    ++ [ (import ../modules/desktop/rofi) ]
+    ++ [ (import ../modules/desktop/picom) ]
+    ++ [ (import ../modules/desktop/dunst) ]
+    ++ [ (import ../modules/desktop/betterlockscreen) ]
+    ++ [ (import ../modules/tools/tmux) ]
+    ++ [ (import ../modules/apps/firefox) ];
 
   home = {
     username = "${user}";
@@ -63,48 +67,6 @@
     stateVersion = "22.11";
   };
 
-  ## WM Configs
-  programs = {
-    rofi = {
-      enable = true;
-      theme = "gruvbox-dark-hard";
-    };
-  };
-
-  services = {
-    picom = {
-      enable = true;
-      menuOpacity = 0.8;
-      fade = true;
-      fadeDelta = 6;
-      fadeSteps = [ 0.03 0.03 ];
-      backend = "xrender";
-      vSync = true;
-    };
-    betterlockscreen = {
-      enable = true;
-      arguments = [ "blur" ];
-    };
-    dunst = {
-      enable = true;
-      settings = {
-        global = {
-          width = 300;
-          height = 300;
-          offset = "30x50";
-          origin = "top-right";
-          transparency = 5;
-          frame_color = "#eceff1";
-          corner_radius = 10;
-        };
-        urgency_normal = {
-          background = "#181818";
-          foreground = "#dfdfdf";
-          timeout = 10;
-        };
-      };
-    };
-  };
 
   xdg.configFile."wallpapers".source = ../assets/wallpapers;
   xdg.configFile."bin".source = ../dots/bin;

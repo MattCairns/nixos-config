@@ -7,7 +7,7 @@
     ./hardware-configuration.nix
     ../../config/base.nix
     ../../config/users.nix
-    ../../pkgs/dev.nix
+    ../../modules/dev.nix
   ];
 
   networking.hostName = "nuc";
