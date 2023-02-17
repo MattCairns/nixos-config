@@ -14,6 +14,20 @@
         OfferToSaveLogins = false;
         OfferToSaveLoginsDefault = false;
         PasswordManagerEnabled = false;
+        SanitizeOnShutdown = {
+          Cache = false;
+          Cookies = false;
+          Downloads = true;
+          FormData = true;
+          History = true;
+          Sessions = true;
+          SiteSettings = true;
+          OfflineApps = true;
+          Locked = true;
+        };
+        SearchEngines = {
+          PreventInstalls = true;
+        };
         FirefoxHome = {
           Search = true;
           Pocket = false;
@@ -21,33 +35,22 @@
           TopSites = false;
           Highlights = false;
         };
+        Homepage = {
+          URL = "https://duckduckgo.com";
+          Locked = true;
+        };
+        Preferences = {
+          browser.theme.content-theme = 0;
+          extensions.activeThemeID = "firefox-compact-dark@mozilla.org";
+        };
       };
     };
     profiles = {
       home = {
         id = 0;
-        search.default = "DuckDuckGo";
-        settings = {
-          "browser.startup.homepage" = "duckduckgo.com";
-          "privacy.clearOnShutdown.history" = true;
-          "privacy.clearOnShutdown.downloads" = true;
-          "privacy.clearOnShutdown.formdata" = true;
-          "extensions.activeThemeID" = "firefox-compact-dark@mozilla.org";
-          "browser.theme.content-theme" = 0;
-        };
       };
-
       work = {
         id = 1;
-        search.default = "DuckDuckGo";
-        settings = {
-          "browser.startup.homepage" = "ticktick.com";
-          "privacy.clearOnShutdown.history" = true;
-          "privacy.clearOnShutdown.downloads" = true;
-          "privacy.clearOnShutdown.formdata" = true;
-          "extensions.activeThemeID" = "firefox-compact-dark@mozilla.org";
-          "browser.theme.content-theme" = 0;
-        };
       };
     };
   };
