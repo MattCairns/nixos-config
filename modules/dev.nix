@@ -1,14 +1,16 @@
-{
-  config,
-  pkgs,
-  ...
-}: let
-  my-python-packages = p:
+{ config
+, pkgs
+, ...
+}:
+let
+  python-packages = p:
     with p; [
       pyserial
     ];
-in {
+in
+{
   environment.systemPackages = with pkgs; [
+    # Build tools
     gcc12
     clang_14
     clang-tools_14
@@ -22,19 +24,21 @@ in {
     pkg-config
     rnix-lsp
     nixpkgs-fmt
-    brightnessctl
-    pinentry
 
     distrobox
+
+    # Desktop
+    brightnessctl
+    pinentry
 
     #nix
     cachix
 
     # Python
-    (pkgs.python3.withPackages my-python-packages)
     python3
+    (pkgs.python3.withPackages python-packages)
   ];
 
   virtualisation.docker.enable = true;
-  users.users.matthew.extraGroups = ["docker"];
+  users.users.matthew.extraGroups = [ "docker" ];
 }
