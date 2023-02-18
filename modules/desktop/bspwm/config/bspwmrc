@@ -24,18 +24,21 @@ if [ "$pcid" = "$thinkpadid" ]; then
   bspc monitor -d I II III IV V VI VII VIII IX X
   notify-send "Loaded Laptop"
 elif [ "$pcid" = "$desktopid" ]; then
-  xrandr --output DP-0 --off \
+  xrandr --output DP-2.8 --primary --mode 2560x1440 --pos 0x602 --rotate normal \
+         --output DP-2.1 --mode 2560x1440 --pos 2560x0 --rotate right \
+         --output DP-0 --off \
          --output DP-1 --off \
          --output HDMI-0 --off \
-         --output DP-2 --primary --mode 2560x1440 --pos 0x602 --rotate normal \
+         --output DP-2 --off \
          --output DP-3 --off \
-         --output DP-4 --mode 2560x1440 --pos 2560x0 --rotate right \
+         --output DP-4 --off \
          --output DP-5 --off
 
   feh --bg-fill --no-xinerama ~/.config/wallpapers/6304411213_c2fc1f7e26_o.jpg
 
-  bspc monitor DP-2 -d I II III
-  bspc monitor DP-4 -d IV V VI
+  bspc wm -O DP-2.8 DP-2.1
+  bspc monitor %DP-2.8 -d I II III
+  bspc monitor %DP-2.1 -d IV V VI
 
   bspc rule -a Obsidian='^3'
   bspc rule -a firefox desktop='^4'
@@ -49,6 +52,7 @@ elif [ "$pcid" = "$oorid" ]; then
          --output DisplayPort-5 --off --output HDMI-A-3 --off \
          --output HDMI-A-4 --mode 2560x1440 --pos 1440x305 --rotate normal
 
+  bspc wm -O DisplayPort-4 HDMI-A-4 DisplayPort-3
   bspc monitor DisplayPort-4 -d I II
   bspc monitor HDMI-A-4 -d III IV 
   bspc monitor DisplayPort-1 -d V VI 
