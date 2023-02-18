@@ -49,4 +49,6 @@
     after = ["docker.service" "docker.socket"];
   };
   */
+
+  system.stateVersion = "22.11";
 }

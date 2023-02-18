@@ -31,6 +31,7 @@
   networking.networkmanager.enable = true;
   networking.firewall.checkReversePath = "loose";
 
+  networking.firewall.enable = true;
   # networking.firewall.allowedUDPPorts = [ ];
   # networking.firewall.allowedTCPPorts = [ ];
 
@@ -133,5 +134,4 @@
 
   users.defaultUserShell = pkgs.zsh;
 
-  system.stateVersion = "22.11";
 }
