@@ -1,7 +1,8 @@
-{ config
-, pkgs
-, user
-, ...
+{
+  config,
+  pkgs,
+  user,
+  ...
 }: {
   programs.tmux = {
     enable = true;

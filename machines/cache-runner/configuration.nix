@@ -1,13 +1,16 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-{ config, pkgs, lib, ... }:
 {
-  imports =
-    [
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  config,
+  pkgs,
+  lib,
+  ...
+}: {
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   services.nix-serve = {
     enable = true;
@@ -21,7 +24,7 @@
     virtualHosts = {
       # ... existing hosts config etc. ...
       "cache.matthewcairns.com" = {
-        serverAliases = [ "binarycache" ];
+        serverAliases = ["binarycache"];
         locations."/".extraConfig = ''
           proxy_pass http://localhost:${toString config.services.nix-serve.port};
           proxy_set_header Host $host;
@@ -39,7 +42,7 @@
     services = {
       # runner for building in docker via host's nix-daemon
       # nix store will be readable in runner, might be insecure
-      nix = with lib;{
+      nix = with lib; {
         # File should contain at least these two variables:
         # `CI_SERVER_URL`
         # `REGISTRATION_TOKEN`
@@ -64,7 +67,7 @@
 
           . ${pkgs.nix}/etc/profile.d/nix.sh
 
-          ${pkgs.nix}/bin/nix-env -i ${concatStringsSep " " (with pkgs; [ nix cacert git openssh ])}
+          ${pkgs.nix}/bin/nix-env -i ${concatStringsSep " " (with pkgs; [nix cacert git openssh])}
 
           ${pkgs.nix}/bin/nix-channel --add https://nixos.org/channels/nixpkgs-unstable
           ${pkgs.nix}/bin/nix-channel --update nixpkgs
@@ -76,11 +79,10 @@
           PATH = "/nix/var/nix/profiles/default/bin:/nix/var/nix/profiles/default/sbin:/bin:/sbin:/usr/bin:/usr/sbin";
           NIX_SSL_CERT_FILE = "/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt";
         };
-        tagList = [ "nix" ];
+        tagList = ["nix"];
       };
     };
   };
-
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -113,8 +115,8 @@
   users.users.nixos = {
     isNormalUser = true;
     description = "nixos-runner";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [ git tmux ];
+    extraGroups = ["networkmanager" "wheel"];
+    packages = with pkgs; [git tmux];
   };
 
   # Allow unfree packages
@@ -153,5 +155,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "22.11"; # Did you read the comment?
-
 }

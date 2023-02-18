@@ -1,7 +1,8 @@
-{ config
-, pkgs
-, mrc
-, ...
+{
+  config,
+  pkgs,
+  mrc,
+  ...
 }: {
   home.packages = with pkgs; [
     vscode-extensions.ms-vscode.cpptools

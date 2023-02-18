@@ -1,9 +1,10 @@
-{ config
-, lib
-, pkgs
-, mrcpkgs
-, user
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  mrcpkgs,
+  user,
+  ...
 }: {
   imports =
     [ (import ../modules/dev/neovim) ]
@@ -21,7 +22,7 @@
   home = {
     username = "${user}";
     homeDirectory = "/home/${user}";
-    sessionPath = [ "/home/${user}/.config/bin" ];
+    sessionPath = ["/home/${user}/.config/bin"];
 
     packages = with pkgs; [
       home-manager

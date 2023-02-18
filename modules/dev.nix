@@ -2,9 +2,13 @@
   config,
   pkgs,
   ...
-}: {
+}: let
+  my-python-packages = p:
+    with p; [
+      pyserial
+    ];
+in {
   environment.systemPackages = with pkgs; [
-    python3
     gcc12
     clang_14
     clang-tools_14
@@ -23,9 +27,12 @@
 
     distrobox
 
-    #nix 
+    #nix
     cachix
 
+    # Python
+    (pkgs.python3.withPackages my-python-packages)
+    python3
   ];
 
   virtualisation.docker.enable = true;

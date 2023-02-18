@@ -1,13 +1,13 @@
-{ lib
-, inputs
-, nixpkgs
-, home-manager
-, mrcpkgs
-, user
-, location
-, ...
-}:
-let
+{
+  lib,
+  inputs,
+  nixpkgs,
+  home-manager,
+  mrcpkgs,
+  user,
+  location,
+  ...
+}: let
   system = "x86_64-linux";
 
   pkgs = import nixpkgs {
@@ -21,11 +21,10 @@ let
   };
 
   lib = nixpkgs.lib;
-in
-{
+in {
   sun = lib.nixosSystem {
     inherit system;
-    specialArgs = { inherit inputs user location; };
+    specialArgs = {inherit inputs user location;};
     modules = [
       ./sun/configuration.nix
       home-manager.nixosModules.home-manager
@@ -36,7 +35,7 @@ in
           inherit user mrc;
         };
         home-manager.users.${user} = {
-          imports = [ (import ./home.nix) ];
+          imports = [(import ./home.nix)];
         };
       }
     ];
@@ -44,7 +43,7 @@ in
 
   laptop = lib.nixosSystem {
     inherit system;
-    specialArgs = { inherit inputs user location; };
+    specialArgs = {inherit inputs user location;};
     modules = [
       ./laptop/configuration.nix
       home-manager.nixosModules.home-manager
@@ -55,7 +54,7 @@ in
           inherit user mrc;
         };
         home-manager.users.${user} = {
-          imports = [ (import ./home.nix) ];
+          imports = [(import ./home.nix)];
         };
       }
     ];
@@ -63,7 +62,7 @@ in
 
   nuc = lib.nixosSystem {
     inherit system;
-    specialArgs = { inherit inputs user location; };
+    specialArgs = {inherit inputs user location;};
     modules = [
       ./nuc/configuration.nix
       home-manager.nixosModules.home-manager
@@ -74,7 +73,7 @@ in
           inherit user mrc;
         };
         home-manager.users.${user} = {
-          imports = [ (import ./home.nix) ];
+          imports = [(import ./home.nix)];
         };
       }
     ];
@@ -82,7 +81,7 @@ in
 
   cache-runner = lib.nixosSystem {
     inherit system;
-    specialArgs = { inherit inputs user location; };
+    specialArgs = {inherit inputs user location;};
     modules = [
       ./cache-runner/configuration.nix
     ];

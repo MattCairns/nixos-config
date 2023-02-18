@@ -4,7 +4,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     mrcoverlays.url = "github:MattCairns/nix-overlays";
-    mrcpkgs.url = "github:MattCairns/nixpkgs"; 
+    mrcpkgs.url = "github:MattCairns/nixpkgs";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
