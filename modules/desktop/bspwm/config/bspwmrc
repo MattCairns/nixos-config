@@ -2,6 +2,17 @@
 
 ~/.config/polybar/load_polybar &
 
+bspc config remove_disabled_monitors  true
+bspc config remove_unplugged_monitors true
+bspc config merge_overlapping_monitors false
+bspc config border_width        1 
+bspc config window_gap          1
+bspc config focused_border_color \#9ECE6A
+bspc config -m focused top_padding 25
+bspc config split_ratio          0.52
+bspc config borderless_monocle   true
+bspc config gapless_monocle      true
+
 pcid=`hostname`
 thinkpadid=laptop
 oorid=nuc
@@ -9,8 +20,9 @@ desktopid=sun
 
 if [ "$pcid" = "$thinkpadid" ]; then
   setxkbmap -option caps:swapescape
+  feh --bg-fill  ~/.config/wallpapers/francesco-ungaro-qgZvBPM9Hm4-unsplash.jpg
   bspc monitor -d I II III IV V VI VII VIII IX X
-
+  notify-send "Loaded Laptop"
 elif [ "$pcid" = "$desktopid" ]; then
   xrandr --output DP-0 --off \
          --output DP-1 --off \
@@ -19,41 +31,32 @@ elif [ "$pcid" = "$desktopid" ]; then
          --output DP-3 --off \
          --output DP-4 --mode 2560x1440 --pos 2560x0 --rotate right \
          --output DP-5 --off
-  bspc monitor DP-2 -d I II III
-  bspc monitor DP-4 -d IV V VI
 
   feh --bg-fill --no-xinerama ~/.config/wallpapers/6304411213_c2fc1f7e26_o.jpg
+
+  bspc monitor DP-2 -d I II III
+  bspc monitor DP-4 -d IV V VI
 
   bspc rule -a Obsidian='^3'
   bspc rule -a firefox desktop='^4'
   bspc rule -a Slack desktop='^6'
-
+  notify-send "Loaded Sun"
 elif [ "$pcid" = "$oorid" ]; then
-  notify-send "Loaded OOR Nuc"
+  setxkbmap -option caps:swapescape
   xrandr --output DisplayPort-2 --off \
          --output DisplayPort-3 --mode 1920x1080 --pos 4000x1322 --rotate normal \
          --output DisplayPort-4 --mode 2560x1440 --pos 0x0 --rotate right \
          --output DisplayPort-5 --off \
          --output HDMI-A-3 --off \
          --output HDMI-A-4 --mode 2560x1440 --pos 1440x287 --rotate normal
-  setxkbmap -option caps:swapescape
+
   bspc monitor DisplayPort-4 -d I II
   bspc monitor HDMI-A-4 -d III IV 
   bspc monitor DisplayPort-3 -d V VI 
-
+  
   bspc rule -a Slack desktop='^1'
   bspc rule -a firefox desktop='^2'
+  notify-send "Loaded OOR Nuc"
 fi
 
-nitrogen --restore &
 
-bspc config remove_disabled_monitors  true
-bspc config remove_unplugged_monitors true
-bspc config merge_overlapping_monitors false
-bspc config border_width        2 
-bspc config window_gap          2
-bspc config focused_border_color \#9ECE6A
-bspc config -m focused top_padding 25
-bspc config split_ratio          0.52
-bspc config borderless_monocle   true
-bspc config gapless_monocle      true
