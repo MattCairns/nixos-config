@@ -14,9 +14,6 @@
   networking.hostName = "laptop";
   hardware.bluetooth.enable = true;
 
-  services.udev.extraRules = ''
-    SUBSYSTEM=="tty", ATTRS{product}=="CubeOrange", SYMLINK="ttyPIXHAWK"
-  '';
 
   # Enable touchpad support
   services.xserver.libinput.enable = true;

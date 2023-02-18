@@ -14,6 +14,11 @@
     };
   };
 
+  # udev rules
+  services.udev.extraRules = ''
+    SUBSYSTEM=="tty", ATTRS{product}=="CubeOrange", SYMLINK="ttyPIXHAWK"
+  '';
+
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
