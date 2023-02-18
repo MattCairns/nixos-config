@@ -31,9 +31,6 @@ in
     brightnessctl
     pinentry
 
-    #nix
-    cachix
-
     # Python
     python3
     (pkgs.python3.withPackages python-packages)

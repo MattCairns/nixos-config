@@ -13,9 +13,6 @@
 
   networking.hostName = "sun";
 
-  # Enable touchpad support
-  services.xserver.libinput.enable = true;
-
   services.xserver.videoDrivers = ["nvidia"];
   hardware.opengl = {
     enable = true;

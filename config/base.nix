@@ -1,9 +1,11 @@
-{
-  inputs,
-  config,
-  pkgs,
-  ...
+{ inputs
+, config
+, pkgs
+, ...
 }: {
+  # Allow unfree packages
+  nixpkgs.config.allowUnfree = true;
+
   nix = {
     package = pkgs.nixFlakes;
     extraOptions = "experimental-features = nix-command flakes";
@@ -23,15 +25,14 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
-  boot.binfmt.emulatedSystems = ["aarch64-linux"];
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   # Enable networking
   networking.networkmanager.enable = true;
   networking.firewall.checkReversePath = "loose";
 
-  networking.firewall.allowedUDPPorts = [
-    14550 # Mavlink
-  ];
+  # networking.firewall.allowedUDPPorts = [ ];
+  # networking.firewall.allowedTCPPorts = [ ];
 
   # Set your time zone.
   time.timeZone = "America/Vancouver";
@@ -44,7 +45,7 @@
 
   boot.plymouth = {
     enable = true;
-    themePackages = [inputs.mrcoverlays.legacyPackages.x86_64-linux.adi1090x-plymouth];
+    themePackages = [ inputs.mrcoverlays.legacyPackages.x86_64-linux.adi1090x-plymouth ];
     theme = "lone";
   };
 
@@ -77,7 +78,7 @@
     nerdfonts
     font-awesome
     siji
-    (nerdfonts.override {fonts = ["SourceCodePro"];})
+    (nerdfonts.override { fonts = [ "SourceCodePro" ]; })
   ];
 
   # Configure keymap in X11
@@ -91,11 +92,9 @@
 
   security.polkit.enable = true;
 
-  services.pcscd.enable = true;
-  programs.gnupg.agent = {
-    enable = true;
-  };
-  services.dbus.packages = [pkgs.gcr];
+  programs.gnupg.agent.enable = true;
+
+  services.dbus.packages = [ pkgs.gcr ];
 
   # Enable sound with pipewire.
   sound.enable = true;
@@ -120,7 +119,6 @@
   services.openssh.enable = true;
   programs.ssh.startAgent = true;
   services.tailscale.enable = true;
-  services.zerotierone.enable = true;
 
   # Set XDG environment
   environment.sessionVariables = rec {
@@ -128,19 +126,12 @@
     XDG_CONFIG_HOME = "\${HOME}/.config";
     XDG_BIN_HOME = "\${HOME}/.local/bin";
     XDG_DATA_HOME = "\${HOME}/.local/share";
-
     PATH = [
       "\${XDG_BIN_HOME}"
     ];
   };
 
   users.defaultUserShell = pkgs.zsh;
-
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-
-  # Cache deply
-  services.cachix-agent.enable = true;
 
   system.stateVersion = "22.11";
 }

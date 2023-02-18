@@ -50,6 +50,14 @@
       scrot
       feh
 
+      # Communication
+      zoom-us
+      teams
+      tdesktop
+      slack
+      signal-desktop
+      discord
+
       # Video/Audio
       feh # Image Viewer
       mpv # Media Player
@@ -65,6 +73,12 @@
       killall
       appimage-run # Runs AppImages on NixOS
       veracrypt
+
+      # Misc
+      qgroundcontrol
+      obsidian
+      qjackctl
+      libnotify
     ];
     stateVersion = "22.11";
   };

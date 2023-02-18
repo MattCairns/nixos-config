@@ -35,7 +35,7 @@ in {
           inherit user mrc;
         };
         home-manager.users.${user} = {
-          imports = [(import ./home.nix)];
+          imports = [(import ../config/home.nix)];
         };
       }
     ];
@@ -54,7 +54,7 @@ in {
           inherit user mrc;
         };
         home-manager.users.${user} = {
-          imports = [(import ./home.nix)];
+          imports = [(import ../config/home.nix)];
         };
       }
     ];
@@ -73,7 +73,7 @@ in {
           inherit user mrc;
         };
         home-manager.users.${user} = {
-          imports = [(import ./home.nix)];
+          imports = [(import ../config/home.nix)];
         };
       }
     ];
