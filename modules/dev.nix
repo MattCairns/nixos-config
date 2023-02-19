@@ -26,6 +26,7 @@ in
     nixpkgs-fmt
 
     distrobox
+    docker-compose
 
     # Desktop
     brightnessctl
@@ -37,5 +38,4 @@ in
   ];
 
   virtualisation.docker.enable = true;
-  users.users.matthew.extraGroups = [ "docker" ];
 }
