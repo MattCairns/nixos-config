@@ -52,7 +52,6 @@
 
       # Communication
       zoom-us
-      teams
       tdesktop
       slack
       signal-desktop

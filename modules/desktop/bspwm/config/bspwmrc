@@ -24,7 +24,7 @@ if [ "$pcid" = "$thinkpadid" ]; then
   bspc monitor -d I II III IV V VI VII VIII IX X
   notify-send "Loaded Laptop"
 elif [ "$pcid" = "$desktopid" ]; then
-  xrandr --output DP-2.8 --primary --mode 2560x1440 --pos 0x602 --rotate normal \
+  xrandr --output DP-2.8 --primary --mode 2560x1440 --pos 0x620 --rotate normal \
          --output DP-2.1 --mode 2560x1440 --pos 2560x0 --rotate right \
          --output DP-0 --off \
          --output DP-1 --off \

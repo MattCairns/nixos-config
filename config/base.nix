@@ -52,21 +52,7 @@
 
   services.xserver = {
     displayManager = {
-      lightdm = {
-        enable = true;
-        greeters.mini = {
-          enable = true;
-          user = "matthew";
-          extraConfig = ''
-            [greeter]
-            show-password-label = false
-            [greeter-theme]
-            window-color = "#37353a"
-            border-color = "#967b5e"
-            background-image-size = fill
-          '';
-        };
-      };
+      gdm.enable = true;
       defaultSession = "none+bspwm";
     };
     desktopManager.gnome.enable = true;
