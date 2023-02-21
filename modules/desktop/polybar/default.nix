@@ -5,12 +5,7 @@
   services.polybar = {
     enable = true;
     package = pkgs.polybarFull;
-    script = ''
-      #!/usr/bin/env sh
-      for m in $(polybar --list-monitors | cut -d":" -f1); do
-        MONITOR=$m polybar --reload example 2>&1 | tee -a /tmp/polybar-$m.log & disown
-      done
-    '';
+    script = "";
   };
 
   xdg.configFile."polybar".source = ./config;
