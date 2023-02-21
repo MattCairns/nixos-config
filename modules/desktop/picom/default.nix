@@ -10,5 +10,6 @@
     fadeSteps = [ 0.03 0.03 ];
     backend = "xrender";
     vSync = true;
+    shadow = true;
   };
 }
