@@ -62,10 +62,9 @@
   };
 
   fonts.fonts = with pkgs; [
-    nerdfonts
+    (nerdfonts.override { fonts = [ "SourceCodePro" "FiraCode" ]; })
     font-awesome
     siji
-    (nerdfonts.override { fonts = [ "SourceCodePro" ]; })
   ];
 
   # Configure keymap in X11

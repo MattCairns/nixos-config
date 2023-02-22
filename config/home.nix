@@ -8,6 +8,7 @@
   imports = [ (import ../modules/dev/neovim) ]
     ++ [ (import ../modules/dev/git) ]
     ++ [ (import ../modules/dev/kitty) ]
+    ++ [ (import ../modules/dev/alacritty) ]
     ++ [ (import ../modules/dev/starship) ]
     ++ [ (import ../modules/dev/tmux) ]
     ++ [ (import ../modules/dev/zsh) ]
