@@ -12,15 +12,15 @@
       };
       font = {
         normal = {
-          family = "FiraCode Nerd Font Mono";
+          family = "DankMono-Regular";
           style = "Regular";
         };
         bold = {
-          family = "FiraCode Nerd Font Mono";
+          family = "DankMono-Regular";
           style = "Bold";
         };
         italic = {
-          family = "FiraCode Nerd Font Mono";
+          family = "DankMono-Regular";
           style = "Italic";
         };
       };
