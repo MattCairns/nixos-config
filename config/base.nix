@@ -19,9 +19,12 @@
   };
 
   # udev rules
-  services.udev.extraRules = ''
-    SUBSYSTEM=="tty", ATTRS{product}=="CubeOrange", SYMLINK="ttyPIXHAWK"
-  '';
+  services.udev = {
+    packages = [ pkgs.qmk-udev-rules ];
+    extraRules = ''
+      SUBSYSTEM=="tty", ATTRS{product}=="CubeOrange", SYMLINK="ttyPIXHAWK"
+    '';
+  };
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;

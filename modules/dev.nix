@@ -35,6 +35,12 @@ in
     # Python
     python3
     (pkgs.python3.withPackages python-packages)
+
+    qmk
+    vial
+
+    dfu-util
+    dfu-programmer
   ];
 
   virtualisation.docker.enable = true;

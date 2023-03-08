@@ -73,12 +73,13 @@
       killall
       appimage-run # Runs AppImages on NixOS
       veracrypt
-
-      # Misc
+      cura
+      openscad
       qgroundcontrol
       obsidian
       qjackctl
       libnotify
+
     ];
     stateVersion = "22.11";
   };
