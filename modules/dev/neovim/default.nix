@@ -53,6 +53,9 @@
         pkgs.vimPlugins.nvim-dap
         pkgs.vimPlugins.nvim-dap-ui
         pkgs.vimPlugins.nvim-dap-virtual-text
+
+        ## Eval
+        pkgs.vimPlugins.ChatGPT-nvim
       ];
 
       extraConfig = ''
@@ -73,6 +76,7 @@
         ${builtins.readFile config/setup/gitsigns.lua}
         ${builtins.readFile config/setup/clangd_extensions.lua}
         ${builtins.readFile config/setup/dap.lua}
+        ${builtins.readFile config/setup/chatgpt.lua}
       '';
       enable = true;
       viAlias = true;
