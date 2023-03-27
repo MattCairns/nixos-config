@@ -1,4 +1,5 @@
-{ config
+{ inputs
+, config
 , pkgs
 , ...
 }:
@@ -41,6 +42,9 @@ in
 
     dfu-util
     dfu-programmer
+    (inputs.mrcoverlays.legacyPackages.x86_64-linux.aichat)
+
+    xorg.xdpyinfo
   ];
 
   virtualisation.docker.enable = true;

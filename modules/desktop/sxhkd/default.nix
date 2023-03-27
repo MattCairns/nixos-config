@@ -13,6 +13,7 @@
       "super + shift + w" = "firefox -P work";
       "super + shift + h" = "firefox -P home";
       "alt + shift + ctrl + c" = "kitty -e slack";
+      "super + shift + g" = "kitty -e aichat";
 
       # terminal emulator
       "super + Return" = "kitty -e /home/$USER/.config/bin/ta";
