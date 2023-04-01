@@ -19,6 +19,7 @@ in
 
     ## Cpp Analysis
     pre-commit
+    (inputs.mrcoverlays.legacyPackages.x86_64-linux.gptcommit)
     cppcheck
 
     lazygit
@@ -35,6 +36,7 @@ in
 
     # Python
     python3
+    nodePackages_latest.pyright
     (pkgs.python3.withPackages python-packages)
 
     qmk
@@ -48,4 +50,5 @@ in
   ];
 
   virtualisation.docker.enable = true;
+  users.users.matthew.extraGroups = [ "docker" ];
 }

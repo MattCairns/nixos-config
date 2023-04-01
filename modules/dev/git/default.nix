@@ -10,7 +10,10 @@
       init = { defaultBranch = "main"; };
       pull = { rebase = true; };
       push = { autoSetupRemote = true; };
-      core = { whitespace = "trailing-space,space-before-tab"; };
+      core = {
+        whitespace = "trailing-space,space-before-tab";
+        editor = "vim";
+      };
     };
   };
 }
