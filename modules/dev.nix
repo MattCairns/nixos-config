@@ -23,8 +23,8 @@ in
     cppcheck
 
     lazygit
+    git-crypt
     pkg-config
-    rnix-lsp
     nixpkgs-fmt
 
     distrobox
@@ -36,8 +36,12 @@ in
 
     # Python
     python3
-    nodePackages_latest.pyright
     (pkgs.python3.withPackages python-packages)
+
+    # LSP Servers
+    nodePackages_latest.pyright
+    cmake-language-server
+    rnix-lsp
 
     qmk
     vial

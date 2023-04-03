@@ -54,8 +54,6 @@
         pkgs.vimPlugins.nvim-dap-ui
         pkgs.vimPlugins.nvim-dap-virtual-text
 
-        ## Eval
-        # pkgs.vimPlugins.ChatGPT-nvim 
       ];
 
       extraConfig = ''
