@@ -2,7 +2,7 @@
 if [[ $# -eq 1 ]]; then
     selected=$1
 else
-    selected=$(find ~/dev/oor/core ~/dev/oor/portal ~/dev/personal ~/.config/tmux ~/.config/nvim -mindepth 1 -maxdepth 2 -type d | fzf)
+    selected=$(find ~/dev/oor/core ~/dev/oor/utilities ~/dev/oor/portal ~/dev/personal ~/.config/tmux ~/.config/nvim -mindepth 1 -maxdepth 2 -type d | fzf)
 fi
 
 if [[ -z $selected ]]; then
