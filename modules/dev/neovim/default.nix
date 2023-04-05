@@ -54,6 +54,8 @@
         pkgs.vimPlugins.nvim-dap-ui
         pkgs.vimPlugins.nvim-dap-virtual-text
 
+        pkgs.vimPlugins.copilot-vim
+
       ];
 
       extraConfig = ''

@@ -19,6 +19,7 @@ in
     clang_14
     clang-tools_14
     cmake
+    cmake-format
 
     # rust
     cargo

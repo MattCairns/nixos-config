@@ -1,7 +1,6 @@
-{
-  config,
-  pkgs,
-  ...
+{ config
+, pkgs
+, ...
 }: {
   programs.firefox = {
     enable = true;
@@ -28,6 +27,13 @@
         };
         SearchEngines = {
           PreventInstalls = true;
+          Add = [
+            {
+              Title = "NixOS Search";
+              URIPrefix = "https://search.nixos.org/packages?query=";
+              URI = "https://search.nixos.org/packages?query={searchTerms}";
+            }
+          ];
         };
         FirefoxHome = {
           Search = true;

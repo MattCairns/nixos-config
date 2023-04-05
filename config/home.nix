@@ -79,6 +79,7 @@
       obsidian
       qjackctl
       libnotify
+      flameshot
 
     ];
     stateVersion = "22.11";

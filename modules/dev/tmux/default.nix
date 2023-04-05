@@ -42,6 +42,8 @@
             bind -r L resize-pane -R 5
 
             bind-key -T prefix P switch-client -l
+
+            bind ; split-window -h -c "#{pane_current_path}"
     '';
   };
 }
