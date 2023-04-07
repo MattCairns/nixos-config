@@ -7,6 +7,9 @@ let
   python-packages = p:
     with p; [
       pyserial
+      torch
+      numpy
+      sentencepiece
     ];
 in
 {
@@ -16,6 +19,10 @@ in
     clang_14
     clang-tools_14
     cmake
+
+    # rust
+    cargo
+    rustc
 
     ## Cpp Analysis
     pre-commit
@@ -37,6 +44,9 @@ in
     # Python
     python3
     (pkgs.python3.withPackages python-packages)
+    python310Packages.pip
+    (python310.withPackages(ps: with ps; [ pyserial torch numpy sentencepiece ]))
+    nodePackages_latest.pyright
 
     # LSP Servers
     nodePackages_latest.pyright
