@@ -20,6 +20,7 @@
         pkgs.vimPlugins.plenary-nvim
         pkgs.vimPlugins.telescope-nvim
         pkgs.vimPlugins.telescope-fzf-native-nvim
+        pkgs.vimPlugins.harpoon
         pkgs.vimPlugins.fidget-nvim
 
         ## cmp

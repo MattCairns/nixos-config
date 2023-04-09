@@ -5,7 +5,7 @@
 }: {
   programs.kitty = {
     enable = true;
-    font.name = "DankMono-Regular";
+    font.name = "FiraCode Nerd Font";
 
     font.size = 12;
     theme = "kanagawabones";
