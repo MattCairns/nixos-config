@@ -4,7 +4,7 @@
 }: {
   programs.firefox = {
     enable = true;
-    package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
+    package = pkgs.wrapFirefox pkgs.firefox-esr-102-unwrapped {
       extraPolicies = {
         DisableFirefoxStudies = true;
         DisablePocket = true;
@@ -29,9 +29,12 @@
           PreventInstalls = true;
           Add = [
             {
-              Title = "NixOS Search";
-              URIPrefix = "https://search.nixos.org/packages?query=";
-              URI = "https://search.nixos.org/packages?query={searchTerms}";
+              Name = "NixOS Search";
+              Alias = "nix";
+              Method = "GET";
+              Description = "Search NixOS packages";
+              PostData = "";
+              URLTemplate = "https://search.nixos.org/packages?channel=unstable&query={searchTerms}";
             }
           ];
         };
@@ -47,7 +50,7 @@
           Locked = true;
         };
         Preferences = {
-          browser.theme.content-theme = 0;
+          browser.theme.content-theme = "dark";
           extensions.activeThemeID = "firefox-compact-dark@mozilla.org";
         };
       };
