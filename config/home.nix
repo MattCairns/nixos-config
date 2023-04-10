@@ -62,6 +62,7 @@
       feh # Image Viewer
       mpv # Media Player
       vlc # Media Player
+      spotify-tui
 
       # File Management
       ranger

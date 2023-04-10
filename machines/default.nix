@@ -45,6 +45,7 @@ in {
     inherit system;
     specialArgs = {inherit inputs user location;};
     modules = [
+      inputs.nixos-hardware.nixosModules.lenovo-thinkpad-l13-yoga
       ./laptop/configuration.nix
       home-manager.nixosModules.home-manager
       {
