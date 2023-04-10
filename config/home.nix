@@ -50,6 +50,7 @@
       xclip
       scrot
       feh
+      magic-wormhole
 
       # Communication
       zoom-us

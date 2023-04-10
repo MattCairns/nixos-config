@@ -116,7 +116,7 @@
     isNormalUser = true;
     description = "nixos-runner";
     extraGroups = ["networkmanager" "wheel"];
-    packages = with pkgs; [git tmux];
+    packages = with pkgs; [git tmux magic-wormhole];
   };
 
   # Allow unfree packages
