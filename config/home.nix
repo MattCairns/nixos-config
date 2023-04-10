@@ -54,10 +54,9 @@
 
       # Communication
       zoom-us
-      tdesktop
       slack
-      signal-desktop
       discord
+      signal-desktop
 
       # Video/Audio
       feh # Image Viewer
@@ -73,16 +72,13 @@
 
       # Misc Apps
       killall
-      appimage-run # Runs AppImages on NixOS
       veracrypt
       cura
       openscad
-      qgroundcontrol
       obsidian
       qjackctl
       libnotify
       flameshot
-
     ];
     stateVersion = "22.11";
   };
