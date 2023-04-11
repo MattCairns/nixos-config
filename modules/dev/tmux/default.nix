@@ -11,6 +11,8 @@
     extraConfig = ''
       set -g default-terminal "screen-256color"
       set-window-option -g mode-keys vi
+      bind -T copy-mode-vi 'v' send -X begin-selection
+      bind -T copy-mode-vi 'y' send -X copy-pipe-and-cancel "xclip -i -selection clipboard"
       set -g base-index 1
       set -g renumber-windows on
       set-option -sg escape-time 10

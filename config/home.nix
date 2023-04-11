@@ -79,6 +79,7 @@
       qjackctl
       libnotify
       flameshot
+      bitwarden
     ];
     stateVersion = "22.11";
   };
