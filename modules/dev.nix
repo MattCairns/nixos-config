@@ -51,6 +51,9 @@ in
     dfu-util
     dfu-programmer
     (inputs.mrcoverlays.legacyPackages.x86_64-linux.aichat)
+
+    # Security
+    inputs.agenix.packages.x86_64-linux.default
   ];
 
   virtualisation.docker.enable = true;

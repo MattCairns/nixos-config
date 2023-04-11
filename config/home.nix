@@ -3,6 +3,7 @@
 , pkgs
 , mrcpkgs
 , user
+, age
 , ...
 }: {
   imports = [ (import ../modules/dev/neovim) ]
@@ -19,6 +20,7 @@
     ++ [ (import ../modules/desktop/picom) ]
     ++ [ (import ../modules/desktop/dunst) ]
     ++ [ (import ../modules/desktop/betterlockscreen) ]
+    ++ [ (import ../modules/apps/aichat) ]
     ++ [ (import ../modules/apps/firefox) ];
 
   programs.home-manager.enable = true;
