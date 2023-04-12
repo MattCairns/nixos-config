@@ -58,9 +58,9 @@ elif [ "$pcid" = "$oorid" ]; then
          --output HDMI-1-3 --off
 
   bspc wm -O DP-5 HDMI-5 DP-4
-  bspc monitor DP-5 -d I II
-  bspc monitor HDMI-5 -d III IV 
-  bspc monitor DP-4 -d V VI 
+  bspc monitor DP-5 -d I II III
+  bspc monitor HDMI-5 -d IV V VI 
+  bspc monitor DP-4 -d VII VIII IX 
 
   feh --bg-fill --no-xinerama ~/.config/wallpapers/lukasz-szmigiel-8AdYB7M4OHY-unsplash.jpg  
 
