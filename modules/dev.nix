@@ -8,24 +8,22 @@ in
 {
   environment.systemPackages = with pkgs; [
     # Build tools
-    gcc12
-    clang_14
-    clang-tools_14
-    cmake
-    cmake-format
+    /* gcc12
+      clang_14
+      clang-tools_14
+      cmake
+    cmake-format */
 
     # rust
-    cargo
-    rustc
+    /* cargo
+    rustc */
 
     ## Cpp Analysis
     pre-commit
-    (inputs.mrcoverlays.legacyPackages.x86_64-linux.gptcommit)
     cppcheck
 
     lazygit
-    git-crypt
-    pkg-config
+    /* pkg-config */
     nixpkgs-fmt
 
     distrobox
@@ -33,15 +31,14 @@ in
 
     # Desktop
     brightnessctl
-    pinentry
 
     # Python
-    python3
-    python310Packages.pip
+    /* python3 */
+    /* python310Packages.pip */
 
     # LSP Servers
-    nodePackages_latest.pyright
-    cmake-language-server
+    /* nodePackages_latest.pyright */
+    /* cmake-language-server */
     rnix-lsp
 
     # Keyboards

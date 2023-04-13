@@ -11,7 +11,8 @@
     ++ [ (import ../modules/dev/alacritty) ]
     ++ [ (import ../modules/dev/starship) ]
     ++ [ (import ../modules/dev/tmux) ]
-    ++ [ (import ../modules/dev/zsh) ]
+    ++ [ (import ../modules/dev/fish) ]
+    ++ [ (import ../modules/dev/direnv) ]
     ++ [ (import ../modules/desktop/bspwm) ]
     ++ [ (import ../modules/desktop/sxhkd) ]
     ++ [ (import ../modules/desktop/polybar) ]
@@ -51,6 +52,7 @@
       scrot
       feh
       magic-wormhole
+      pfetch
 
       # Communication
       zoom-us

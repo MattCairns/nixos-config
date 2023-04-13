@@ -1,13 +1,13 @@
-{
-  lib,
-  inputs,
-  nixpkgs,
-  home-manager,
-  mrcpkgs,
-  user,
-  location,
-  ...
-}: let
+{ lib
+, inputs
+, nixpkgs
+, home-manager
+, mrcpkgs
+, user
+, location
+, ...
+}:
+let
   system = "x86_64-linux";
 
   pkgs = import nixpkgs {
@@ -21,10 +21,11 @@
   };
 
   lib = nixpkgs.lib;
-in {
+in
+{
   sun = lib.nixosSystem {
     inherit system;
-    specialArgs = {inherit inputs user location;};
+    specialArgs = { inherit inputs user location; };
     modules = [
       ./sun/configuration.nix
       home-manager.nixosModules.home-manager
@@ -35,7 +36,7 @@ in {
           inherit user mrc;
         };
         home-manager.users.${user} = {
-          imports = [(import ../config/home.nix)];
+          imports = [ (import ../config/home.nix) ];
         };
       }
     ];
@@ -43,7 +44,7 @@ in {
 
   laptop = lib.nixosSystem {
     inherit system;
-    specialArgs = {inherit inputs user location;};
+    specialArgs = { inherit inputs user location; };
     modules = [
       inputs.nixos-hardware.nixosModules.lenovo-thinkpad-l13-yoga
       ./laptop/configuration.nix
@@ -55,7 +56,7 @@ in {
           inherit user mrc;
         };
         home-manager.users.${user} = {
-          imports = [(import ../config/home.nix)];
+          imports = [ (import ../config/home.nix) ];
         };
       }
     ];
@@ -63,8 +64,9 @@ in {
 
   nuc = lib.nixosSystem {
     inherit system;
-    specialArgs = {inherit inputs user location;};
+    specialArgs = { inherit inputs user location; };
     modules = [
+      inputs.nixos-hardware.nixosModules.intel-nuc-8i7beh
       ./nuc/configuration.nix
       home-manager.nixosModules.home-manager
       {
@@ -74,7 +76,7 @@ in {
           inherit user mrc;
         };
         home-manager.users.${user} = {
-          imports = [(import ../config/home.nix)];
+          imports = [ (import ../config/home.nix) ];
         };
       }
     ];
@@ -82,7 +84,7 @@ in {
 
   cache-runner = lib.nixosSystem {
     inherit system;
-    specialArgs = {inherit inputs user location;};
+    specialArgs = { inherit inputs user location; };
     modules = [
       ./cache-runner/configuration.nix
     ];
