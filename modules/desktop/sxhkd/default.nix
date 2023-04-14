@@ -20,7 +20,7 @@
       "super + ctrl + Return" = "kitty ";
 
       # program launcher
-      "super + @space" = "rofi -show drun";
+      "super + shift + Return" = "rofi -show drun";
 
       # make sxhkd reload its configuration files:
       "super + Escape" = "-USR1 -x sxhkd";
