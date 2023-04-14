@@ -7,6 +7,9 @@
     enable = true;
     plugins = with pkgs; [
       tmuxPlugins.power-theme
+      tmuxPlugins.yank
+      tmuxPlugins.tmux-thumbs
+      tmuxPlugins.resurrect
     ];
     extraConfig = ''
       set -g default-terminal "screen-256color"
