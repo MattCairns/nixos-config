@@ -4,7 +4,6 @@
 , home-manager
 , mrcpkgs
 , user
-, location
 , ...
 }:
 let
@@ -25,7 +24,7 @@ in
 {
   sun = lib.nixosSystem {
     inherit system;
-    specialArgs = { inherit inputs user location; };
+    specialArgs = { inherit inputs user; };
     modules = [
       ./sun/configuration.nix
       home-manager.nixosModules.home-manager
@@ -44,7 +43,7 @@ in
 
   laptop = lib.nixosSystem {
     inherit system;
-    specialArgs = { inherit inputs user location; };
+    specialArgs = { inherit inputs user; };
     modules = [
       inputs.nixos-hardware.nixosModules.lenovo-thinkpad-l13-yoga
       ./laptop/configuration.nix
@@ -64,7 +63,7 @@ in
 
   nuc = lib.nixosSystem {
     inherit system;
-    specialArgs = { inherit inputs user location; };
+    specialArgs = { inherit inputs user; };
     modules = [
       inputs.nixos-hardware.nixosModules.intel-nuc-8i7beh
       ./nuc/configuration.nix
@@ -84,7 +83,7 @@ in
 
   cache-runner = lib.nixosSystem {
     inherit system;
-    specialArgs = { inherit inputs user location; };
+    specialArgs = { inherit inputs user; };
     modules = [
       ./cache-runner/configuration.nix
     ];

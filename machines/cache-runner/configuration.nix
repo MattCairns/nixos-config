@@ -1,39 +1,11 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-{
-  config,
-  pkgs,
-  lib,
-  ...
+{ config
+, pkgs
+, lib
+, ...
 }: {
   imports = [
-    # Include the results of the hardware scan.
     ./hardware-configuration.nix
   ];
-
-  services.nix-serve = {
-    enable = true;
-    secretKeyFile = "/var/cache-priv-key.pem";
-    openFirewall = true;
-    port = 8312;
-  };
-
-  services.nginx = {
-    enable = true;
-    virtualHosts = {
-      # ... existing hosts config etc. ...
-      "cache.matthewcairns.com" = {
-        serverAliases = ["binarycache"];
-        locations."/".extraConfig = ''
-          proxy_pass http://localhost:${toString config.services.nix-serve.port};
-          proxy_set_header Host $host;
-          proxy_set_header X-Real-IP $remote_addr;
-          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        '';
-      };
-    };
-  };
 
   boot.kernel.sysctl."net.ipv4.ip_forward" = true; # 1
   virtualisation.docker.enable = true;
@@ -79,7 +51,7 @@
           PATH = "/nix/var/nix/profiles/default/bin:/nix/var/nix/profiles/default/sbin:/bin:/sbin:/usr/bin:/usr/sbin";
           NIX_SSL_CERT_FILE = "/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt";
         };
-        tagList = ["nix"];
+        tagList = [ "nix" ];
       };
     };
   };
@@ -115,8 +87,8 @@
   users.users.nixos = {
     isNormalUser = true;
     description = "nixos-runner";
-    extraGroups = ["networkmanager" "wheel"];
-    packages = with pkgs; [git tmux magic-wormhole];
+    extraGroups = [ "networkmanager" "wheel" ];
+    packages = with pkgs; [ git tmux magic-wormhole ];
   };
 
   # Allow unfree packages

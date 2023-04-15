@@ -22,13 +22,12 @@
     }:
     let
       user = "matthew";
-      location = "$HOME/.setup";
     in
     {
       nixosConfigurations = (
         import ./machines {
           inherit (nixpkgs) lib;
-          inherit inputs nixpkgs mrcpkgs home-manager user location;
+          inherit inputs nixpkgs mrcpkgs home-manager user;
         }
       );
 
