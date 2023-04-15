@@ -1,11 +1,12 @@
 { inputs
 , config
 , pkgs
+, user
 , ...
 }: {
-  # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
+  # Use the latest kernel
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
   nix = {
@@ -31,6 +32,11 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+  boot.plymouth = {
+    enable = true;
+    themePackages = [ inputs.mrcoverlays.legacyPackages.x86_64-linux.adi1090x-plymouth ];
+    theme = "lone";
+  };
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -40,21 +46,12 @@
   # networking.firewall.allowedUDPPorts = [ ];
   # networking.firewall.allowedTCPPorts = [ ];
 
-  # Set your time zone.
+  # Set your time zone and locale
   time.timeZone = "America/Vancouver";
-
-  # Select internationalisation properties.
   i18n.defaultLocale = "en_CA.UTF-8";
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-
-  boot.plymouth = {
-    enable = true;
-    themePackages = [ inputs.mrcoverlays.legacyPackages.x86_64-linux.adi1090x-plymouth ];
-    theme = "lone";
-  };
-
   services.xserver = {
     displayManager = {
       gdm.enable = true;
@@ -62,7 +59,7 @@
     };
     desktopManager.gnome.enable = true;
     windowManager.bspwm.enable = true;
-    windowManager.bspwm.configFile = "/home/matthew/.config/bspwm/bspwmrc";
+    windowManager.bspwm.configFile = "/home/${user}/.config/bspwm/bspwmrc";
     desktopManager.xterm.enable = false;
   };
 
@@ -102,8 +99,8 @@
   services.syncthing = {
     enable = true;
     openDefaultPorts = true;
-    configDir = "/home/matthew/.config/syncthing";
-    user = "matthew";
+    configDir = "/home/${user}/.config/syncthing";
+    user = "${user}";
     group = "users";
   };
 
@@ -113,8 +110,8 @@
 
   # Set XDG environment
   environment.sessionVariables = rec {
-    XDG_CACHE_HOME = "\${HOME}/.cache";
     XDG_CONFIG_HOME = "\${HOME}/.config";
+    XDG_CACHE_HOME = "\${HOME}/.local/cache";
     XDG_BIN_HOME = "\${HOME}/.local/bin";
     XDG_DATA_HOME = "\${HOME}/.local/share";
     PATH = [
@@ -122,6 +119,19 @@
     ];
   };
 
+  # Globally available packages 
+  environment.systemPackages = with pkgs; [
+    distrobox
+    docker-compose
+    brightnessctl
+    qjackctl
+    nixos-generators
+    (inputs.mrcoverlays.legacyPackages.x86_64-linux.aichat)
+  ];
+
+  virtualisation.docker.enable = true;
+
+  # Set up shell
   users.defaultUserShell = pkgs.fish;
   programs.fish.enable = true;
 

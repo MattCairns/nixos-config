@@ -63,7 +63,6 @@
       # Video/Audio
       feh # Image Viewer
       mpv # Media Player
-      vlc # Media Player
       spotify-tui
 
       # File Management
@@ -78,11 +77,29 @@
       cura
       openscad
       obsidian
-      qjackctl
       libnotify
       flameshot
       bitwarden
+
+      # Dev tools
+      pre-commit
+      cppcheck
+      lazygit
+      nixpkgs-fmt
+      cmake-format
+
+      # LSP Servers
+      nodePackages_latest.pyright
+      cmake-language-server
+      rnix-lsp
+
+      # Keyboards
+      qmk
+      vial
+      dfu-util
+      dfu-programmer
     ];
+
     stateVersion = "22.11";
   };
 }
