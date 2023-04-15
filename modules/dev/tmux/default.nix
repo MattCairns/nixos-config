@@ -12,7 +12,8 @@
       tmuxPlugins.resurrect
     ];
     extraConfig = ''
-      set -g default-terminal "screen-256color"
+      set -g default-terminal "tmux-256color"
+      set-option -sa terminal-features ',tmux-256color:RGB'
       set-window-option -g mode-keys vi
       bind -T copy-mode-vi 'v' send -X begin-selection
       bind -T copy-mode-vi 'y' send -X copy-pipe-and-cancel "xclip -i -selection clipboard"

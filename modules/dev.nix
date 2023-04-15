@@ -7,24 +7,13 @@ let
 in
 {
   environment.systemPackages = with pkgs; [
-    # Build tools
-    /* gcc12
-      clang_14
-      clang-tools_14
-      cmake
-    cmake-format */
-
-    # rust
-    /* cargo
-    rustc */
-
     ## Cpp Analysis
     pre-commit
     cppcheck
 
     lazygit
-    /* pkg-config */
     nixpkgs-fmt
+    cmake-format
 
     distrobox
     docker-compose
@@ -32,13 +21,9 @@ in
     # Desktop
     brightnessctl
 
-    # Python
-    /* python3 */
-    /* python310Packages.pip */
-
     # LSP Servers
-    /* nodePackages_latest.pyright */
-    /* cmake-language-server */
+    nodePackages_latest.pyright
+    cmake-language-server
     rnix-lsp
 
     # Keyboards
