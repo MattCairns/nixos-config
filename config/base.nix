@@ -41,7 +41,6 @@
   # Enable networking
   networking.networkmanager.enable = true;
   networking.firewall.checkReversePath = "loose";
-
   networking.firewall.enable = true;
   # networking.firewall.allowedUDPPorts = [ ];
   # networking.firewall.allowedTCPPorts = [ ];
@@ -57,10 +56,8 @@
       gdm.enable = true;
       defaultSession = "none+bspwm";
     };
-    desktopManager.gnome.enable = true;
     windowManager.bspwm.enable = true;
     windowManager.bspwm.configFile = "/home/${user}/.config/bspwm/bspwmrc";
-    desktopManager.xterm.enable = false;
   };
 
   fonts.fonts = with pkgs; [
@@ -96,6 +93,7 @@
     jack.enable = true;
   };
 
+  # Enable syncthing
   services.syncthing = {
     enable = true;
     openDefaultPorts = true;
@@ -126,6 +124,7 @@
     brightnessctl
     qjackctl
     nixos-generators
+    gnome.nautilus
     (inputs.mrcoverlays.legacyPackages.x86_64-linux.aichat)
   ];
 
