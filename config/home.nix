@@ -1,6 +1,7 @@
 { config
 , lib
 , pkgs
+, test-pkgs
 , mrcpkgs
 , user
 , ...

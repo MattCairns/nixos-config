@@ -108,7 +108,24 @@
         "mrcoverlays": "mrcoverlays",
         "mrcpkgs": "mrcpkgs",
         "nixos-hardware": "nixos-hardware",
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": "nixpkgs_2",
+        "test-nixpkgs": "test-nixpkgs"
+      }
+    },
+    "test-nixpkgs": {
+      "locked": {
+        "lastModified": 1681852559,
+        "narHash": "sha256-wNfDffkEQqn1H5+0OeFBwlObQ2mJ/TLGI7xf4EiPCJE=",
+        "owner": "MattCairns",
+        "repo": "nixpkgs",
+        "rev": "861e0d0d2041405c0274f43a15225f72ead2bc84",
+        "type": "github"
+      },
+      "original": {
+        "owner": "MattCairns",
+        "ref": "add-neoai-nvim",
+        "repo": "nixpkgs",
+        "type": "github"
       }
     },
     "utils": {

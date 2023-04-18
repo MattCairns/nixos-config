@@ -1,5 +1,6 @@
 { config
 , pkgs
+, test-pkgs
 , ...
 }: {
   imports = [ (import ../modules/dev/neovim) ]

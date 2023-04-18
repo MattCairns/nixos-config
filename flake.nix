@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    test-nixpkgs.url = "github:MattCairns/nixpkgs/add-neoai-nvim";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     mrcoverlays.url = "github:MattCairns/nix-overlays";
     mrcpkgs.url = "github:MattCairns/nixpkgs";
@@ -15,6 +16,7 @@
   outputs =
     inputs @ { self
     , nixpkgs
+    , test-nixpkgs
     , nixos-hardware
     , mrcpkgs
     , home-manager
@@ -27,7 +29,7 @@
       nixosConfigurations = (
         import ./machines {
           inherit (nixpkgs) lib;
-          inherit inputs nixpkgs mrcpkgs home-manager user;
+          inherit inputs nixpkgs test-nixpkgs mrcpkgs home-manager user;
         }
       );
 

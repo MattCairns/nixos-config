@@ -1,8 +1,8 @@
-{
-  config,
-  pkgs,
-  mrc,
-  ...
+{ config
+, pkgs
+, test-pkgs
+, mrc
+, ...
 }: {
   home.packages = with pkgs; [
     vscode-extensions.ms-vscode.cpptools
@@ -57,6 +57,8 @@
 
         pkgs.vimPlugins.copilot-vim
 
+        test-pkgs.vimPlugins.neoai-nvim
+
       ];
 
       extraConfig = ''
@@ -77,6 +79,7 @@
         ${builtins.readFile config/setup/gitsigns.lua}
         ${builtins.readFile config/setup/clangd_extensions.lua}
         ${builtins.readFile config/setup/dap.lua}
+        ${builtins.readFile config/setup/neoai.lua}
       '';
       enable = true;
       viAlias = true;
