@@ -12,7 +12,7 @@
       "super + ctrl + f" = "kitty -e vifm";
       "super + shift + w" = "firefox -P work";
       "super + shift + h" = "firefox -P home";
-      "alt + shift + ctrl + c" = "kitty -e slack";
+      "super + shift + s" = "kitty -e slack";
       "super + shift + g" = "kitty -e aichat";
 
       # terminal emulator

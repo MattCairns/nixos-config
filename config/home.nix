@@ -64,6 +64,8 @@
       libnotify
       flameshot
       bitwarden
+      texstudio
+      texlive.combined.scheme-full
 
       # Dev tools
       pre-commit
