@@ -15,17 +15,17 @@
   xdg.configFile."wallpapers".source = ../assets/wallpapers;
   xdg.configFile."bin".source = ../dots/bin;
 
-  home.persistence."/persist/home/matthew" = {
-    directories = [
-      "dev"
-      "nixos-config"
-      "Downloads"
-      "Documents"
-      ".ssh"
-      ".mozilla"
-    ];
-    allowOther = true;
-  };
+#  home.persistence."/persist/home/matthew" = {
+#    directories = [
+#      "dev"
+#      "nixos-config"
+#      "Downloads"
+#      "Documents"
+#      ".ssh"
+#      ".mozilla"
+#    ];
+#    allowOther = true;
+#  };
 
   home = {
     username = "${user}";

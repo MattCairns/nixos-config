@@ -48,30 +48,31 @@
 #    umount /mnt
 #  '';
 
-  environment.persistence = {
-    "/persist" = {
-      directories = [
-        "/var/lib/NetworkManager"
-        "/var/lib/tailscale"
-        "/etc/NetworkManager"
-        "/etc/ssh"
-      ];
-      files = [
-      ];
-      users.matthew = {
-        directories = [
-          "nixos-config"
-          "dev"
-        ];
-      };
-    };
-  };
+#  environment.persistence = {
+#    "/persist" = {
+#      directories = [
+#        "/var/lib/NetworkManager"
+#        "/var/lib/tailscale"
+#        "/etc/NetworkManager"
+#        "/etc/ssh"
+#      ];
+#      files = [
+#      ];
+#      users.matthew = {
+#        directories = [
+#          "nixos-config"
+#          "dev"
+#        ];
+#      };
+#    };
+#  };
 
   environment.etc = {
     machine-id.source = "/persist/etc/machine-id";
   };
 
   programs.fuse.userAllowOther = true;
+
 
   system.activationScripts.persistent-dirs.text =
     let
