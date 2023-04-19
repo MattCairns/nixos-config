@@ -9,7 +9,7 @@
 }: {
   imports = [
     (import ../modules)
-#    inputs.impermanence.nixosModules.home-manager.impermanence
+    inputs.impermanence.nixosModules.home-manager.impermanence
   ];
   programs.home-manager.enable = true;
   xdg.configFile."wallpapers".source = ../assets/wallpapers;
