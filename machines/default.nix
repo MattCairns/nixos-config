@@ -78,7 +78,7 @@ in
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
         home-manager.extraSpecialArgs = {
-          inherit user mrc;
+          inherit user mrc test-pkgs;
         };
         home-manager.users.${user} = {
           imports = [ (import ../config/home.nix) ];

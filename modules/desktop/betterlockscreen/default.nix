@@ -14,7 +14,7 @@
       Environment = "DISPLAY=:0";
       Type = "oneshot";
       RemainAfterExit = "yes";
-      ExecStart = "${pkgs.betterlockscreen}/bin/betterlockscreen --update /home/${user}/.config/wallpapers/lukasz-szmigiel-8AdYB7M4OHY-unsplash.jpg";
+      ExecStart = "${pkgs.betterlockscreen}/bin/betterlockscreen --span --update /home/${user}/.config/wallpapers/lukasz-szmigiel-8AdYB7M4OHY-unsplash.jpg";
     };
   };
 }
