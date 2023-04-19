@@ -41,7 +41,7 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  # boot.loader.efi.efiSysMountPoint = "/boot/efi";
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
   boot.plymouth = {
     enable = true;
@@ -64,7 +64,7 @@
   services.xserver.enable = true;
   services.xserver = {
     displayManager = {
-      gdm.enable = true;
+      lightdm.enable = true;
       defaultSession = "none+bspwm";
     };
     windowManager.bspwm.enable = true;

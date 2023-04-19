@@ -38,11 +38,14 @@ in
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
         home-manager.extraSpecialArgs = {
-          inherit user mrc test-pkgs;
+          inherit user mrc test-pkgs inputs;
         };
         home-manager.users.${user} = {
-          imports = [ (import ../config/home.nix) ];
+          imports = [
+            (import ../config/home.nix)
+          ];
         };
+
       }
     ];
   };
@@ -51,14 +54,15 @@ in
     inherit system;
     specialArgs = { inherit inputs user; };
     modules = [
-      inputs.nixos-hardware.nixosModules.lenovo-thinkpad-l13-yoga
       ./laptop/configuration.nix
+      ../config/optin-persistence.nix
+      inputs.nixos-hardware.nixosModules.lenovo-thinkpad-l13-yoga
       home-manager.nixosModules.home-manager
       {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
         home-manager.extraSpecialArgs = {
-          inherit user mrc test-pkgs;
+          inherit user mrc test-pkgs inputs;
         };
         home-manager.users.${user} = {
           imports = [ (import ../config/home.nix) ];
