@@ -28,6 +28,7 @@
       dates = "weekly";
       options = "--delete-older-than 30d";
     };
+    trustedUsers = [ "root" "@wheel" "matthew" ];
   };
 
   # udev rules
