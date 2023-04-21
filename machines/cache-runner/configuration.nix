@@ -7,6 +7,26 @@
     ./hardware-configuration.nix
   ];
 
+  services.nix-serve = {
+    enable = true;
+    secretKeyFile = "/var/cache-priv-key.pem";
+  };
+
+  services.nginx = {
+    enable = true;
+    virtualHosts = {
+      "cache-runner" = {
+        serverAliases = [ "binarycache" ];
+        locations."/".extraConfig = ''
+          proxy_pass http://localhost:${toString config.services.nix-serve.port};
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        '';
+      };
+    };
+  };
+
   boot.kernel.sysctl."net.ipv4.ip_forward" = true; # 1
   virtualisation.docker.enable = true;
   services.gitlab-runner = {
@@ -56,11 +76,6 @@
     };
   };
 
-  swapDevices = [{
-    device = "/var/lib/swapfile";
-    size = 16 * 1024;
-  }];
-
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -95,6 +110,8 @@
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [ git tmux magic-wormhole ];
   };
+
+  services.tailscale.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;

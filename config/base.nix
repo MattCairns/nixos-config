@@ -28,6 +28,10 @@
       dates = "weekly";
       options = "--delete-older-than 30d";
     };
+    settings = {
+      substituters = [ "https://cache.nixos.org" "http://nixos-runner" ];
+      trusted-public-keys = [ "binarycache.example.com:rfOVxtenFVSfS2OS1J/wzoz+RVRrRU4cUsSw7Rf65Ng=" ];
+    };
   };
 
   # udev rules

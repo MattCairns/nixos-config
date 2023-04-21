@@ -78,7 +78,7 @@
       # LSP Servers
       nodePackages_latest.pyright
       cmake-language-server
-      rnix-lsp
+      nil
 
       # Keyboards
       qmk
