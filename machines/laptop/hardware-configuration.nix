@@ -5,7 +5,8 @@
 
 {
   imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
+    [
+      (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "nvme" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
@@ -14,7 +15,8 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/4ac7c205-2862-42ca-a449-2b09e7958a2e";
+    {
+      device = "/dev/disk/by-uuid/4ac7c205-2862-42ca-a449-2b09e7958a2e";
       fsType = "btrfs";
       options = [ "subvol=root" ];
     };
@@ -22,38 +24,48 @@
   boot.initrd.luks.devices."enc".device = "/dev/disk/by-uuid/d9865762-b352-4650-a6f3-83781e2f3d86";
 
   fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/4ac7c205-2862-42ca-a449-2b09e7958a2e";
+    {
+      device = "/dev/disk/by-uuid/4ac7c205-2862-42ca-a449-2b09e7958a2e";
       fsType = "btrfs";
       options = [ "subvol=home" ];
     };
 
   fileSystems."/nix" =
-    { device = "/dev/disk/by-uuid/4ac7c205-2862-42ca-a449-2b09e7958a2e";
+    {
+      device = "/dev/disk/by-uuid/4ac7c205-2862-42ca-a449-2b09e7958a2e";
       fsType = "btrfs";
       options = [ "subvol=nix" ];
     };
 
   fileSystems."/persist" =
-    { device = "/dev/disk/by-uuid/4ac7c205-2862-42ca-a449-2b09e7958a2e";
+    {
+      device = "/dev/disk/by-uuid/4ac7c205-2862-42ca-a449-2b09e7958a2e";
       fsType = "btrfs";
       options = [ "subvol=persist" ];
       neededForBoot = true;
     };
 
   fileSystems."/var/log" =
-    { device = "/dev/disk/by-uuid/4ac7c205-2862-42ca-a449-2b09e7958a2e";
+    {
+      device = "/dev/disk/by-uuid/4ac7c205-2862-42ca-a449-2b09e7958a2e";
       fsType = "btrfs";
       options = [ "subvol=log" ];
       neededForBoot = true;
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/0D30-0E1B";
+    {
+      device = "/dev/disk/by-uuid/0D30-0E1B";
       fsType = "vfat";
     };
 
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/a4f29f40-6386-4755-9958-745dceb2f7af"; }
+    [
+      { device = "/dev/disk/by-uuid/a4f29f40-6386-4755-9958-745dceb2f7af"; }
+      {
+        device = "/var/lib/swapfile";
+        size = 16 * 1024;
+      }
     ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
