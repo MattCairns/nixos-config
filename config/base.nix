@@ -68,7 +68,7 @@
   services.xserver.enable = true;
   services.xserver = {
     displayManager = {
-      gdm.enable = true;
+      lightdm.enable = true;
       defaultSession = "none+bspwm";
     };
     windowManager.bspwm.enable = true;
