@@ -143,6 +143,7 @@
     v4l-utils
     gnome.nautilus
     (inputs.mrcoverlays.legacyPackages.x86_64-linux.aichat)
+    (inputs.mrcoverlays.legacyPackages.x86_64-linux.hide-my-mess-rs)
   ];
 
   virtualisation.docker.enable = true;
