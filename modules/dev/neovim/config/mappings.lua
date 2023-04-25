@@ -1,7 +1,3 @@
--- Terminal
-vim.api.nvim_set_keymap('n', '<leader>te', '<cmd>terminal<cr>', { noremap = true })
-vim.api.nvim_set_keymap('t', '<leader>jf', '<C-\\><C-n>', { noremap = true })
-
 -- Neoformat
 vim.api.nvim_set_keymap('n', '<leader>fm', '<cmd>Neoformat<cr>', { noremap = true })
 
@@ -22,17 +18,13 @@ vim.api.nvim_set_keymap('n', '<leader>fb', "<cmd>lua require('telescope.builtin'
 vim.api.nvim_set_keymap('n', '<leader>fh', "<cmd>lua require('telescope.builtin').help_tags()<cr>", { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>fd', "<cmd>lua require('telescope.builtin').lsp_definitions()<cr>", { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>fi', "<cmd>lua require('telescope.builtin').lsp_implementations()<cr>", { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>fp', ':Telescope project<cr>', { noremap = true })
-
--- Worktree
-vim.api.nvim_set_keymap('n', '<leader>wt', "<cmd>lua require('telescope').extensions.git_worktree.git_worktrees()<cr>", { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>wc', "<cmd>lua require('telescope').extensions.git_worktree.create_git_worktree()<cr>", { noremap = true })
 
 -- DAP
 vim.api.nvim_set_keymap('n', '<leader>db', "<cmd>lua require('dap').toggle_breakpoint()<cr>", { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>dc', "<cmd>lua require('dap').continue()<cr>", { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>so', "<cmd>lua require('dap').step_over()<cr>", { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>si', "<cmd>lua require('dap').step_into()<cr>", { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>du', "<cmd>lua require('dapui').toggle()<cr>", { noremap = true })
 
 -- SnipRun
 vim.api.nvim_set_keymap('n', '<leader>sr', "<cmd>lua require('sniprun').run()<cr>", { noremap = true })
@@ -53,3 +45,9 @@ vim.api.nvim_set_keymap('n', '<C-j>', '<cmd>lua require("harpoon.ui").nav_file(2
 vim.api.nvim_set_keymap('n', '<C-k>', '<cmd>lua require("harpoon.ui").nav_file(3)<cr>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<C-l>', '<cmd>lua require("harpoon.ui").nav_file(4)<cr>', { noremap = true })
 
+-- Clang
+vim.api.nvim_set_keymap('n', '<leader>he', '<cmd>ClangdSwitchSourceHeader<cr>', { noremap = true })
+
+-- Neoai
+vim.api.nvim_set_keymap('n', '<leader>na', '<cmd>NeoAI<cr>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>nc', '<cmd>NeoAIContext<cr>', { noremap = true })

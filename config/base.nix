@@ -15,6 +15,7 @@
       options v4l2loopback exclusive_caps=1
       options v4l2loopback devices=1
       options v4l2loopback video_nr=2
+      options v4l2loopback max_buffers=2
       options v4l2loopback card_label="fake-cam"
     '';
   };
@@ -29,6 +30,14 @@
       options = "--delete-older-than 30d";
     };
     trustedUsers = [ "root" "@wheel" "matthew" ];
+    settings.trusted-users = [ "root" "matthew" ];
+    settings = {
+      substituters = [ "https://cache.nixos.org" "https://cuda-maintainers.cachix.org" ];
+      trusted-public-keys = [
+        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+        "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
+      ];
+    };
   };
 
   # udev rules
@@ -54,8 +63,8 @@
   networking.networkmanager.enable = true;
   networking.firewall.checkReversePath = "loose";
   networking.firewall.enable = true;
-  # networking.firewall.allowedUDPPorts = [ ];
-  # networking.firewall.allowedTCPPorts = [ ];
+   networking.firewall.allowedUDPPorts = [ 3355 ];
+   networking.firewall.allowedTCPPorts = [ 3355 ];
 
   # Set your time zone and locale
   time.timeZone = "America/Vancouver";
@@ -139,6 +148,7 @@
     nixos-generators
     v4l-utils
     gnome.nautilus
+    cachix
     (inputs.mrcoverlays.legacyPackages.x86_64-linux.aichat)
     (inputs.mrcoverlays.legacyPackages.x86_64-linux.hide-my-mess-rs)
   ];

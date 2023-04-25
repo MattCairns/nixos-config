@@ -1,24 +1,10 @@
 local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
-require'lspconfig'.clangd.setup{
-  cmd = {
-    -- see clangd --help-hidden
-    "clangd",
-    "--background-index",
-    -- by default, clang-tidy use -checks=clang-diagnostic-*,clang-analyzer-*
-    -- to add more checks, create .clang-tidy file in the root directory
-    -- and add Checks key, see https://clang.llvm.org/extra/clang-tidy/
-    "--clang-tidy",
-    "--completion-style=bundled",
-    "--cross-file-rename",
-    "--header-insertion=iwyu",
-  },
-  capabilities=capabilities
-}
+require'lspconfig'.clangd.setup{capabilities=capabilities}
 require'lspconfig'.rust_analyzer.setup{capabilities=capabilities}
 require'lspconfig'.cmake.setup{capabilities=capabilities}
 require'lspconfig'.dockerls.setup{capabilities=capabilities}
-require'lspconfig'.rnix.setup{capabilities=capabilities}
+require'lspconfig'.nil_ls.setup{capabilities=capabilities}
 require'lspconfig'.pyright.setup{
   capabilities=capabilities,
   settings = {

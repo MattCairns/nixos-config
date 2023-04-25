@@ -54,6 +54,7 @@
       feh
       magic-wormhole
       pfetch
+      nvtop
 
       # Communication
       zoom-us
@@ -95,6 +96,7 @@
       nodePackages_latest.pyright
       cmake-language-server
       nil
+      rust-analyzer
 
       # Keyboards
       qmk
