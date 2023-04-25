@@ -48,7 +48,7 @@
         pkgs.vimPlugins.leap-nvim
         pkgs.vimPlugins.vim-repeat
         pkgs.vimPlugins.kanagawa-nvim
-        mrc.vimPlugins.no-neck-pain-nvim
+        pkgs.vimPlugins.no-neck-pain-nvim
 
         ## Debugging
         pkgs.vimPlugins.nvim-dap
@@ -58,7 +58,6 @@
         pkgs.vimPlugins.copilot-vim
 
         test-pkgs.vimPlugins.neoai-nvim
-
       ];
 
       extraConfig = ''

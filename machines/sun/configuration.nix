@@ -1,8 +1,6 @@
-{
-  config,
-  pkgs,
-  user,
-  ...
+{ config
+, pkgs
+, ...
 }: {
   imports = [
     ./hardware-configuration.nix
@@ -11,8 +9,9 @@
   ];
 
   networking.hostName = "sun";
+  networking.nameservers = [ "192.168.1.24" ];
 
-  services.xserver.videoDrivers = ["nvidia"];
+  services.xserver.videoDrivers = [ "nvidia" ];
   hardware.opengl = {
     enable = true;
     extraPackages = with pkgs; [
@@ -28,16 +27,17 @@
     open = true;
   };
 
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+  environment.systemPackages = with pkgs; [
+    cudaPackages.cudatoolkit
+    cudaPackages.cudnn
+    nfs-utils
+  ];
+
+  fileSystems."/mnt/unraid-appdata" = {
+    device = "192.168.1.10:/mnt/user/appdata";
+    options = [ "x-systemd.automount" "noauto" ];
   };
 
-  environment.systemPackages = with pkgs; [
-    moonlight-qt
-    sunshine
-  ];
 
   /*
      systemd.services.tdarr = {
@@ -46,7 +46,7 @@
     '';
     wantedBy = ["multi-user.target"];
     after = ["docker.service" "docker.socket"];
-  };
+    };
   */
 
   system.stateVersion = "22.11";

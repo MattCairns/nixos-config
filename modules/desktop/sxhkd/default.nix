@@ -12,7 +12,7 @@
       "super + ctrl + f" = "kitty -e vifm";
       "super + shift + w" = "firefox -P work";
       "super + shift + h" = "firefox -P home";
-      "super + shift + s" = "kitty -e slack";
+      "super + shift + s" = "slack";
       "super + shift + g" = "kitty -e aichat";
 
       # terminal emulator
@@ -21,6 +21,7 @@
 
       # program launcher
       "super + space" = "rofi -show drun";
+      "super + c" = "rofi -show calc -modi calc";
 
       # make sxhkd reload its configuration files:
       "super + Escape" = "-USR1 -x sxhkd";
