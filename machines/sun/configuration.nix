@@ -31,6 +31,7 @@
     cudaPackages.cudatoolkit
     cudaPackages.cudnn
     nfs-utils
+    ktra
   ];
 
   fileSystems."/mnt/unraid-appdata" = {

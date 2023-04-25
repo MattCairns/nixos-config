@@ -13,6 +13,7 @@ let
   pkgs = import nixpkgs {
     inherit system;
     config.allowUnfree = true;
+    overlays = [ inputs.mrcoverlays.ktra-overlay ];
   };
 
   test-pkgs = import test-nixpkgs {
@@ -30,7 +31,7 @@ in
 {
   sun = lib.nixosSystem {
     inherit system;
-    specialArgs = { inherit inputs user; };
+    specialArgs = { inherit inputs user pkgs; };
     modules = [
       ./sun/configuration.nix
       home-manager.nixosModules.home-manager
@@ -93,7 +94,7 @@ in
 
   cache-runner = lib.nixosSystem {
     inherit system;
-    specialArgs = { inherit inputs user; };
+    specialArgs = { inherit inputs user pkgs; };
     modules = [
       ./cache-runner/configuration.nix
     ];

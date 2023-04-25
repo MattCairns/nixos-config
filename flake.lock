@@ -40,15 +40,16 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1682207207,
-        "narHash": "sha256-fRBVh/lUjZoe1t7gjjSkI41RgYjmJcbAfdRPmtaRrdg=",
+        "lastModified": 1682453051,
+        "narHash": "sha256-8CvnDBjAIK1PBuNxDiQQxuK6IMQYdrE2k/7dUix/3i0=",
         "owner": "MattCairns",
         "repo": "nix-overlays",
-        "rev": "68ff8eb74011d25e841fbb654b34bd0c7c1e7b9d",
+        "rev": "303fccb84a94ebbf87328b25e7639aaf0317a71d",
         "type": "github"
       },
       "original": {
         "owner": "MattCairns",
+        "ref": "add_ktra",
         "repo": "nix-overlays",
         "type": "github"
       }
