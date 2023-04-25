@@ -5,7 +5,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     test-nixpkgs.url = "github:MattCairns/nixpkgs/add-neoai-nvim";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-    mrcoverlays.url = "github:MattCairns/nix-overlays";
+    mrcoverlays.url = "github:MattCairns/nix-overlays/add_ktra";
     mrcpkgs.url = "github:MattCairns/nixpkgs";
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -14,10 +14,8 @@
   };
 
   outputs =
-    inputs @ { self
-    , nixpkgs
+    inputs @ { nixpkgs
     , test-nixpkgs
-    , nixos-hardware
     , mrcpkgs
     , home-manager
     , ...
