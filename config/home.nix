@@ -4,12 +4,28 @@
 , test-pkgs
 , mrcpkgs
 , user
+, inputs
 , ...
 }: {
-  imports = [ (import ../modules) ];
+  imports = [
+    (import ../modules)
+    inputs.impermanence.nixosModules.home-manager.impermanence
+  ];
   programs.home-manager.enable = true;
   xdg.configFile."wallpapers".source = ../assets/wallpapers;
   xdg.configFile."bin".source = ../dots/bin;
+
+#  home.persistence."/persist/home/matthew" = {
+#    directories = [
+#      "dev"
+#      "nixos-config"
+#      "Downloads"
+#      "Documents"
+#      ".ssh"
+#      ".mozilla"
+#    ];
+#    allowOther = true;
+#  };
 
   home = {
     username = "${user}";

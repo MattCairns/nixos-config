@@ -4,6 +4,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     test-nixpkgs.url = "github:MattCairns/nixpkgs/add-neoai-nvim";
+    impermanence.url = "github:nix-community/impermanence";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     mrcoverlays.url = "github:MattCairns/nix-overlays/add_ktra";
     mrcpkgs.url = "github:MattCairns/nixpkgs";
