@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 {
   imports = [
     <nixpkgs/nixos/modules/installer/cd-dvd/installation-cd-graphical-plasma5-new-kernel.nix>
@@ -91,7 +91,20 @@
         sudo mount "$DISK"p1 /mnt/boot
       '';
 
-      mode = "0666";
+      mode = "0777";
+    };
+
+  };
+
+  environment.etc = {
+    generateconfig = {
+      text = ''
+        nixos-generate-config --root /mnt
+        nixos-install --flake https://github.com/mattcairns/nixos-config#sun --root /mnt
+        # add neededForBoot = true; to /persist and /var/log
+      '';
+
+      mode = "0777";
     };
   };
 }

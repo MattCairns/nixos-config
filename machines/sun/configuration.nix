@@ -7,6 +7,8 @@
     ../../config/base.nix
     ../../config/users.nix
   ];
+  users.users.matthew.passwordFile = "/persist/passwords/matthew";
+  users.users.root.passwordFile = "/persist/passwords/root";
 
   networking.hostName = "sun";
   networking.nameservers = [ "192.168.1.24" ];
@@ -28,10 +30,9 @@
   };
 
   environment.systemPackages = with pkgs; [
-    cudaPackages.cudatoolkit
-    cudaPackages.cudnn
+    # cudaPackages.cudatoolkit
+    # cudaPackages.cudnn
     nfs-utils
-    ktra
   ];
 
   fileSystems."/mnt/unraid-appdata" = {

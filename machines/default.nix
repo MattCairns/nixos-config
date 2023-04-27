@@ -34,6 +34,7 @@ in
     specialArgs = { inherit inputs user pkgs; };
     modules = [
       ./sun/configuration.nix
+      ../config/optin-persistence.nix
       home-manager.nixosModules.home-manager
       {
         home-manager.useGlobalPkgs = true;
