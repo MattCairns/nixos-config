@@ -1,5 +1,4 @@
-{ inputs
-, config
+{ config
 , pkgs
 , ...
 }: {
@@ -8,6 +7,9 @@
     ../../config/base.nix
     ../../config/users.nix
   ];
+
+  users.users.matthew.passwordFile = "/persist/passwords/matthew";
+  users.users.root.passwordFile = "/persist/passwords/root";
 
   networking.hostName = "laptop";
   hardware.bluetooth.enable = true;
