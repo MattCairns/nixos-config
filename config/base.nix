@@ -29,7 +29,6 @@
       dates = "weekly";
       options = "--delete-older-than 30d";
     };
-    trustedUsers = [ "root" "@wheel" "matthew" ];
     settings.trusted-users = [ "root" "matthew" ];
     settings = {
       substituters = [ "https://cache.nixos.org" "https://cuda-maintainers.cachix.org" ];
