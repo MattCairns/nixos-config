@@ -36,6 +36,14 @@
               PostData = "";
               URLTemplate = "https://search.nixos.org/packages?channel=unstable&query={searchTerms}";
             }
+            {
+              Name = "Brave Search";
+              Alias = "brave";
+              Method = "GET";
+              Description = "Search on the Brave search engine.";
+              PostData = "";
+              URLTemplate = "https://search.brave.com/search?q={searchTerms}";
+            }
           ];
         };
         FirefoxHome = {
@@ -46,7 +54,7 @@
           Highlights = false;
         };
         Homepage = {
-          URL = "https://duckduckgo.com";
+          URL = "https://search.brave.com";
           Locked = true;
         };
         Preferences = {
