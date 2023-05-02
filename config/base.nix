@@ -128,14 +128,12 @@
   services.tailscale.enable = true;
 
   # Set XDG environment
-  environment.sessionVariables = rec {
+  environment.sessionVariables = {
     XDG_CONFIG_HOME = "\${HOME}/.config";
     XDG_CACHE_HOME = "\${HOME}/.local/cache";
     XDG_BIN_HOME = "\${HOME}/.local/bin";
     XDG_DATA_HOME = "\${HOME}/.local/share";
-    PATH = [
-      "\${XDG_BIN_HOME}"
-    ];
+    PATH = [ "\${XDG_BIN_HOME}" ];
   };
 
   # Globally available packages 
@@ -152,7 +150,7 @@
     (inputs.mrcoverlays.legacyPackages.x86_64-linux.hide-my-mess-rs)
   ];
 
-  virtualisation.docker.enable = true;
+  virtualisation.podman.enable = true;
 
   # Set up shell
   users.defaultUserShell = pkgs.fish;

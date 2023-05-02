@@ -33,12 +33,17 @@
     # cudaPackages.cudatoolkit
     # cudaPackages.cudnn
     nfs-utils
+    qgroundcontrol
   ];
 
   fileSystems."/mnt/unraid-appdata" = {
     device = "192.168.1.10:/mnt/user/appdata";
     options = [ "x-systemd.automount" "noauto" ];
   };
+
+
+  virtualisation.libvirtd.enable = true;
+  users.users.matthew.extraGroups = [ "qemu-libvirtd" "libvirtd" ];
 
 
   /*

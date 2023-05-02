@@ -36,7 +36,7 @@
         pkgs.vimPlugins.nvim-lint
         pkgs.vimPlugins.vim-surround
         pkgs.vimPlugins.vim-obsession
-        pkgs.vimPlugins.kommentary
+        pkgs.vimPlugins.comment-nvim
         pkgs.vimPlugins.neoformat
         pkgs.vimPlugins.lazygit-nvim
         pkgs.vimPlugins.gitsigns-nvim

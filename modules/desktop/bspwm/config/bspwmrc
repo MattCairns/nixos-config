@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
 
+pkill polybar
 ~/.config/polybar/load_polybar &
 
 bspc config remove_disabled_monitors  true

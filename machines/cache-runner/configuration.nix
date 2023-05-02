@@ -16,8 +16,8 @@
     username = "mattrcairns";
   };
 
-  networking.firewall.allowedUDPPorts = [ 8000 ];
-  networking.firewall.allowedTCPPorts = [ 8000 ];
+  networking.firewall.allowedUDPPorts = [ 14550 ];
+  networking.firewall.allowedTCPPorts = [ ];
 
   services.nginx = {
     enable = true;
