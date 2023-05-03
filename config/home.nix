@@ -10,22 +10,29 @@
   imports = [
     (import ../modules)
     inputs.impermanence.nixosModules.home-manager.impermanence
+    inputs.sops-nix.homeManagerModule
   ];
   programs.home-manager.enable = true;
   xdg.configFile."wallpapers".source = ../assets/wallpapers;
   xdg.configFile."bin".source = ../dots/bin;
 
-#  home.persistence."/persist/home/matthew" = {
-#    directories = [
-#      "dev"
-#      "nixos-config"
-#      "Downloads"
-#      "Documents"
-#      ".ssh"
-#      ".mozilla"
-#    ];
-#    allowOther = true;
-#  };
+  #  home.persistence."/persist/home/matthew" = {
+  #    directories = [
+  #      "dev"
+  #      "nixos-config"
+  #      "Downloads"
+  #      "Documents"
+  #      ".ssh"
+  #      ".mozilla"
+  #    ];
+  #    allowOther = true;
+  #  };
+
+  sops = {
+    age.sshKeyPaths = [ "/home/${user}/.ssh/id_ed25519" ];
+    defaultSopsFile = ../secrets/openai_api_key.json;
+    secrets.openai-api-key = { path = "/home/${user}/.config/secrets/openai_api_key"; };
+  };
 
   home = {
     username = "${user}";
@@ -97,6 +104,7 @@
       cmake-language-server
       nil
       rust-analyzer
+      ansible-language-server
 
       # Keyboards
       qmk

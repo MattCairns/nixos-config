@@ -1,9 +1,14 @@
 { inputs
+, sops
 , config
 , pkgs
 , user
 , ...
 }: {
+  sops.defaultSopsFile = ../secrets/openai_api_key.json;
+  sops.age.sshKeyPaths = [ "/home/${user}/.ssh/id_ed25519" ];
+  sops.secrets.openai-api-key = { };
+
   nixpkgs.config.allowUnfree = true;
 
   # Use the latest kernel
@@ -137,15 +142,17 @@
   };
 
   # Globally available packages 
-  environment.systemPackages = with pkgs; [
-    distrobox
-    docker-compose
-    brightnessctl
-    qjackctl
-    nixos-generators
-    v4l-utils
-    gnome.nautilus
-    cachix
+  environment.systemPackages = [
+    pkgs.distrobox
+    pkgs.docker-compose
+    pkgs.brightnessctl
+    pkgs.qjackctl
+    pkgs.nixos-generators
+    pkgs.v4l-utils
+    pkgs.gnome.nautilus
+    pkgs.cachix
+    (inputs.mrcoverlays.legacyPackages.x86_64-linux.molecule)
+    (inputs.mrcoverlays.legacyPackages.x86_64-linux.molecule-docker)
     (inputs.mrcoverlays.legacyPackages.x86_64-linux.aichat)
     (inputs.mrcoverlays.legacyPackages.x86_64-linux.hide-my-mess-rs)
   ];
