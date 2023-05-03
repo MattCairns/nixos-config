@@ -9,6 +9,7 @@
       function fish_greeting
         pfetch
       end
+      export OPENAI_API_KEY=$(cat ~/.config/secrets/openai_api_key)
     '';
     plugins = [
       { name = "hydro"; src = pkgs.fishPlugins.hydro.src; }

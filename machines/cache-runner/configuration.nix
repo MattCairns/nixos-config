@@ -6,18 +6,7 @@
 }: {
   imports = [
     ./hardware-configuration.nix
-    inputs.mrcoverlays.nixosModules.ktra
   ];
-
-  services.ktra = {
-    enable = true;
-    remoteUrl = "git@gitlab.com:open-ocean-robotics/xplorer-vessel/libs/crate_index.git";
-    privateKeyPath = "/home/nixos/.ssh/id_ed25519";
-    username = "mattrcairns";
-  };
-
-  networking.firewall.allowedUDPPorts = [ 14550 ];
-  networking.firewall.allowedTCPPorts = [ ];
 
   services.nginx = {
     enable = true;

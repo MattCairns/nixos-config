@@ -151,8 +151,6 @@
     pkgs.v4l-utils
     pkgs.gnome.nautilus
     pkgs.cachix
-    (inputs.mrcoverlays.legacyPackages.x86_64-linux.molecule)
-    (inputs.mrcoverlays.legacyPackages.x86_64-linux.molecule-docker)
     (inputs.mrcoverlays.legacyPackages.x86_64-linux.aichat)
     (inputs.mrcoverlays.legacyPackages.x86_64-linux.hide-my-mess-rs)
   ];

@@ -16,18 +16,6 @@
   xdg.configFile."wallpapers".source = ../assets/wallpapers;
   xdg.configFile."bin".source = ../dots/bin;
 
-  #  home.persistence."/persist/home/matthew" = {
-  #    directories = [
-  #      "dev"
-  #      "nixos-config"
-  #      "Downloads"
-  #      "Documents"
-  #      ".ssh"
-  #      ".mozilla"
-  #    ];
-  #    allowOther = true;
-  #  };
-
   sops = {
     age.sshKeyPaths = [ "/home/${user}/.ssh/id_ed25519" ];
     defaultSopsFile = ../secrets/openai_api_key.json;
@@ -98,6 +86,7 @@
       lazygit
       nixpkgs-fmt
       cmake-format
+      kubectl
 
       # LSP Servers
       nodePackages_latest.pyright

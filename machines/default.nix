@@ -12,7 +12,6 @@ let
   pkgs = import nixpkgs {
     inherit system;
     config.allowUnfree = true;
-    overlays = [ inputs.mrcoverlays.ktra-overlay ];
   };
 
   test-pkgs = import test-nixpkgs {
@@ -34,6 +33,7 @@ in
     modules = [
       ./sun/configuration.nix
       ../config/optin-persistence.nix
+      inputs.sops-nix.nixosModules.sops
       home-manager.nixosModules.home-manager
       {
         home-manager.useGlobalPkgs = true;
