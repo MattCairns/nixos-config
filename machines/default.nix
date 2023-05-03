@@ -1,5 +1,4 @@
-{ lib
-, inputs
+{ inputs
 , nixpkgs
 , test-nixpkgs
 , home-manager
@@ -58,6 +57,7 @@ in
     modules = [
       ./laptop/configuration.nix
       ../config/optin-persistence.nix
+      inputs.sops-nix.nixosModules.sops
       inputs.nixos-hardware.nixosModules.lenovo-thinkpad-l13-yoga
       home-manager.nixosModules.home-manager
       {
