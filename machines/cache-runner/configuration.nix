@@ -8,6 +8,11 @@
     ./hardware-configuration.nix
   ];
 
+  services.nix-serve = {
+    enable = true;
+    secretKeyFile = "/var/cache-priv-key.pem";
+  };
+
   services.nginx = {
     enable = true;
     virtualHosts = {
