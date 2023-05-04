@@ -36,10 +36,15 @@
     };
     settings.trusted-users = [ "root" "matthew" ];
     settings = {
-      substituters = [ "https://cache.nixos.org" "https://cuda-maintainers.cachix.org" ];
+      substituters = [
+        "https://cache.nixos.org"
+        "https://cuda-maintainers.cachix.org"
+        "http://cache-runner"
+      ];
       trusted-public-keys = [
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
         "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
+        "cache-runner:58R6++8rfMsbj2oZvfo7bZEIp0mfm4neDLdJZBvxF8k="
       ];
     };
   };
