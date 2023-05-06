@@ -5,10 +5,6 @@
 , user
 , ...
 }: {
-  sops.defaultSopsFile = ../secrets/openai_api_key.json;
-  sops.age.sshKeyPaths = [ "/home/${user}/.ssh/id_ed25519" ];
-  sops.secrets.openai-api-key = { };
-
   nixpkgs.config.allowUnfree = true;
 
   # Use the latest kernel

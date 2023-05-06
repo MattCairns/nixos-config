@@ -1,7 +1,7 @@
 keys:
   - &matthew age1t55px8ak0qznjp94zknxuzq7ysuu58myl9srazjytak7efspmplqetxcd6
 creation_rules:
-  - path_regex: secrets/secrets/[^/]+\.yaml$
+  - path_regex: secrets/secrets.yaml$
     key_groups:
     - age:
       - *matthew

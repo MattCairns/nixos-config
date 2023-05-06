@@ -16,10 +16,10 @@
   xdg.configFile."wallpapers".source = ../assets/wallpapers;
   xdg.configFile."bin".source = ../dots/bin;
 
-  sops = {
-    age.sshKeyPaths = [ "/home/${user}/.ssh/id_ed25519" ];
-    defaultSopsFile = ../secrets/openai_api_key.json;
-    secrets.openai-api-key = { path = "/home/${user}/.config/secrets/openai_api_key"; };
+  sops.age.sshKeyPaths = [ "/home/${user}/.ssh/id_ed25519" ];
+  sops.secrets.openai-api-key = {
+    sopsFile = ../secrets/openai_api_key.json;
+    path = "/home/${user}/.config/secrets/openai_api_key";
   };
 
   home = {

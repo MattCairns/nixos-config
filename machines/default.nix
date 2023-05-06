@@ -57,8 +57,8 @@ in
     modules = [
       ./laptop/configuration.nix
       ../config/optin-persistence.nix
-      inputs.sops-nix.nixosModules.sops
       inputs.nixos-hardware.nixosModules.lenovo-thinkpad-l13-yoga
+    inputs.sops-nix.nixosModules.sops
       home-manager.nixosModules.home-manager
       {
         home-manager.useGlobalPkgs = true;

@@ -1,5 +1,6 @@
 { config
 , pkgs
+, inputs
 , ...
 }: {
   imports = [
@@ -8,6 +9,11 @@
     ../../config/users.nix
   ];
 
+  sops.defaultSopsFile = ../../secrets/secrets.yaml;
+  sops.age.sshKeyPaths = [ "/home/matthew/.ssh/id_ed25519" ];
+  sops.secrets.user-matthew-password.neededForUsers = true;
+
+  #:Wusers.users.matthew.passwordFile = config.sops.secrets.user-matthew-password.path;
   users.users.matthew.passwordFile = "/persist/passwords/matthew";
   users.users.root.passwordFile = "/persist/passwords/root";
 
