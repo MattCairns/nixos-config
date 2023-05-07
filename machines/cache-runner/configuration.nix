@@ -30,6 +30,7 @@
 
   boot.kernel.sysctl."net.ipv4.ip_forward" = true; # 1
   virtualisation.docker.enable = true;
+  users.users.matthew.extraGroups = [ "docker" ];
   services.gitlab-runner = {
     enable = true;
     services = {

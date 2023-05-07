@@ -14,6 +14,20 @@
   networking.hostName = "sun";
   networking.nameservers = [ "192.168.1.24" ];
 
+  services.xserver.config = ''
+    Section "Monitor"
+        Identifier "DP-2.8"
+        Option "PreferredMode" "2560x1440"
+        Option "Primary" "1"
+    EndSection
+    Section "Monitor"
+        Identifier "DP-2.1"
+        Option "PreferredMode" "2560x1440"
+        Option "RightOf" "DP-2.8"
+        Option "Rotate" "right"
+    EndSection
+  '';
+
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.opengl = {
     enable = true;
@@ -24,6 +38,7 @@
     ];
   };
 
+  boot.extraModprobeConfig = ''blacklist i2c_nvidia_gpu'';
   hardware.nvidia = {
     package = config.boot.kernelPackages.nvidiaPackages.beta;
     modesetting.enable = true;
@@ -42,20 +57,8 @@
     options = [ "x-systemd.automount" "noauto" ];
   };
 
-
   virtualisation.libvirtd.enable = true;
   users.users.matthew.extraGroups = [ "qemu-libvirtd" "libvirtd" ];
-
-
-  /*
-     systemd.services.tdarr = {
-    script = ''
-      docker-compose -f ${HOME}/.config/docker/tdarr.yml
-    '';
-    wantedBy = ["multi-user.target"];
-    after = ["docker.service" "docker.socket"];
-    };
-  */
 
   system.stateVersion = "22.11";
 }

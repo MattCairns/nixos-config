@@ -156,7 +156,8 @@
     (inputs.mrcoverlays.legacyPackages.x86_64-linux.hide-my-mess-rs)
   ];
 
-  virtualisation.podman.enable = true;
+  virtualisation.docker.enable = true;
+  users.extraGroups.docker.members = [ "${user}" ];
 
   # Set up shell
   users.defaultUserShell = pkgs.fish;
