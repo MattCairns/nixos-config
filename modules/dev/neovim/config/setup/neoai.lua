@@ -43,6 +43,17 @@ require('neoai').setup{
             strip_function = nil,
         },
         {
+            name = "flatbuffer",
+            key = "<leader>fb",
+            desc = "fix text with AI",
+            use_context = true,
+            prompt = [[
+            Act as a c++ developer writing code to test flatbuffer schemas.  Only write c++ code and nothing else. Convert the given flatbuffer schema to c++ code, fill the flatbuffer with dummy data.
+            ]],
+            modes = { "v" },
+            strip_function = nil,
+        },
+        {
             name = "gitcommit",
             key = "<leader>ag",
             desc = "generate git commit message",
