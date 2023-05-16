@@ -94,6 +94,7 @@
       nil
       rust-analyzer
       ansible-language-server
+      nodePackages_latest.dockerfile-language-server-nodejs
 
       # Keyboards
       qmk
