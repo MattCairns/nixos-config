@@ -49,6 +49,8 @@
 
       bind -T prefix P switch-client -l
 
+      set -g @resurrect-strategy-nvim 'session'
+
     '';
   };
 }
