@@ -31,6 +31,7 @@
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.opengl = {
     enable = true;
+    driSupport32Bit = true;
     extraPackages = with pkgs; [
       vaapiVdpau
       libvdpau-va-gl
@@ -48,10 +49,11 @@
   services.blueman.enable = true;
 
   environment.systemPackages = with pkgs; [
-    # cudaPackages.cudatoolkit
-    # cudaPackages.cudnn
+    cudaPackages.cudatoolkit
+    cudaPackages.cudnn
     nfs-utils
     qgroundcontrol
+    vagrant
   ];
 
   fileSystems."/mnt/unraid-appdata" = {
@@ -59,6 +61,8 @@
     options = [ "x-systemd.automount" "noauto" ];
   };
 
+  virtualisation.docker.enable = true;
+  virtualisation.docker.enableNvidia = true;
   virtualisation.libvirtd.enable = true;
   users.users.matthew.extraGroups = [ "qemu-libvirtd" "libvirtd" ];
 
