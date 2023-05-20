@@ -1,5 +1,4 @@
 { config
-, sops
 , pkgs
 , ...
 }: {
@@ -8,6 +7,7 @@
     ../../config/base.nix
     ../../config/users.nix
   ];
+
   users.users.matthew.passwordFile = "/persist/passwords/matthew";
   users.users.root.passwordFile = "/persist/passwords/root";
 
@@ -46,6 +46,7 @@
     open = true;
   };
 
+  hardware.bluetooth.enable = true;
   services.blueman.enable = true;
 
   environment.systemPackages = with pkgs; [

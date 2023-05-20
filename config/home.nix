@@ -1,8 +1,4 @@
-{ config
-, lib
-, pkgs
-, test-pkgs
-, mrcpkgs
+{ pkgs
 , user
 , inputs
 , ...
@@ -38,15 +34,10 @@
       wget
       curl
       ncdu
-      tree
-      hexyl
-      zoxide
       bat
       lsd
       neofetch
       xclip
-      scrot
-      feh
       magic-wormhole
       pfetch
       nvtop
@@ -59,20 +50,20 @@
 
       # Video/Audio
       feh # Image Viewer
+      scrot
       mpv # Media Player
-      spotify-tui
 
       # File Management
+      gnome.nautilus
       ranger
       rsync
-      unzip # Zip Files
-      unrar # Rar Files
+      unzip
+      unrar
 
       # Misc Apps
       killall
       veracrypt
       cura
-      openscad
       obsidian
       libnotify
       flameshot
@@ -82,14 +73,10 @@
 
       # Dev tools
       pre-commit
-      cppcheck
       lazygit
       nixpkgs-fmt
       cmake-format
       kubectl
-      python311Packages.ansible
-      python311Packages.ansible-core
-      python311Packages.mitogen
 
       # LSP Servers
       nodePackages_latest.pyright
@@ -99,10 +86,8 @@
       ansible-language-server
       nodePackages_latest.dockerfile-language-server-nodejs
 
-
       # Keyboards
       qmk
-      vial
       dfu-util
       dfu-programmer
     ];

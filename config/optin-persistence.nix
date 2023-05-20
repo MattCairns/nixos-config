@@ -53,6 +53,8 @@
       directories = [
         "/var/lib/NetworkManager"
         "/var/lib/tailscale"
+        "/var/lib/bluetooth"
+        "/var/lib/blueman"
         "/etc/NetworkManager"
         "/etc/ssh"
       ];

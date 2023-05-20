@@ -1,5 +1,4 @@
 { inputs
-, sops
 , config
 , pkgs
 , user
@@ -21,7 +20,6 @@
     '';
   };
 
-
   nix = {
     package = pkgs.nixFlakes;
     extraOptions = "experimental-features = nix-command flakes";
@@ -30,7 +28,7 @@
       dates = "weekly";
       options = "--delete-older-than 30d";
     };
-    settings.trusted-users = [ "root" "matthew" ];
+    settings.trusted-users = [ "root" "${user}" ];
     settings = {
       substituters = [
         "https://cache.nixos.org"
@@ -56,7 +54,6 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  # boot.loader.efi.efiSysMountPoint = "/boot/efi";
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
   boot.plymouth = {
     enable = true;
@@ -66,10 +63,16 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
-  networking.firewall.checkReversePath = "loose";
-  networking.firewall.enable = true;
-  networking.firewall.allowedUDPPorts = [ ];
-  networking.firewall.allowedTCPPorts = [ ];
+  networking.firewall = {
+    enable = true;
+    checkReversePath = "loose";
+    allowedUDPPorts = [ ];
+    allowedTCPPorts = [ ];
+  };
+  services.openssh.enable = true;
+  programs.ssh.startAgent = true;
+  services.tailscale.enable = true;
+
 
   # Set your time zone and locale
   time.timeZone = "America/Vancouver";
@@ -99,12 +102,13 @@
   };
 
   # Enable CUPS to print documents.
-  services.printing.enable = true;
-  services.printing.drivers = [ pkgs.hplip ];
-
-  security.polkit.enable = true;
+  services.printing = {
+    enable = true;
+    drivers = [ pkgs.hplip ];
+  };
 
   programs.gnupg.agent.enable = true;
+  security.polkit.enable = true;
 
   services.dbus.packages = [ pkgs.gcr ];
 
@@ -129,10 +133,6 @@
     group = "users";
   };
 
-  services.openssh.enable = true;
-  programs.ssh.startAgent = true;
-  services.tailscale.enable = true;
-
   # Set XDG environment
   environment.sessionVariables = {
     XDG_CONFIG_HOME = "\${HOME}/.config";
@@ -150,7 +150,6 @@
     pkgs.qjackctl
     pkgs.nixos-generators
     pkgs.v4l-utils
-    pkgs.gnome.nautilus
     pkgs.cachix
     (inputs.mrcoverlays.legacyPackages.x86_64-linux.aichat)
     (inputs.mrcoverlays.legacyPackages.x86_64-linux.hide-my-mess-rs)
