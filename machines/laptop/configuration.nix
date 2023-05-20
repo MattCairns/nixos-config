@@ -19,6 +19,7 @@
 
   networking.hostName = "laptop";
   hardware.bluetooth.enable = true;
+  services.blueman.enable = true;
 
   # Enable touchpad support
   services.xserver.libinput.enable = true;
@@ -34,6 +35,23 @@
   boot.initrd.availableKernelModules = [ "nvme" "ehci_pci" "xhci_pci" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" "thinkpad_acpi" ];
   boot.initrd.kernelModules = [ "acpi_call" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
+
+  ## Random usb-eth devices
+  # networking.interfaces.enp0s13f0u3.ipv4.addresses = [{
+  #   address = "192.168.1.20";
+  #   prefixLength = 24;
+  # }];
+  networking.defaultGateway = "192.168.20.1";
+  networking.interfaces.enp0s20f0u1.ipv4.addresses = [{
+    address = "192.168.20.21";
+    prefixLength = 24;
+  }];
+
+  fileSystems."/mnt/backup" = {
+    device = "192.168.1.10:/mnt/user/backup";
+    fsType = "nfs";
+    options = [ "x-systemd.automount" "noauto" ];
+  };
 
   system.stateVersion = "22.11";
 }

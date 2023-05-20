@@ -45,6 +45,8 @@
     open = true;
   };
 
+  services.blueman.enable = true;
+
   environment.systemPackages = with pkgs; [
     # cudaPackages.cudatoolkit
     # cudaPackages.cudnn

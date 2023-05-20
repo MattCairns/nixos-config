@@ -87,6 +87,9 @@
       nixpkgs-fmt
       cmake-format
       kubectl
+      python311Packages.ansible
+      python311Packages.ansible-core
+      python311Packages.mitogen
 
       # LSP Servers
       nodePackages_latest.pyright
@@ -95,6 +98,7 @@
       rust-analyzer
       ansible-language-server
       nodePackages_latest.dockerfile-language-server-nodejs
+
 
       # Keyboards
       qmk
