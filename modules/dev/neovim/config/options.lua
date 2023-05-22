@@ -1,10 +1,8 @@
 -- THEME
 vim.opt.termguicolors = true
 vim.opt.background='dark'
--- vim.cmd[[colorscheme nordic]]
-vim.cmd[[colorscheme kanagawa]]
--- vim.opt.background = 'light'
--- vim.cmd[[colorscheme zenbones]]
+-- vim.cmd[[colorscheme kanagawa]]
+vim.cmd[[colorscheme tokyonight-night]]
 
 -- QOL settings
 HOME = os.getenv("HOME")

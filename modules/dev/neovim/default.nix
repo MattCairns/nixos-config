@@ -10,6 +10,10 @@
   programs = {
     neovim = {
       plugins = [
+        ## Theme
+        # pkgs.vimPlugins.kanagawa-nvim
+        pkgs.vimPlugins.tokyonight-nvim
+
         ## Treesitter
         pkgs.vimPlugins.nvim-treesitter
         pkgs.vimPlugins.nvim-treesitter.withAllGrammars
@@ -47,7 +51,6 @@
         pkgs.vimPlugins.lightspeed-nvim
         pkgs.vimPlugins.leap-nvim
         pkgs.vimPlugins.vim-repeat
-        pkgs.vimPlugins.kanagawa-nvim
         pkgs.vimPlugins.no-neck-pain-nvim
 
         ## Debugging

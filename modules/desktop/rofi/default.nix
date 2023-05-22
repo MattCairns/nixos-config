@@ -4,7 +4,9 @@
   programs = {
     rofi = {
       enable = true;
-      theme = "gruvbox-dark-hard";
+      extraConfig = { 
+      };
+      theme = config/tokyonight.rasi;
       plugins = [
         pkgs.rofi-calc
         pkgs.rofi-top
