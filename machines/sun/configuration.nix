@@ -29,21 +29,22 @@
   '';
 
   services.xserver.videoDrivers = [ "nvidia" ];
-  hardware.opengl = {
-    enable = true;
-    driSupport32Bit = true;
-    extraPackages = with pkgs; [
-      vaapiVdpau
-      libvdpau-va-gl
-      nvidia-vaapi-driver
-    ];
-  };
-
-  boot.extraModprobeConfig = ''blacklist i2c_nvidia_gpu'';
-  hardware.nvidia = {
-    package = config.boot.kernelPackages.nvidiaPackages.beta;
-    modesetting.enable = true;
-    open = true;
+  boot.blacklistedKernelModules = [ "nouveau" "i2c_nvidia_gpu" ];
+  hardware = {
+    nvidia = {
+      package = config.boot.kernelPackages.nvidiaPackages.beta;
+      modesetting.enable = true;
+      open = true;
+    };
+    opengl = {
+      enable = true;
+      driSupport32Bit = true;
+      extraPackages = with pkgs; [
+        vaapiVdpau
+        libvdpau-va-gl
+        nvidia-vaapi-driver
+      ];
+    };
   };
 
   hardware.bluetooth.enable = true;
