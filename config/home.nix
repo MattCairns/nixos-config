@@ -77,6 +77,7 @@
       nixpkgs-fmt
       cmake-format
       kubectl
+      cppcheck
 
       # LSP Servers
       nodePackages_latest.pyright
