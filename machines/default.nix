@@ -77,7 +77,7 @@ in
     inherit system;
     specialArgs = { inherit inputs user; };
     modules = [
-      inputs.nixos-hardware.nixosModules.intel-nuc-8i7beh
+      # inputs.nixos-hardware.nixosModules.intel-nuc-8i7beh
       ./nuc/configuration.nix
       inputs.sops-nix.nixosModules.sops
       home-manager.nixosModules.home-manager
