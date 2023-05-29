@@ -85,6 +85,8 @@
       rust-analyzer
       ansible-language-server
       nodePackages_latest.dockerfile-language-server-nodejs
+      nodePackages.vim-language-server
+      lua-language-server
 
       # Keyboards
       qmk
