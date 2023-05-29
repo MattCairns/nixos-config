@@ -58,7 +58,7 @@ in
       ./laptop/configuration.nix
       ../config/optin-persistence.nix
       inputs.nixos-hardware.nixosModules.lenovo-thinkpad-l13-yoga
-    inputs.sops-nix.nixosModules.sops
+      inputs.sops-nix.nixosModules.sops
       home-manager.nixosModules.home-manager
       {
         home-manager.useGlobalPkgs = true;
@@ -79,12 +79,13 @@ in
     modules = [
       inputs.nixos-hardware.nixosModules.intel-nuc-8i7beh
       ./nuc/configuration.nix
+      inputs.sops-nix.nixosModules.sops
       home-manager.nixosModules.home-manager
       {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
         home-manager.extraSpecialArgs = {
-          inherit user mrc test-pkgs;
+          inherit user mrc test-pkgs inputs;
         };
         home-manager.users.${user} = {
           imports = [ (import ../config/home.nix) ];

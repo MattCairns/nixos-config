@@ -5,7 +5,6 @@
 }: {
   imports = [
     (import ../modules)
-    inputs.impermanence.nixosModules.home-manager.impermanence
     inputs.sops-nix.homeManagerModule
   ];
   programs.home-manager.enable = true;
