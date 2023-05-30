@@ -32,10 +32,11 @@
         pkgs.vimPlugins.cmp-nvim-lsp
         pkgs.vimPlugins.cmp-buffer
         pkgs.vimPlugins.cmp-cmdline
+        pkgs.vimPlugins.cmp_luasnip
 
+        ## QoL
         pkgs.vimPlugins.clangd_extensions-nvim
         pkgs.vimPlugins.luasnip
-        pkgs.vimPlugins.cmp_luasnip
         pkgs.vimPlugins.lspkind-nvim
         pkgs.vimPlugins.nvim-lint
         pkgs.vimPlugins.vim-surround
@@ -48,10 +49,8 @@
         pkgs.vimPlugins.vim-sleuth
         pkgs.vimPlugins.lualine-nvim
         pkgs.vimPlugins.nvim-web-devicons
-        pkgs.vimPlugins.lightspeed-nvim
-        pkgs.vimPlugins.leap-nvim
         pkgs.vimPlugins.vim-repeat
-        pkgs.vimPlugins.no-neck-pain-nvim
+        pkgs.vimPlugins.vim-startuptime
 
         ## Debugging
         pkgs.vimPlugins.nvim-dap
@@ -77,7 +76,6 @@
         ${builtins.readFile config/setup/lualine.lua}
         ${builtins.readFile config/setup/fidget.lua}
         ${builtins.readFile config/setup/lint.lua}
-        ${builtins.readFile config/setup/leap.lua}
         ${builtins.readFile config/setup/gitsigns.lua}
         ${builtins.readFile config/setup/clangd_extensions.lua}
         ${builtins.readFile config/setup/dap.lua}
