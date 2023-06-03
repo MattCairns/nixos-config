@@ -1,9 +1,20 @@
-{ config
-, pkgs
+{ pkgs
 , test-pkgs
-, mrc
+, lib
 , ...
-}: {
+}:
+let
+  fromGitHub = rev: ref: repo: pkgs.vimUtils.buildVimPluginFrom2Nix {
+    pname = "${lib.strings.sanitizeDerivationName repo}";
+    version = ref;
+    src = builtins.fetchGit {
+      url = "https://github.com/${repo}.git";
+      ref = ref;
+      rev = rev;
+    };
+  };
+in
+{
   home.packages = with pkgs; [
     vscode-extensions.ms-vscode.cpptools
   ];
@@ -11,75 +22,132 @@
     neovim = {
       plugins = [
         ## Theme
-        # pkgs.vimPlugins.kanagawa-nvim
-        pkgs.vimPlugins.tokyonight-nvim
+        {
+          plugin = pkgs.vimPlugins.tokyonight-nvim;
+          config = "vim.cmd[[colorscheme tokyonight-night]]";
+          type = "lua";
+        }
 
         ## Treesitter
-        pkgs.vimPlugins.nvim-treesitter
+        {
+          plugin = pkgs.vimPlugins.nvim-treesitter;
+          config = builtins.readFile config/setup/treesitter.lua;
+          type = "lua";
+        }
         pkgs.vimPlugins.nvim-treesitter.withAllGrammars
         pkgs.vimPlugins.nvim-treesitter-textobjects
-        pkgs.vimPlugins.nvim-lspconfig
+        {
+          plugin = pkgs.vimPlugins.nvim-lspconfig;
+          config = builtins.readFile config/setup/lspconfig.lua;
+          type = "lua";
+        }
 
-        pkgs.vimPlugins.trouble-nvim
+        {
+          plugin = pkgs.vimPlugins.trouble-nvim;
+          config = "require('trouble').setup {}";
+          type = "lua";
+        }
         pkgs.vimPlugins.plenary-nvim
-        pkgs.vimPlugins.telescope-nvim
+        {
+          plugin = pkgs.vimPlugins.telescope-nvim;
+          config = builtins.readFile config/setup/telescope.lua;
+          type = "lua";
+        }
         pkgs.vimPlugins.telescope-fzf-native-nvim
         pkgs.vimPlugins.harpoon
-        pkgs.vimPlugins.fidget-nvim
+        {
+          plugin = pkgs.vimPlugins.fidget-nvim;
+          config = "require('fidget').setup{}";
+          type = "lua";
+        }
 
         ## cmp
-        pkgs.vimPlugins.nvim-cmp
+        {
+          plugin = pkgs.vimPlugins.nvim-cmp;
+          config = builtins.readFile config/setup/cmp.lua;
+          type = "lua";
+        }
         pkgs.vimPlugins.cmp-nvim-lsp
         pkgs.vimPlugins.cmp-buffer
         pkgs.vimPlugins.cmp-cmdline
         pkgs.vimPlugins.cmp_luasnip
 
         ## QoL
-        pkgs.vimPlugins.clangd_extensions-nvim
-        pkgs.vimPlugins.luasnip
+        {
+          plugin = pkgs.vimPlugins.clangd_extensions-nvim;
+          config = builtins.readFile config/setup/clangd_extensions.lua;
+          type = "lua";
+        }
+        {
+          plugin = pkgs.vimPlugins.luasnip;
+          config = builtins.readFile config/setup/luasnip.lua;
+          type = "lua";
+        }
         pkgs.vimPlugins.lspkind-nvim
-        pkgs.vimPlugins.nvim-lint
+        {
+          plugin = pkgs.vimPlugins.nvim-lint;
+          config = ''
+            require('lint').linters_by_ft = {
+              cpp = {'cppcheck',}
+            }
+            vim.cmd[[autocmd BufWritePost * :lua require('lint').try_lint()]]
+          '';
+          type = "lua";
+        }
         pkgs.vimPlugins.vim-surround
         pkgs.vimPlugins.vim-obsession
-        pkgs.vimPlugins.comment-nvim
+        {
+          plugin = pkgs.vimPlugins.comment-nvim;
+          config = "require('Comment').setup()";
+          type = "lua";
+        }
         pkgs.vimPlugins.neoformat
         pkgs.vimPlugins.lazygit-nvim
-        pkgs.vimPlugins.gitsigns-nvim
+        {
+          plugin = pkgs.vimPlugins.gitsigns-nvim;
+          config = "require('gitsigns').setup()";
+          type = "lua";
+        }
         pkgs.vimPlugins.rainbow
         pkgs.vimPlugins.vim-sleuth
-        pkgs.vimPlugins.lualine-nvim
+        {
+          plugin = pkgs.vimPlugins.lualine-nvim;
+          config = ''
+            require('lualine').setup {
+                options = {
+                    theme = 'tokyonight',
+                }
+            }
+          '';
+          type = "lua";
+        }
         pkgs.vimPlugins.nvim-web-devicons
         pkgs.vimPlugins.vim-repeat
-        pkgs.vimPlugins.vim-startuptime
 
         ## Debugging
-        pkgs.vimPlugins.nvim-dap
+        {
+          plugin = pkgs.vimPlugins.nvim-dap;
+          config = builtins.readFile config/setup/dap.lua;
+          type = "lua";
+        }
         pkgs.vimPlugins.nvim-dap-ui
         pkgs.vimPlugins.nvim-dap-virtual-text
 
         pkgs.vimPlugins.copilot-vim
 
-        test-pkgs.vimPlugins.neoai-nvim
+        (fromGitHub "c3b6ca031dc29b9b59f760f6d568210c66bd30fe" "main" "MattCairns/telescope-cargo-workspace.nvim")
+
+        pkgs.vimPlugins.nui-nvim
+        {
+          plugin = (fromGitHub "b90180e30d143afb71490b92b08c1e9121d4416a" "main" "Bryley/neoai.nvim");
+          config = builtins.readFile config/setup/neoai.lua;
+          type = "lua";
+        }
       ];
 
-      extraConfig = ''
-        lua << EOF
+      extraLuaConfig = ''
         ${builtins.readFile config/mappings.lua}
         ${builtins.readFile config/options.lua}
-        ${builtins.readFile config/setup/cmp.lua}
-        ${builtins.readFile config/setup/treesitter.lua}
-        ${builtins.readFile config/setup/lspconfig.lua}
-        ${builtins.readFile config/setup/luasnip.lua}
-        ${builtins.readFile config/setup/trouble.lua}
-        ${builtins.readFile config/setup/telescope.lua}
-        ${builtins.readFile config/setup/kommentary.lua}
-        ${builtins.readFile config/setup/lualine.lua}
-        ${builtins.readFile config/setup/fidget.lua}
-        ${builtins.readFile config/setup/lint.lua}
-        ${builtins.readFile config/setup/gitsigns.lua}
-        ${builtins.readFile config/setup/clangd_extensions.lua}
-        ${builtins.readFile config/setup/dap.lua}
-        ${builtins.readFile config/setup/neoai.lua}
       '';
       enable = true;
       viAlias = true;
