@@ -66,7 +66,7 @@
   networking.firewall = {
     enable = true;
     checkReversePath = "loose";
-    allowedUDPPorts = [ ];
+    allowedUDPPorts = [ 14505 14504 ];
     allowedTCPPorts = [ ];
   };
   services.openssh.enable = true;
@@ -151,6 +151,7 @@
     pkgs.nixos-generators
     pkgs.v4l-utils
     pkgs.cachix
+    pkgs.qgroundcontrol
     (inputs.mrcoverlays.legacyPackages.x86_64-linux.aichat)
     (inputs.mrcoverlays.legacyPackages.x86_64-linux.hide-my-mess-rs)
   ];
