@@ -1,8 +1,6 @@
 { inputs
 , nixpkgs
-, test-nixpkgs
 , home-manager
-, mrcpkgs
 , user
 , ...
 }:
@@ -10,16 +8,6 @@ let
   system = "x86_64-linux";
 
   pkgs = import nixpkgs {
-    inherit system;
-    config.allowUnfree = true;
-  };
-
-  test-pkgs = import test-nixpkgs {
-    inherit system;
-    config.allowUnfree = true;
-  };
-
-  mrc = import mrcpkgs {
     inherit system;
     config.allowUnfree = true;
   };
@@ -39,7 +27,7 @@ in
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
         home-manager.extraSpecialArgs = {
-          inherit user mrc test-pkgs inputs;
+          inherit user inputs;
         };
         home-manager.users.${user} = {
           imports = [
@@ -64,7 +52,7 @@ in
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
         home-manager.extraSpecialArgs = {
-          inherit user mrc test-pkgs inputs;
+          inherit user inputs;
         };
         home-manager.users.${user} = {
           imports = [ (import ../config/home.nix) ];
@@ -79,13 +67,14 @@ in
     modules = [
       # inputs.nixos-hardware.nixosModules.intel-nuc-8i7beh
       ./nuc/configuration.nix
+      ../config/optin-persistence.nix
       inputs.sops-nix.nixosModules.sops
       home-manager.nixosModules.home-manager
       {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
         home-manager.extraSpecialArgs = {
-          inherit user mrc test-pkgs inputs;
+          inherit user inputs;
         };
         home-manager.users.${user} = {
           imports = [ (import ../config/home.nix) ];
