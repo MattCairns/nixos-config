@@ -144,7 +144,6 @@
 
   # Globally available packages 
   environment.systemPackages = [
-    pkgs.distrobox
     pkgs.docker-compose
     pkgs.brightnessctl
     pkgs.qjackctl
@@ -152,8 +151,7 @@
     pkgs.v4l-utils
     pkgs.cachix
     pkgs.qgroundcontrol
-    (inputs.mrcoverlays.legacyPackages.x86_64-linux.aichat)
-    (inputs.mrcoverlays.legacyPackages.x86_64-linux.hide-my-mess-rs)
+    pkgs.blink
   ];
 
   virtualisation.docker.enable = true;

@@ -143,6 +143,9 @@ in
           config = builtins.readFile config/setup/neoai.lua;
           type = "lua";
         }
+
+        pkgs.vimPlugins.surround-nvim
+        pkgs.vimPlugins.neomake
       ];
 
       extraLuaConfig = ''
