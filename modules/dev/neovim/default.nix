@@ -145,7 +145,6 @@ in
         }
 
         pkgs.vimPlugins.surround-nvim
-        pkgs.vimPlugins.neomake
       ];
 
       extraLuaConfig = ''
