@@ -31,7 +31,7 @@
       fzf
       fd
       wget
-      curl
+      curlWithGnuTls
       ncdu
       bat
       lsd
@@ -40,6 +40,7 @@
       magic-wormhole
       pfetch
       nvtop
+      sshfs
 
       # Communication
       zoom-us
