@@ -67,7 +67,7 @@
     enable = true;
     checkReversePath = "loose";
     allowedUDPPorts = [ 14505 14504 ];
-    allowedTCPPorts = [ ];
+    allowedTCPPorts = [ 8384 ];
   };
   services.openssh.enable = true;
   programs.ssh.startAgent = true;
