@@ -30,7 +30,6 @@
 
   boot.kernel.sysctl."net.ipv4.ip_forward" = true; # 1
   virtualisation.docker.enable = true;
-  users.users.matthew.extraGroups = [ "docker" ];
   services.gitlab-runner = {
     enable = true;
     services = {
@@ -109,7 +108,7 @@
   users.users.nixos = {
     isNormalUser = true;
     description = "nixos-runner";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" ];
     packages = with pkgs; [ git tmux magic-wormhole ];
   };
 

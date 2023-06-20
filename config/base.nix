@@ -32,7 +32,7 @@
     settings = {
       substituters = [
         "https://cache.nixos.org"
-        "https://cuda-maintainers.cachix.org"
+        # "https://cuda-maintainers.cachix.org"
         # "http://cache-runner"
       ];
       trusted-public-keys = [
