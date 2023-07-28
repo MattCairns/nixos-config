@@ -9,6 +9,7 @@
 
   networking.hostName = "nuc";
   hardware.bluetooth.enable = true;
+  services.blueman.enable = true;
 
   system.stateVersion = "22.11";
 }

@@ -46,7 +46,7 @@ elif [ "$pcid" = "$desktopid" ]; then
   bspc rule -a Slack desktop='^6'
   notify-send "Loaded Sun"
 elif [ "$pcid" = "$oorid" ]; then
-  xrandr --output DP-3 --mode 1920x1080 --pos 0x1480 --rotate normal \
+  xrandr --output DP-3 --off \
          --output DP-4 --off \
          --output DP-5 --off \
          --output DP-6 --mode 2560x1440 --pos 4480x0 --rotate right \
@@ -62,7 +62,6 @@ elif [ "$pcid" = "$oorid" ]; then
 
   bspc monitor HDMI-5 -d I II III
   bspc monitor DP-6 -d IV V VI 
-  bspc monitor DP-3 -d VII VIII IX 
 
   feh --bg-fill --no-xinerama ~/.config/wallpapers/lukasz-szmigiel-8AdYB7M4OHY-unsplash.jpg  
 
