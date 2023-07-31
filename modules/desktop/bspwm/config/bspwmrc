@@ -20,7 +20,7 @@ oorid=nuc
 desktopid=sun
 
 if [ "$pcid" = "$thinkpadid" ]; then
-  setxkbmap -option caps:swapescape
+  # setxkbmap -option caps:swapescape
   feh --bg-fill  ~/.config/wallpapers/francesco-ungaro-qgZvBPM9Hm4-unsplash.jpg
   bspc monitor -d I II III IV V VI VII VIII IX X
   notify-send "Loaded Laptop"

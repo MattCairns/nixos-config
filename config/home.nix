@@ -44,6 +44,7 @@
 
       # Communication
       zoom-us
+      teams
       slack
       discord
       signal-desktop
