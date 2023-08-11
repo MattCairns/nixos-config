@@ -20,7 +20,18 @@ oorid=nuc
 desktopid=sun
 
 if [ "$pcid" = "$thinkpadid" ]; then
-  # setxkbmap -option caps:swapescape
+  setxkbmap -option caps:swapescape
+  INTERNAL_MONITOR="eDP-1"
+  EXTERNAL_MONITOR="DP-1-1-5"
+  if [[ "$1" = 0 ]]; then
+  if [[ $(xrandr -q | grep "${EXTERNAL_MONITOR} connected") ]]; then
+    bspc monitor "$EXTERNAL_MONITOR" -d 1 2 3 4 5
+    bspc monitor "$INTERNAL_MONITOR" -d 6 7 8 9 10
+    bspc wm -O "$EXTERNAL_MONITOR" "$INTERNAL_MONITOR"
+  else
+    bspc monitor "$INTERNAL_MONITOR" -d 1 2 3 4 5 6 7 8 9 10
+  fi
+fi
   feh --bg-fill  ~/.config/wallpapers/francesco-ungaro-qgZvBPM9Hm4-unsplash.jpg
   bspc monitor -d I II III IV V VI VII VIII IX X
   notify-send "Loaded Laptop"
