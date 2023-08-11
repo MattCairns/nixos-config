@@ -90,7 +90,7 @@
     windowManager.bspwm.configFile = "/home/${user}/.config/bspwm/bspwmrc";
   };
 
-  fonts.fonts = with pkgs; [
+  fonts.packages = with pkgs; [
     (nerdfonts.override { fonts = [ "SourceCodePro" "FiraCode" ]; })
     font-awesome
     siji
