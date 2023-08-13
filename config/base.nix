@@ -66,7 +66,7 @@
   networking.firewall = {
     enable = true;
     checkReversePath = "loose";
-    allowedUDPPorts = [ 14505 14504 ];
+    allowedUDPPorts = [ 17140 17141 17142 17143 14556 ];
     allowedTCPPorts = [ 8384 ];
   };
   services.openssh.enable = true;
@@ -82,7 +82,7 @@
   services.xserver.enable = true;
   services.xserver = {
     displayManager = {
-      lightdm.enable = true;
+      gdm.enable = true;
       defaultSession = "none+bspwm";
     };
     windowManager.bspwm.enable = true;

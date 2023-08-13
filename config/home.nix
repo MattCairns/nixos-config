@@ -41,6 +41,7 @@
       pfetch
       nvtop
       sshfs
+      cool-retro-term
 
       # Communication
       zoom-us
