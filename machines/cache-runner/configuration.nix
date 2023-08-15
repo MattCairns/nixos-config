@@ -3,7 +3,18 @@
 , lib
 , inputs
 , ...
-}: {
+}:
+let
+  specificPkgs = import (builtins.fetchGit {
+    name = "my-old-revision";
+    url = "https://github.com/NixOS/nixpkgs/";
+    ref = "refs/heads/nixpkgs-unstable";
+    rev = "8ad5e8132c5dcf977e308e7bf5517cc6cc0bf7d8";
+  }) { system = "x86_64-linux"; };
+
+  myPkg = specificPkgs.gitlab-runner;
+in
+ {
   imports = [
     ./hardware-configuration.nix
   ];
@@ -32,6 +43,7 @@
   virtualisation.docker.enable = true;
   services.gitlab-runner = {
     enable = true;
+    package = myPkg;
     services = {
       # runner for building in docker via host's nix-daemon
       # nix store will be readable in runner, might be insecure
