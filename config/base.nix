@@ -4,7 +4,7 @@
 , user
 , ...
 }: {
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.allowUnfree = false;
 
   # Use the latest kernel
   boot = {

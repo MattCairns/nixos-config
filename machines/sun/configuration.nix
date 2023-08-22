@@ -33,8 +33,10 @@
   hardware = {
     nvidia = {
       package = config.boot.kernelPackages.nvidiaPackages.beta;
-      modesetting.enable = true;
       open = true;
+      modesetting.enable = true;
+      forceFullCompositionPipeline = true;
+      powerManagement.enable = true;
     };
     opengl = {
       enable = true;
@@ -65,8 +67,8 @@
 
   programs.steam = {
     enable = true;
-    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+    remotePlay.openFirewall = false; 
+    dedicatedServer.openFirewall = false; 
   };
 
   virtualisation.docker.enable = true;
