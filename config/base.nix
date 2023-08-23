@@ -32,7 +32,7 @@
     settings = {
       substituters = [
         "https://cache.nixos.org"
-        # "https://cuda-maintainers.cachix.org"
+        "https://cuda-maintainers.cachix.org"
         # "http://cache-runner"
       ];
       trusted-public-keys = [
@@ -55,11 +55,11 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
-  boot.plymouth = {
-    enable = true;
-    themePackages = [ inputs.mrcoverlays.legacyPackages.x86_64-linux.adi1090x-plymouth ];
-    theme = "lone";
-  };
+  # boot.plymouth = {
+  #   enable = true;
+  #   themePackages = [ inputs.mrcoverlays.legacyPackages.x86_64-linux.adi1090x-plymouth ];
+  #   theme = "lone";
+  # };
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -145,14 +145,11 @@
 
   # Globally available packages 
   environment.systemPackages = [
+    pkgs.nixos-generators
     pkgs.docker-compose
     pkgs.brightnessctl
     pkgs.qjackctl
-    pkgs.nixos-generators
     pkgs.v4l-utils
-    pkgs.cachix
-    pkgs.qgroundcontrol
-    pkgs.blink
   ];
 
   virtualisation.docker.enable = true;

@@ -5,7 +5,6 @@
     enable = true;
     interactiveShellInit = ''
       function fish_greeting
-        pfetch
       end
       export OPENAI_API_KEY=$(cat ~/.config/secrets/openai_api_key)
     '';

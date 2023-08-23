@@ -33,21 +33,14 @@
       wget
       curlWithGnuTls
       ncdu
-      bat
       lsd
-      neofetch
       xclip
       magic-wormhole
-      pfetch
       nvtop
-      sshfs
-      cool-retro-term
 
       # Communication
       zoom-us
-      teams
       slack
-      discord
       signal-desktop
 
       # Video/Audio
@@ -56,7 +49,6 @@
       mpv # Media Player
 
       # File Management
-      gnome.nautilus
       ranger
       rsync
       unzip

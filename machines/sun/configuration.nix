@@ -53,8 +53,8 @@
   services.blueman.enable = true;
 
   environment.systemPackages = with pkgs; [
-    cudaPackages.cudatoolkit
-    cudaPackages.cudnn
+    # cudaPackages.cudatoolkit
+    # cudaPackages.cudnn
     nfs-utils
     qgroundcontrol
     vagrant
