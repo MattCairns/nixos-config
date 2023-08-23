@@ -52,7 +52,6 @@
       ranger
       rsync
       unzip
-      unrar
 
       # Misc Apps
       killall

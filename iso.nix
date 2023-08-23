@@ -6,7 +6,6 @@
   ];
 
   hardware.enableAllFirmware = true;
-  nixpkgs.config.allowUnfree = true;
   isoImage.squashfsCompression = "gzip -Xcompression-level 1";
 
   environment.systemPackages = with pkgs; [
@@ -31,7 +30,6 @@
           boot.kernelPackages = pkgs.linuxPackages_latest;
           boot.supportedFilesystems = [ "btrfs" ];
           hardware.enableAllFirmware = true;
-          nixpkgs.config.allowUnfree = true;
 
           # Use the systemd-boot EFI boot loader.
           boot.loader.systemd-boot.enable = true;

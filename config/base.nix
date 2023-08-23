@@ -2,9 +2,20 @@
 , config
 , pkgs
 , user
+, lib
 , ...
 }: {
-  nixpkgs.config.allowUnfree = false;
+  # Explicitly set which non-free packages can be installed
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+    "vscode-extension-ms-vscode-cpptools"
+    "cudatoolkit"
+    "zoom"
+    "slack"
+    "obsidian"
+    "veracrypt"
+    "teams"
+    "google-chrome"
+  ];
 
   # Use the latest kernel
   boot = {
