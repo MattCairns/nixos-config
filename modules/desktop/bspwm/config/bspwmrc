@@ -76,8 +76,8 @@ elif [ "$pcid" = "$oorid" ]; then
 
   feh --bg-fill --no-xinerama ~/.config/wallpapers/lukasz-szmigiel-8AdYB7M4OHY-unsplash.jpg  
 
-  bspc rule -a Slack desktop='^1'
-  bspc rule -a firefox desktop='^2'
+  bspc rule -a firefox desktop='^4'
+  bspc rule -a Slack desktop='^6'
   notify-send "Loaded OOR Nuc"
 fi
 
