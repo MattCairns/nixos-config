@@ -1,3 +1,4 @@
+vim.lsp.set_log_level("debug")
 local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 require'lspconfig'.clangd.setup{capabilities=capabilities}
@@ -10,11 +11,11 @@ require'lspconfig'.pyright.setup{
   capabilities=capabilities,
   settings = {
     python = {
-      analysis = {       
-        typeCheckingMode = "off",                                                                                          
+      analysis = {
+        typeCheckingMode = "off",
       }
     }
-  }   
+  }
 }
 require'lspconfig'.vimls.setup{}
 require'lspconfig'.lua_ls.setup {

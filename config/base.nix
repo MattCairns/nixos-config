@@ -77,7 +77,7 @@
   networking.firewall = {
     enable = true;
     checkReversePath = "loose";
-    allowedUDPPorts = [ 17140 17141 17142 17143 14556 ];
+    allowedUDPPorts = [ 17140 17141 17142 17143 14557 ];
     allowedTCPPorts = [ 8384 ];
   };
   services.openssh.enable = true;
