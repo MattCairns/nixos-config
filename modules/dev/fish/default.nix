@@ -13,10 +13,11 @@
       { name = "sponge"; src = pkgs.fishPlugins.sponge.src; }
     ];
     shellAliases = {
-      ls = "lsd";
+      ls = "exa";
       nd = "nix develop";
       mkenv = "echo 'use flake' >> .envrc";
       du = "dust";
+      grep = "rg";
     };
   };
 }

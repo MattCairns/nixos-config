@@ -33,7 +33,7 @@
       wget
       curlWithGnuTls
       ncdu
-      lsd
+      exa
       xclip
       magic-wormhole
       nvtop
