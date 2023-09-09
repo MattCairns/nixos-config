@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+LOCATION="$1"
+SOURCE="$(pwd -P)"
+
+echo "Warping $SOURCE to $LOCATION"
+rsync -ah --info=progress2 --exclude '.git' --exclude 'build' --exclude 'target' --exclude 'result' $SOURCE $LOCATION 

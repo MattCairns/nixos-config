@@ -37,6 +37,8 @@
       xclip
       magic-wormhole
       nvtop
+      du-dust
+
 
       # Communication
       zoom-us

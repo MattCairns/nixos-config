@@ -16,6 +16,7 @@
       ls = "lsd";
       nd = "nix develop";
       mkenv = "echo 'use flake' >> .envrc";
+      du = "dust";
     };
   };
 }
