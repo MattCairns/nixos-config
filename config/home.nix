@@ -12,9 +12,15 @@
   xdg.configFile."bin".source = ../dots/bin;
 
   sops.age.sshKeyPaths = [ "/home/${user}/.ssh/id_ed25519" ];
-  sops.secrets.openai-api-key = {
-    sopsFile = ../secrets/openai_api_key.json;
-    path = "/home/${user}/.config/secrets/openai_api_key";
+  sops.secrets = {
+    openai-api-key = {
+      sopsFile = ../secrets/secrets.yaml;
+      path = "/home/${user}/.config/secrets/openai-api-key";
+    };
+    toggl-api-key = {
+      sopsFile = ../secrets/secrets.yaml;
+      path = "/home/${user}/.config/secrets/toggl-api-key";
+    };
   };
 
   home = {

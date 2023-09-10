@@ -15,3 +15,9 @@ creation_rules:
       - *matthew
       - *thinkpad
       - *sun
+  - path_regex: secrets/toggl_api_key.json$
+    key_groups:
+    - age:
+      - *matthew
+      - *thinkpad
+      - *sun

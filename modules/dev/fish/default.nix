@@ -7,6 +7,7 @@
       function fish_greeting
       end
       export OPENAI_API_KEY=$(cat ~/.config/secrets/openai_api_key)
+      export TOGGL_API_KEY=$(cat ~/.config/secrets/toggl_api_key)
     '';
     plugins = [
       { name = "hydro"; src = pkgs.fishPlugins.hydro.src; }
