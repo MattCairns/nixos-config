@@ -2,6 +2,14 @@
 
 LOCATION="$1"
 SOURCE="$(pwd -P)"
+BASENAME="$(basename $(pwd))"
+echo "$BASENAME"
 
 echo "Warping $SOURCE to $LOCATION"
-rsync -ah --info=progress2 --exclude '.git' --exclude 'build' --exclude 'target' --exclude 'result' $SOURCE $LOCATION 
+rsync -ah --info=progress2 \
+  --cvs-exclude \
+  --exclude "/$BASENAME/.direnv" \
+  --exclude "/$BASENAME/build" \
+  --exclude "/$BASENAME/target" \
+  --exclude "/$BASENAME/result" \
+  $SOURCE $LOCATION 

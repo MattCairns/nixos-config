@@ -39,11 +39,12 @@
       wget
       curlWithGnuTls
       ncdu
-      exa
+      eza
       xclip
       magic-wormhole
       nvtop
       du-dust
+      jq
 
 
       # Communication

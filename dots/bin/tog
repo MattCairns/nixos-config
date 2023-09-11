@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+TOKEN="$TOGGL_API_KEY:api_token"
+WORKSPACE=4909092
+CURRENT_TIME=$(date -u +"%Y-%m-%dT%H:%M:%S.%NZ")
+ENTRY_SAVE=/tmp/tog_save
+DEFAULT_PROJECT_ID=175655622
+DEFAULT_TASK_ID=86010900
+
+if ! command -v jq &>/dev/null; then
+  echo "Error: Please install jq"
+  exit 1
+fi
+
+if git rev-parse --is-inside-work-tree &>/dev/null; then
+  BRANCH_NAME=$(git symbolic-ref --short HEAD)
+  DESCRIPTION="$BRANCH_NAME"
+else
+  DESCRIPTION="COULD NOT INFER DESCRIPTION, PLEASE ADD ONE"
+fi
+
+JSON=$(cat <<-END
+    {
+        "created_with": "API example code", 
+        "description": "${DESCRIPTION}", 
+        "tags": [], 
+        "billable": false, 
+        "workspace_id": ${WORKSPACE}, 
+        "project_id": ${DEFAULT_PROJECT_ID},
+        "task_id": ${DEFAULT_TASK_ID},
+        "duration": -1, 
+        "start": "${CURRENT_TIME}",
+        "stop": null
+    }
+END
+)
+
+
+if [ "$1" == "start" ]; then
+  if test -f "$ENTRY_SAVE"; then
+    echo -e "\e[31mError: I think you might already have a timer running!\e[0m"
+    echo -e "Run \e[1mtog stop\e[0m to stop the timer"
+    exit 1
+  fi
+  OUTPUT=$(curl -u $TOKEN \
+    -H "Content-Type: application/json" \
+    -d "$JSON" \
+    -X POST https://api.track.toggl.com/api/v9/workspaces/$WORKSPACE/time_entries)
+
+  # Check if the output contains the error message
+  if [[ "$OUTPUT" == "\"This entry can't be saved - please add a project and task\"" ]]; then
+    echo -e "\e[31mError: I think you might already have a timer running!\e[0m"
+  else
+    echo "$OUTPUT" > $ENTRY_SAVE 
+  fi
+fi
+
+if [ "$1" == "status" ]; then
+  curl -u $TOKEN \
+    -X GET https://api.track.toggl.com/api/v9/workspaces/$WORKSPACE/time_entries/current
+fi
+
+if [ "$1" == "stop" ]; then
+  ENTRY=$(cat $ENTRY_SAVE)
+  TIMER_ID=$(echo $ENTRY | jq -r '.id')
+
+  echo "Stopping $TIMER_ID"
+
+  curl -u $TOKEN \
+    -X PATCH https://api.track.toggl.com/api/v9/workspaces/$WORKSPACE/time_entries/$TIMER_ID/stop
+
+  rm $ENTRY_SAVE
+fi
+
