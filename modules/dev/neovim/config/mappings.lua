@@ -1,6 +1,3 @@
--- Neoformat
-vim.api.nvim_set_keymap('n', '<leader>fm', '<cmd>Neoformat<cr>', { noremap = true })
-
 -- lazygit
 vim.api.nvim_set_keymap('n', '<leader>lg', '<cmd>LazyGit<cr>', { noremap = true, silent = true })
 
@@ -16,7 +13,7 @@ vim.api.nvim_set_keymap('n', '<leader>ff', "<cmd>lua require('telescope.builtin'
 vim.api.nvim_set_keymap('n', '<leader>fg', "<cmd>lua require('telescope.builtin').live_grep()<cr>", { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>fb', "<cmd>lua require('telescope.builtin').buffers()<cr>", { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>fh', "<cmd>lua require('telescope.builtin').help_tags()<cr>", { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>fd', "<cmd>lua require('telescope.builtin').lsp_definitions()<cr>", { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>fd', "<cmd>lua require('telescope.builtin').diagnostics()<cr>", { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>fi', "<cmd>lua require('telescope.builtin').lsp_implementations()<cr>", { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>fw', "<cmd>Telescope telescope-cargo-workspace switch<cr>", { noremap = true })
 
@@ -29,10 +26,6 @@ vim.api.nvim_set_keymap('n', '<leader>du', "<cmd>lua require('dapui').toggle()<c
 
 -- SnipRun
 vim.api.nvim_set_keymap('n', '<leader>sr', "<cmd>lua require('sniprun').run()<cr>", { noremap = true })
-
--- lspconfig
-vim.api.nvim_set_keymap('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', { noremap = true })
 
 -- Quickfix
 vim.api.nvim_set_keymap('n', '<leader>qn', '<cmd>:cn<CR>', { noremap = true })
@@ -52,3 +45,6 @@ vim.api.nvim_set_keymap('n', '<leader>he', '<cmd>ClangdSwitchSourceHeader<cr>', 
 -- Neoai
 vim.api.nvim_set_keymap('n', '<leader>na', '<cmd>NeoAI<cr>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>nc', '<cmd>NeoAIContext<cr>', { noremap = true })
+
+-- Oil
+vim.api.nvim_set_keymap('n', '<leader>oo', '<cmd>Oil<cr>', { noremap = true })

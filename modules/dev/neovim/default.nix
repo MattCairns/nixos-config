@@ -16,6 +16,7 @@ in
 {
   home.packages = with pkgs; [
     vscode-extensions.ms-vscode.cpptools
+    vscode-extensions.vadimcn.vscode-lldb
   ];
   programs = {
     neovim = {
@@ -41,12 +42,10 @@ in
           type = "lua";
         }
 
-        {
-          plugin = pkgs.vimPlugins.trouble-nvim;
-          config = "require('trouble').setup {}";
-          type = "lua";
-        }
+
         pkgs.vimPlugins.plenary-nvim
+
+        ## Telescope
         {
           plugin = pkgs.vimPlugins.telescope-nvim;
           config = builtins.readFile config/setup/telescope.lua;
@@ -54,11 +53,6 @@ in
         }
         pkgs.vimPlugins.telescope-fzf-native-nvim
         pkgs.vimPlugins.harpoon
-        {
-          plugin = pkgs.vimPlugins.fidget-nvim;
-          config = "require('fidget').setup{}";
-          type = "lua";
-        }
 
         ## cmp
         {
@@ -71,10 +65,35 @@ in
         pkgs.vimPlugins.cmp-cmdline
         pkgs.vimPlugins.cmp_luasnip
 
+        ## Tpope
+        pkgs.vimPlugins.vim-surround
+        pkgs.vimPlugins.vim-sleuth
+        pkgs.vimPlugins.vim-repeat
+        pkgs.vimPlugins.copilot-vim
+
         ## QoL
+        pkgs.vimPlugins.lspkind-nvim
+        pkgs.vimPlugins.rainbow
+        pkgs.vimPlugins.nvim-web-devicons
+        pkgs.vimPlugins.surround-nvim
+        pkgs.vimPlugins.nui-nvim
+        pkgs.vimPlugins.nvim-notify
+        pkgs.vimPlugins.lazygit-nvim
+        pkgs.vimPlugins.nvim-code-action-menu
+        (fromGitHub "f30f899c30d91bb35574ff5962103f00cc4ea23a" "main" "MattCairns/telescope-cargo-workspace.nvim")
         {
-          plugin = pkgs.vimPlugins.clangd_extensions-nvim;
-          config = builtins.readFile config/setup/clangd_extensions.lua;
+          plugin = pkgs.vimPlugins.oil-nvim;
+          config = "require('oil').setup()";
+          type = "lua";
+        }
+        {
+          plugin = pkgs.vimPlugins.fidget-nvim;
+          config = "require('fidget').setup{}";
+          type = "lua";
+        }
+        {
+          plugin = pkgs.vimPlugins.trouble-nvim;
+          config = "require('trouble').setup {}";
           type = "lua";
         }
         {
@@ -82,33 +101,16 @@ in
           config = builtins.readFile config/setup/luasnip.lua;
           type = "lua";
         }
-        pkgs.vimPlugins.lspkind-nvim
-        {
-          plugin = pkgs.vimPlugins.nvim-lint;
-          config = ''
-            require('lint').linters_by_ft = {
-              cpp = {'cppcheck',}
-            }
-            vim.cmd[[autocmd BufWritePost * :lua require('lint').try_lint()]]
-          '';
-          type = "lua";
-        }
-        pkgs.vimPlugins.vim-surround
-        pkgs.vimPlugins.vim-obsession
         {
           plugin = pkgs.vimPlugins.comment-nvim;
           config = "require('Comment').setup()";
           type = "lua";
         }
-        pkgs.vimPlugins.neoformat
-        pkgs.vimPlugins.lazygit-nvim
         {
           plugin = pkgs.vimPlugins.gitsigns-nvim;
           config = "require('gitsigns').setup()";
           type = "lua";
         }
-        pkgs.vimPlugins.rainbow
-        pkgs.vimPlugins.vim-sleuth
         {
           plugin = pkgs.vimPlugins.lualine-nvim;
           config = ''
@@ -120,31 +122,6 @@ in
           '';
           type = "lua";
         }
-        pkgs.vimPlugins.nvim-web-devicons
-        pkgs.vimPlugins.vim-repeat
-
-        ## Debugging
-        {
-          plugin = pkgs.vimPlugins.nvim-dap;
-          config = builtins.readFile config/setup/dap.lua;
-          type = "lua";
-        }
-        pkgs.vimPlugins.nvim-dap-ui
-        pkgs.vimPlugins.nvim-dap-virtual-text
-
-        pkgs.vimPlugins.copilot-vim
-
-        (fromGitHub "c3b6ca031dc29b9b59f760f6d568210c66bd30fe" "main" "MattCairns/telescope-cargo-workspace.nvim")
-
-        pkgs.vimPlugins.nui-nvim
-        {
-          plugin = (fromGitHub "b90180e30d143afb71490b92b08c1e9121d4416a" "main" "Bryley/neoai.nvim");
-          config = builtins.readFile config/setup/neoai.lua;
-          type = "lua";
-        }
-
-        pkgs.vimPlugins.surround-nvim
-
         {
           plugin = pkgs.vimPlugins.noice-nvim;
           config = ''
@@ -170,6 +147,38 @@ in
           type = "lua";
         }
 
+        ## Debugging
+        pkgs.vimPlugins.nvim-dap-ui
+        pkgs.vimPlugins.nvim-dap-virtual-text
+        {
+          plugin = pkgs.vimPlugins.nvim-dap;
+          config = builtins.readFile config/setup/dap.lua;
+          type = "lua";
+        }
+        {
+          plugin = pkgs.vimPlugins.rust-tools-nvim;
+          config = ''
+            local rt = require("rust-tools")
+            rt.setup({
+              server = {
+                on_attach = function(_, bufnr)
+                  vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
+                  vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+                end,
+              },
+              tools = {
+                dap = {
+                  adapter = {
+                    id = 'cppdbg',
+                    type = 'executable',
+                    command = dirLookup('/nix/store/*vscode-extension-ms-vscode-cpptools*')..'/share/vscode/extensions/ms-vscode.cpptools/debugAdapters/bin/OpenDebugAD7',
+                  },
+                },
+              },
+            })
+          '';
+          type = "lua";
+        }
       ];
 
       extraLuaConfig = ''

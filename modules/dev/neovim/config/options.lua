@@ -18,14 +18,7 @@ vim.opt.relativenumber = true
 vim.opt.clipboard = 'unnamedplus'
 
 vim.cmd([[
-" UltiSnips settings
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-
 set completeopt=menu,menuone,noselect
-
-autocmd BufWritePre * :lua require('lint').try_lint()
 ]])
 
 -- [[ Highlight on yank ]]
@@ -38,3 +31,17 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = highlight_group,
   pattern = '*',
 })
+
+-- [[ LSP Diagnostics ]]
+local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+for type, icon in pairs(signs) do
+  local hl = "DiagnosticSign" .. type
+  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+end
+vim.diagnostic.config({
+  virtual_text = true
+})
+-- You will likely want to reduce updatetime which affects CursorHold
+-- note: this setting is global and should be set only once
+vim.o.updatetime = 500
+vim.cmd [[autocmd! CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
