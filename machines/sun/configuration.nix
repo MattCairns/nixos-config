@@ -53,10 +53,7 @@
   services.blueman.enable = true;
 
   environment.systemPackages = with pkgs; [
-    # cudaPackages.cudatoolkit
-    # cudaPackages.cudnn
     nfs-utils
-    qgroundcontrol
     vagrant
   ];
 
@@ -73,8 +70,6 @@
 
   virtualisation.docker.enable = true;
   virtualisation.docker.enableNvidia = true;
-  virtualisation.libvirtd.enable = true;
-  users.users.matthew.extraGroups = [ "qemu-libvirtd" "libvirtd" ];
 
   system.stateVersion = "22.11";
 }

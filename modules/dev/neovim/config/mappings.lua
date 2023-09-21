@@ -42,9 +42,5 @@ vim.api.nvim_set_keymap('n', '<C-l>', '<cmd>lua require("harpoon.ui").nav_file(4
 -- Clang
 vim.api.nvim_set_keymap('n', '<leader>he', '<cmd>ClangdSwitchSourceHeader<cr>', { noremap = true })
 
--- Neoai
-vim.api.nvim_set_keymap('n', '<leader>na', '<cmd>NeoAI<cr>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>nc', '<cmd>NeoAIContext<cr>', { noremap = true })
-
 -- Oil
 vim.api.nvim_set_keymap('n', '<leader>oo', '<cmd>Oil<cr>', { noremap = true })

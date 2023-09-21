@@ -1,5 +1,4 @@
-{ inputs
-, config
+{ config
 , pkgs
 , user
 , lib
@@ -44,12 +43,10 @@
       substituters = [
         "https://cache.nixos.org"
         "https://cuda-maintainers.cachix.org"
-        # "http://cache-runner"
       ];
       trusted-public-keys = [
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
         "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
-        "cache-runner:58R6++8rfMsbj2oZvfo7bZEIp0mfm4neDLdJZBvxF8k="
       ];
     };
   };
@@ -66,19 +63,14 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
-  # boot.plymouth = {
-  #   enable = true;
-  #   themePackages = [ inputs.mrcoverlays.legacyPackages.x86_64-linux.adi1090x-plymouth ];
-  #   theme = "lone";
-  # };
 
   # Enable networking
   networking.networkmanager.enable = true;
   networking.firewall = {
     enable = true;
     checkReversePath = "loose";
-    allowedUDPPorts = [ 17140 17141 17142 17143 14557 ];
-    allowedTCPPorts = [ 8384 ];
+    allowedUDPPorts = [ 14557 ];
+    allowedTCPPorts = [ 14557 ];
   };
   services.openssh.enable = true;
   programs.ssh.startAgent = true;
