@@ -80,6 +80,11 @@ in
         pkgs.vimPlugins.nvim-notify
         pkgs.vimPlugins.lazygit-nvim
         pkgs.vimPlugins.nvim-code-action-menu
+        {
+          plugin = (fromGitHub "6218a401824c5733ac50b264991b62d064e85ab2" "main" "m-demare/hlargs.nvim");
+          config = "require('hlargs').setup()";
+          type = "lua";
+        }
         (fromGitHub "f30f899c30d91bb35574ff5962103f00cc4ea23a" "main" "MattCairns/telescope-cargo-workspace.nvim")
         {
           plugin = pkgs.vimPlugins.oil-nvim;
@@ -156,6 +161,11 @@ in
           type = "lua";
         }
         {
+          plugin =pkgs.vimPlugins.crates-nvim;
+          config = "require('crates').setup{}";
+          type = "lua";
+        }
+        {
           plugin = pkgs.vimPlugins.rust-tools-nvim;
           config = ''
             local rt = require("rust-tools")
@@ -165,6 +175,27 @@ in
                   vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
                   vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
                 end,
+              settings = {
+                ["rust-analyzer"] = {
+                  assist = {
+                    importEnforceGranularity = true,
+                    importPrefix = "crate"
+                    },
+                  cargo = {
+                    allFeatures = true
+                    },
+                  checkOnSave = {
+                    -- default: `cargo check`
+                    command = "clippy"
+                    },
+                  },
+                  inlayHints = {
+                    lifetimeElisionHints = {
+                      enable = true,
+                      useParameterNames = true
+                    },
+                  },
+                }
               },
               tools = {
                 dap = {
