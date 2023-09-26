@@ -44,3 +44,7 @@ vim.api.nvim_set_keymap('n', '<leader>he', '<cmd>ClangdSwitchSourceHeader<cr>', 
 
 -- Oil
 vim.api.nvim_set_keymap('n', '<leader>oo', '<cmd>Oil<cr>', { noremap = true })
+
+-- Neorg
+vim.api.nvim_set_keymap('n', '<leader>ne', '<cmd>Neorg index<cr>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>nr', '<cmd>Neorg return<cr>', { noremap = true })

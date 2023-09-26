@@ -81,6 +81,11 @@ in
         pkgs.vimPlugins.lazygit-nvim
         pkgs.vimPlugins.nvim-code-action-menu
         {
+          plugin = pkgs.vimPlugins.neorg;
+          config = builtins.readFile config/setup/neorg.lua;
+          type = "lua";
+        }
+        {
           plugin = (fromGitHub "6218a401824c5733ac50b264991b62d064e85ab2" "main" "m-demare/hlargs.nvim");
           config = "require('hlargs').setup()";
           type = "lua";
