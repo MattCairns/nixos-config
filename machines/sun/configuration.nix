@@ -8,8 +8,8 @@
     ../../config/users.nix
   ];
 
-  users.users.matthew.passwordFile = "/persist/passwords/matthew";
-  users.users.root.passwordFile = "/persist/passwords/root";
+  users.users.matthew.hashedPasswordFile = "/persist/passwords/matthew";
+  users.users.root.hashedPasswordFile = "/persist/passwords/root";
 
   networking.hostName = "sun";
   networking.nameservers = [ "192.168.1.24" ];

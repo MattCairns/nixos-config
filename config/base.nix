@@ -59,6 +59,11 @@
     '';
   };
 
+# Systemd
+  systemd.extraConfig = ''
+    DefaultTimeoutStopSec=3s
+  '';
+
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;

@@ -13,8 +13,8 @@
   sops.secrets.user-matthew-password.neededForUsers = true;
 
   #:Wusers.users.matthew.passwordFile = config.sops.secrets.user-matthew-password.path;
-  users.users.matthew.passwordFile = "/persist/passwords/matthew";
-  users.users.root.passwordFile = "/persist/passwords/root";
+  users.users.matthew.hashedPasswordFile = "/persist/passwords/matthew";
+  users.users.root.hashedPasswordFile = "/persist/passwords/root";
 
   networking.hostName = "laptop";
   hardware.bluetooth.enable = true;
