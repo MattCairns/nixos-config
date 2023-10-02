@@ -1,19 +1,19 @@
-{ pkgs
-, lib
-, ...
-}:
-let
-  fromGitHub = rev: ref: repo: pkgs.vimUtils.buildVimPluginFrom2Nix {
-    pname = "${lib.strings.sanitizeDerivationName repo}";
-    version = ref;
-    src = builtins.fetchGit {
-      url = "https://github.com/${repo}.git";
-      ref = ref;
-      rev = rev;
-    };
-  };
-in
 {
+  pkgs,
+  lib,
+  ...
+}: let
+  fromGitHub = rev: ref: repo:
+    pkgs.vimUtils.buildVimPluginFrom2Nix {
+      pname = "${lib.strings.sanitizeDerivationName repo}";
+      version = ref;
+      src = builtins.fetchGit {
+        url = "https://github.com/${repo}.git";
+        ref = ref;
+        rev = rev;
+      };
+    };
+in {
   home.packages = with pkgs; [
     vscode-extensions.ms-vscode.cpptools
     vscode-extensions.vadimcn.vscode-lldb
@@ -41,7 +41,6 @@ in
           config = builtins.readFile config/setup/lspconfig.lua;
           type = "lua";
         }
-
 
         pkgs.vimPlugins.plenary-nvim
 
@@ -86,7 +85,7 @@ in
           type = "lua";
         }
         {
-          plugin = (fromGitHub "6218a401824c5733ac50b264991b62d064e85ab2" "main" "m-demare/hlargs.nvim");
+          plugin = fromGitHub "6218a401824c5733ac50b264991b62d064e85ab2" "main" "m-demare/hlargs.nvim";
           config = "require('hlargs').setup()";
           type = "lua";
         }
@@ -166,7 +165,7 @@ in
           type = "lua";
         }
         {
-          plugin =pkgs.vimPlugins.crates-nvim;
+          plugin = pkgs.vimPlugins.crates-nvim;
           config = "require('crates').setup{}";
           type = "lua";
         }

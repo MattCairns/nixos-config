@@ -1,6 +1,4 @@
-{ pkgs
-, ...
-}: {
+{pkgs, ...}: {
   programs.fish = {
     enable = true;
     interactiveShellInit = ''
@@ -10,8 +8,14 @@
       export TOGGL_API_KEY=$(cat ~/.config/secrets/toggl-api-key)
     '';
     plugins = [
-      { name = "hydro"; src = pkgs.fishPlugins.hydro.src; }
-      { name = "sponge"; src = pkgs.fishPlugins.sponge.src; }
+      {
+        name = "hydro";
+        src = pkgs.fishPlugins.hydro.src;
+      }
+      {
+        name = "sponge";
+        src = pkgs.fishPlugins.sponge.src;
+      }
     ];
     shellAliases = {
       ls = "eza";

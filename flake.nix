@@ -19,22 +19,20 @@
     };
   };
 
-  outputs =
-    inputs @ { nixpkgs
-    , home-manager
-    , ...
-    }:
-    let
-      user = "matthew";
-    in
-    {
-      nixosConfigurations = (
-        import ./machines {
-          inherit (nixpkgs) lib;
-          inherit inputs nixpkgs home-manager user;
-        }
-      );
+  outputs = inputs @ {
+    nixpkgs,
+    home-manager,
+    ...
+  }: let
+    user = "matthew";
+  in {
+    nixosConfigurations = (
+      import ./machines {
+        inherit (nixpkgs) lib;
+        inherit inputs nixpkgs home-manager user;
+      }
+    );
 
-      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
-    };
+    formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
+  };
 }

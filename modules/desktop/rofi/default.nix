@@ -1,10 +1,8 @@
-{ pkgs
-, ...
-}: {
+{pkgs, ...}: {
   programs = {
     rofi = {
       enable = true;
-      extraConfig = { 
+      extraConfig = {
       };
       theme = config/tokyonight.rasi;
       plugins = [

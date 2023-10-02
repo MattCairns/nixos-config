@@ -1,6 +1,7 @@
-{ config
-, pkgs
-, ...
+{
+  config,
+  pkgs,
+  ...
 }: {
   imports = [
     ./hardware-configuration.nix
@@ -12,7 +13,7 @@
   users.users.root.hashedPasswordFile = "/persist/passwords/root";
 
   networking.hostName = "sun";
-  networking.nameservers = [ "192.168.1.24" ];
+  networking.nameservers = ["192.168.1.24"];
 
   services.xserver.config = ''
     Section "Monitor"
@@ -28,8 +29,8 @@
     EndSection
   '';
 
-  services.xserver.videoDrivers = [ "nvidia" ];
-  boot.blacklistedKernelModules = [ "nouveau" "i2c_nvidia_gpu" ];
+  services.xserver.videoDrivers = ["nvidia"];
+  boot.blacklistedKernelModules = ["nouveau" "i2c_nvidia_gpu"];
   hardware = {
     nvidia = {
       package = config.boot.kernelPackages.nvidiaPackages.beta;
@@ -59,13 +60,13 @@
 
   fileSystems."/mnt/unraid-appdata" = {
     device = "192.168.1.10:/mnt/user/appdata";
-    options = [ "x-systemd.automount" "noauto" ];
+    options = ["x-systemd.automount" "noauto"];
   };
 
   programs.steam = {
     enable = true;
-    remotePlay.openFirewall = false; 
-    dedicatedServer.openFirewall = false; 
+    remotePlay.openFirewall = false;
+    dedicatedServer.openFirewall = false;
   };
 
   virtualisation.docker.enable = true;

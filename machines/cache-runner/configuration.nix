@@ -1,19 +1,18 @@
-{ config
-, pkgs
-, lib
-, ...
-}:
-let
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
   specificPkgs = import (builtins.fetchGit {
     name = "my-old-revision";
     url = "https://github.com/NixOS/nixpkgs/";
     ref = "refs/heads/nixpkgs-unstable";
     rev = "8ad5e8132c5dcf977e308e7bf5517cc6cc0bf7d8";
-  }) { system = "x86_64-linux"; };
+  }) {system = "x86_64-linux";};
 
   myPkg = specificPkgs.gitlab-runner;
-in
- {
+in {
   imports = [
     ./hardware-configuration.nix
   ];
@@ -33,7 +32,7 @@ in
     enable = true;
     virtualHosts = {
       "cache-runner" = {
-        serverAliases = [ "binarycache" ];
+        serverAliases = ["binarycache"];
         locations."/".extraConfig = ''
           proxy_pass http://localhost:${toString config.services.nix-serve.port};
           proxy_set_header Host $host;
@@ -89,7 +88,7 @@ in
           PATH = "/nix/var/nix/profiles/default/bin:/nix/var/nix/profiles/default/sbin:/bin:/sbin:/usr/bin:/usr/sbin";
           NIX_SSL_CERT_FILE = "/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt";
         };
-        tagList = [ "nix" ];
+        tagList = ["nix"];
       };
     };
   };
@@ -125,8 +124,8 @@ in
   users.users.nixos = {
     isNormalUser = true;
     description = "nixos-runner";
-    extraGroups = [ "networkmanager" "wheel" "docker" ];
-    packages = with pkgs; [ git tmux magic-wormhole ];
+    extraGroups = ["networkmanager" "wheel" "docker"];
+    packages = with pkgs; [git tmux magic-wormhole];
   };
 
   services.tailscale.enable = true;

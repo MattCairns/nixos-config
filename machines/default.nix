@@ -1,10 +1,10 @@
-{ inputs
-, nixpkgs
-, home-manager
-, user
-, ...
-}:
-let
+{
+  inputs,
+  nixpkgs,
+  home-manager,
+  user,
+  ...
+}: let
   system = "x86_64-linux";
 
   pkgs = import nixpkgs {
@@ -13,11 +13,10 @@ let
   };
 
   lib = nixpkgs.lib;
-in
-{
+in {
   sun = lib.nixosSystem {
     inherit system;
-    specialArgs = { inherit inputs user pkgs; };
+    specialArgs = {inherit inputs user pkgs;};
     modules = [
       ./sun/configuration.nix
       ../config/optin-persistence.nix
@@ -34,14 +33,13 @@ in
             (import ../config/home.nix)
           ];
         };
-
       }
     ];
   };
 
   laptop = lib.nixosSystem {
     inherit system;
-    specialArgs = { inherit inputs user; };
+    specialArgs = {inherit inputs user;};
     modules = [
       ./laptop/configuration.nix
       ../config/optin-persistence.nix
@@ -55,7 +53,7 @@ in
           inherit user inputs;
         };
         home-manager.users.${user} = {
-          imports = [ (import ../config/home.nix) ];
+          imports = [(import ../config/home.nix)];
         };
       }
     ];
@@ -63,7 +61,7 @@ in
 
   nuc = lib.nixosSystem {
     inherit system;
-    specialArgs = { inherit inputs user; };
+    specialArgs = {inherit inputs user;};
     modules = [
       # inputs.nixos-hardware.nixosModules.intel-nuc-8i7beh
       ./nuc/configuration.nix
@@ -77,7 +75,7 @@ in
           inherit user inputs;
         };
         home-manager.users.${user} = {
-          imports = [ (import ../config/home.nix) ];
+          imports = [(import ../config/home.nix)];
         };
       }
     ];
@@ -85,7 +83,7 @@ in
 
   cache-runner = lib.nixosSystem {
     inherit system;
-    specialArgs = { inherit inputs user pkgs; };
+    specialArgs = {inherit inputs user pkgs;};
     modules = [
       ./cache-runner/configuration.nix
     ];

@@ -1,7 +1,8 @@
-{ pkgs
-, user
-, inputs
-, ...
+{
+  pkgs,
+  user,
+  inputs,
+  ...
 }: {
   imports = [
     (import ../modules)
@@ -11,7 +12,7 @@
   xdg.configFile."wallpapers".source = ../assets/wallpapers;
   xdg.configFile."bin".source = ../dots/bin;
 
-  sops.age.sshKeyPaths = [ "/home/${user}/.ssh/id_ed25519" ];
+  sops.age.sshKeyPaths = ["/home/${user}/.ssh/id_ed25519"];
   sops.secrets = {
     openai-api-key = {
       sopsFile = ../secrets/secrets.yaml;
@@ -26,12 +27,12 @@
   home = {
     username = "${user}";
     homeDirectory = "/home/${user}";
-    sessionPath = [ "/home/${user}/.config/bin" ];
+    sessionPath = ["/home/${user}/.config/bin"];
 
     packages = with pkgs; [
       home-manager
 
-      # Terminal 
+      # Terminal
       htop
       ripgrep
       fzf
@@ -45,7 +46,6 @@
       nvtop
       du-dust
       jq
-
 
       # Communication
       zoom-us

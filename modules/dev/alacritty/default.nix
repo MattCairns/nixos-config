@@ -1,5 +1,4 @@
-{ ...
-}: {
+{...}: {
   programs.alacritty = {
     enable = true;
     settings = {
@@ -52,15 +51,16 @@
           background = "0x2d4f67";
           foreground = "0xc8c093";
         };
-        "indexed_colors" =
-          [{
+        "indexed_colors" = [
+          {
             index = 16;
             color = "0xffa066";
           }
-            {
-              index = 17;
-              color = "0xff5d62";
-            }];
+          {
+            index = 17;
+            color = "0xff5d62";
+          }
+        ];
       };
     };
   };

@@ -1,26 +1,28 @@
-{ config
-, pkgs
-, user
-, lib
-, ...
+{
+  config,
+  pkgs,
+  user,
+  lib,
+  ...
 }: {
   # Explicitly set which non-free packages can be installed
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-    "vscode-extension-ms-vscode-cpptools"
-    "cudatoolkit"
-    "zoom"
-    "slack"
-    "obsidian"
-    "veracrypt"
-    "teams"
-    "google-chrome"
-  ];
+  nixpkgs.config.allowUnfreePredicate = pkg:
+    builtins.elem (lib.getName pkg) [
+      "vscode-extension-ms-vscode-cpptools"
+      "cudatoolkit"
+      "zoom"
+      "slack"
+      "obsidian"
+      "veracrypt"
+      "teams"
+      "google-chrome"
+    ];
 
   # Use the latest kernel
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
-    extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback.out ];
-    kernelModules = [ "v4l2loopback" ];
+    extraModulePackages = with config.boot.kernelPackages; [v4l2loopback.out];
+    kernelModules = ["v4l2loopback"];
     extraModprobeConfig = ''
       options v4l2loopback exclusive_caps=1
       options v4l2loopback devices=1
@@ -38,7 +40,7 @@
       dates = "weekly";
       options = "--delete-older-than 30d";
     };
-    settings.trusted-users = [ "root" "${user}" ];
+    settings.trusted-users = ["root" "${user}"];
     settings = {
       substituters = [
         "https://cache.nixos.org"
@@ -53,13 +55,13 @@
 
   # udev rules
   services.udev = {
-    packages = [ pkgs.qmk-udev-rules ];
+    packages = [pkgs.qmk-udev-rules];
     extraRules = ''
       SUBSYSTEM=="tty", ATTRS{product}=="CubeOrange", SYMLINK="ttyPIXHAWK"
     '';
   };
 
-# Systemd
+  # Systemd
   systemd.extraConfig = ''
     DefaultTimeoutStopSec=3s
   '';
@@ -67,20 +69,19 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+  boot.binfmt.emulatedSystems = ["aarch64-linux"];
 
   # Enable networking
   networking.networkmanager.enable = true;
   networking.firewall = {
     enable = true;
     checkReversePath = "loose";
-    allowedUDPPorts = [ 14557 ];
-    allowedTCPPorts = [ 14557 ];
+    allowedUDPPorts = [14557];
+    allowedTCPPorts = [14557];
   };
   services.openssh.enable = true;
   programs.ssh.startAgent = true;
   services.tailscale.enable = true;
-
 
   # Set your time zone and locale
   time.timeZone = "America/Vancouver";
@@ -99,7 +100,7 @@
   };
 
   fonts.packages = with pkgs; [
-    (nerdfonts.override { fonts = [ "SourceCodePro" "FiraCode" ]; })
+    (nerdfonts.override {fonts = ["SourceCodePro" "FiraCode"];})
     font-awesome
     siji
   ];
@@ -113,13 +114,13 @@
   # Enable CUPS to print documents.
   services.printing = {
     enable = true;
-    drivers = [ pkgs.hplip ];
+    drivers = [pkgs.hplip];
   };
 
   programs.gnupg.agent.enable = true;
   security.polkit.enable = true;
 
-  services.dbus.packages = [ pkgs.gcr ];
+  services.dbus.packages = [pkgs.gcr];
 
   # Enable sound with pipewire.
   sound.enable = true;
@@ -148,10 +149,10 @@
     XDG_CACHE_HOME = "\${HOME}/.local/cache";
     XDG_BIN_HOME = "\${HOME}/.local/bin";
     XDG_DATA_HOME = "\${HOME}/.local/share";
-    PATH = [ "\${XDG_BIN_HOME}" ];
+    PATH = ["\${XDG_BIN_HOME}"];
   };
 
-  # Globally available packages 
+  # Globally available packages
   environment.systemPackages = [
     pkgs.nixos-generators
     pkgs.docker-compose
@@ -161,10 +162,9 @@
   ];
 
   virtualisation.docker.enable = true;
-  users.extraGroups.docker.members = [ "${user}" ];
+  users.extraGroups.docker.members = ["${user}"];
 
   # Set up shell
   users.defaultUserShell = pkgs.fish;
   programs.fish.enable = true;
-
 }
