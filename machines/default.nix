@@ -25,8 +25,10 @@ in {
       {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
-        home-manager.extraSpecialArgs = {
-          inherit user inputs;
+        home-manager.extraSpecialArgs = let
+          machine = "sun";
+        in {
+          inherit user inputs machine;
         };
         home-manager.users.${user} = {
           imports = [
@@ -49,8 +51,10 @@ in {
       {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
-        home-manager.extraSpecialArgs = {
-          inherit user inputs;
+        home-manager.extraSpecialArgs = let
+          machine = "laptop";
+        in {
+          inherit user inputs machine;
         };
         home-manager.users.${user} = {
           imports = [(import ../config/home.nix)];
@@ -71,8 +75,10 @@ in {
       {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
-        home-manager.extraSpecialArgs = {
-          inherit user inputs;
+        home-manager.extraSpecialArgs = let
+          machine = "nuc";
+        in {
+          inherit user inputs machine;
         };
         home-manager.users.${user} = {
           imports = [(import ../config/home.nix)];
