@@ -31,10 +31,11 @@
 
   services.xserver.videoDrivers = ["nvidia"];
   boot.blacklistedKernelModules = ["nouveau" "i2c_nvidia_gpu"];
+  boot.kernelParams = ["nvidia.NVreg_PreserveVideoMemoryAllocations=1"];
   hardware = {
     nvidia = {
       package = config.boot.kernelPackages.nvidiaPackages.beta;
-      open = true;
+      open = false;
       modesetting.enable = true;
       forceFullCompositionPipeline = true;
       powerManagement.enable = true;

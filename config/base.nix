@@ -3,6 +3,7 @@
   pkgs,
   user,
   lib,
+  inputs,
   ...
 }: {
   # Explicitly set which non-free packages can be installed
@@ -45,10 +46,12 @@
       substituters = [
         "https://cache.nixos.org"
         "https://cuda-maintainers.cachix.org"
+        "https://hyprland.cachix.org"
       ];
       trusted-public-keys = [
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
         "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
+        "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
       ];
     };
   };
@@ -86,6 +89,13 @@
   # Set your time zone and locale
   time.timeZone = "America/Vancouver";
   i18n.defaultLocale = "en_CA.UTF-8";
+
+  programs.hyprland = {
+    enable = true;
+    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+    xwayland.enable = true;
+    enableNvidiaPatches = true;
+  };
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
