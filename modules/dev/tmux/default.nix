@@ -6,15 +6,17 @@
       tmuxPlugins.resurrect
     ];
     extraConfig = ''
-            set -g default-terminal "tmux-256color"
-            set-option -sa terminal-features ',tmux-256color:RGB'
-            set-window-option -g mode-keys vi
-            bind -T copy-mode-vi 'v' send -X begin-selection
-            bind -T copy-mode-vi 'y' send -X copy-pipe-and-cancel "xclip -i -selection clipboard"
-            set -g base-index 1
-            set -g renumber-windows on
-            set-option -sg escape-time 10
-            set-option -g focus-events on
+      # set -g default-terminal "tmux-256color"
+      # set-option -sa terminal-features ',tmux-256color:RGB'
+      set -g default-terminal "screen-256color"
+      set -ga terminal-overrides ",*256col*:Tc"
+      set-window-option -g mode-keys vi
+      bind -T copy-mode-vi 'v' send -X begin-selection
+      bind -T copy-mode-vi 'y' send -X copy-pipe-and-cancel "xclip -i -selection clipboard"
+      set -g base-index 1
+      set -g renumber-windows on
+      set-option -sg escape-time 10
+      set-option -g focus-events on
 
             bind c new-window -c "#{pane_current_path}"
 

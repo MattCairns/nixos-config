@@ -8,11 +8,10 @@
       "super + shift + w" = "firefox -P work";
       "super + shift + h" = "firefox -P home";
       "super + shift + s" = "slack";
-      "super + shift + g" = "kitty -e aichat";
 
       # terminal emulator
-      "super + Return" = "kitty -e /home/$USER/.config/bin/ta";
-      "super + ctrl + Return" = "kitty ";
+      "super + Return" = "wezterm -e /home/$USER/.config/bin/ta";
+      "super + ctrl + Return" = "wezterm";
 
       # program launcher
       "super + space" = "rofi -show drun";
