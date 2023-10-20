@@ -3,7 +3,6 @@
   pkgs,
   user,
   lib,
-  inputs,
   ...
 }: {
   # Explicitly set which non-free packages can be installed
