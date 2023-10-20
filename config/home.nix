@@ -24,6 +24,11 @@
     };
   };
 
+  programs.nix-index = {
+    enable = true;
+    enableFishIntegration = true;
+  };
+
   home = {
     username = "${user}";
     homeDirectory = "/home/${user}";
