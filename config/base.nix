@@ -3,6 +3,7 @@
   pkgs,
   user,
   lib,
+  inputs,
   ...
 }: {
   # Explicitly set which non-free packages can be installed
@@ -106,6 +107,11 @@
     windowManager.bspwm.enable = true;
     desktopManager.gnome.enable = true;
     windowManager.bspwm.configFile = "/home/${user}/.config/bspwm/bspwmrc";
+  };
+
+  programs.hyprland = {
+    enable = true;
+    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
   };
 
   fonts.packages = with pkgs; [
