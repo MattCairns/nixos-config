@@ -7,11 +7,15 @@
     wofi
     hyprpaper
     wlr-randr
-    swaylock-fancy
     swayidle
     slurp
     xwayland
   ];
+
+  programs.swaylock = {
+    enable = true;
+    package = pkgs.swaylock-effects;
+  };
 
   services.swayidle = {
     enable = true;

@@ -1,6 +1,6 @@
 {...}: {
   services.picom = {
-    enable = true;
+    enable = false;
     menuOpacity = 0.8;
     fade = true;
     fadeDelta = 10;

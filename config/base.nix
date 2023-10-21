@@ -134,6 +134,7 @@
 
   programs.gnupg.agent.enable = true;
   security.polkit.enable = true;
+  security.pam.services.swaylock = {};
 
   services.dbus.packages = [pkgs.gcr];
 
