@@ -11,7 +11,6 @@
     swayidle
     slurp
     xwayland
-    waybar
   ];
 
   services.swayidle = {

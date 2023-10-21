@@ -11,6 +11,7 @@
     ++ [(import ../modules/desktop/bspwm)]
     ++ [(import ../modules/desktop/sxhkd)]
     ++ [(import ../modules/desktop/polybar)]
+    ++ [(import ../modules/desktop/waybar)]
     ++ [(import ../modules/desktop/rofi)]
     ++ [(import ../modules/desktop/picom)]
     ++ [(import ../modules/desktop/dunst)]
