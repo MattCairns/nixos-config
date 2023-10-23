@@ -105,7 +105,7 @@
       defaultSession = "none+bspwm";
     };
     windowManager.bspwm.enable = true;
-    desktopManager.gnome.enable = true;
+    desktopManager.gnome.enable = false;
     windowManager.bspwm.configFile = "/home/${user}/.config/bspwm/bspwmrc";
   };
 
