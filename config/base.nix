@@ -90,13 +90,6 @@
   time.timeZone = "America/Vancouver";
   i18n.defaultLocale = "en_CA.UTF-8";
 
-  # programs.hyprland = {
-  #   enable = true;
-  #   package = inputs.hyprland.packages.${pkgs.system}.hyprland;
-  #   xwayland.enable = true;
-  #   enableNvidiaPatches = true;
-  # };
-
   # Enable the X11 windowing system.
   services.xserver.enable = true;
   services.xserver = {
