@@ -38,7 +38,7 @@
       home-manager
 
       # Terminal
-      htop
+      btop
       ripgrep
       fzf
       fd
