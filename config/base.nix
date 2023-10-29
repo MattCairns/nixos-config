@@ -97,7 +97,7 @@
   services.xserver = {
     displayManager = {
       gdm.enable = true;
-      defaultSession = "none+bspwm";
+      defaultSession = "hyprland";
     };
     windowManager.bspwm.enable = true;
     desktopManager.gnome.enable = false;

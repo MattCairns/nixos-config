@@ -61,6 +61,7 @@
         "/var/lib/tailscale"
         "/var/lib/bluetooth"
         "/var/lib/blueman"
+        "/var/lib/fprint"
         "/etc/NetworkManager"
         "/etc/ssh"
       ];
