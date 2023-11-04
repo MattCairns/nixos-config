@@ -100,7 +100,7 @@
       defaultSession = "hyprland";
     };
     windowManager.bspwm.enable = true;
-    desktopManager.gnome.enable = false;
+    desktopManager.gnome.enable = true;
     windowManager.bspwm.configFile = "/home/${user}/.config/bspwm/bspwmrc";
   };
 

@@ -10,6 +10,7 @@
     xwayland
     slurp
     wofi
+    wl-clipboard
   ];
 
   programs.wlogout = {
