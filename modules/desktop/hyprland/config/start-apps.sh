@@ -43,6 +43,7 @@ else
 fi
     hyprctl dispatch -- exec "[workspace ${FIREFOX_HOME} silent]" firefox -p home
     hyprctl dispatch -- exec "[workspace ${WEZTERM} silent]" wezterm -e /home/matthew/.config/bin/ta
+    hyprctl dispatch -- exec "[workspace special:spotify silent]" spotify 
  
 
 

@@ -61,6 +61,7 @@
       feh # Image Viewer
       scrot
       mpv # Media Player
+      spotify
 
       # File Management
       ranger
