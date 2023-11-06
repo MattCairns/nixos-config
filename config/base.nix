@@ -16,7 +16,7 @@
       "obsidian"
       "veracrypt"
       "teams"
-      "google-chrome"
+      "spotify"
     ];
 
   # Use the latest kernel
