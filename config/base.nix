@@ -170,6 +170,7 @@
     pkgs.brightnessctl
     pkgs.qjackctl
     pkgs.v4l-utils
+    pkgs.distrobox
   ];
 
   virtualisation.docker.enable = true;
