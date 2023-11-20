@@ -11,6 +11,7 @@
     slurp
     wofi
     wl-clipboard
+    dunst
   ];
 
   programs.wlogout = {
@@ -34,4 +35,5 @@
   xdg.configFile."hypr/hyprpaper.conf".source = ./config/hyprpaper.conf;
   xdg.configFile."hypr/start-apps.sh".source = ./config/start-apps.sh;
   xdg.configFile."hypr/start-swaylock.sh".source = ./config/start-swaylock.sh;
+  xdg.configFile."hypr/toggle-tailscale.sh".source = ./config/toggle-tailscale.sh;
 }

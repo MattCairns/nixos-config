@@ -131,6 +131,21 @@
   security.polkit.enable = true;
   security.pam.services.swaylock = {};
 
+  security.sudo = {
+    enable = true;
+    extraRules = [
+      {
+        commands = [
+          {
+            command = "${pkgs.tailscale}/bin/tailscale";
+            options = ["NOPASSWD"];
+          }
+        ];
+        groups = ["wheel"];
+      }
+    ];
+  };
+
   services.dbus.packages = [pkgs.gcr];
 
   # Enable sound with pipewire.
