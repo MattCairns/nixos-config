@@ -45,7 +45,7 @@ in {
     modules = [
       ./framework/configuration.nix
       ../config/optin-persistence.nix
-      inputs.nixos-hardware.nixosModules.framework-13-7040-amd 
+      inputs.nixos-hardware.nixosModules.framework-13-7040-amd
       inputs.sops-nix.nixosModules.sops
       home-manager.nixosModules.home-manager
       {

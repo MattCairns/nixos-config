@@ -170,7 +170,6 @@ in {
           type = "lua";
         }
         pkgs.vimPlugins.rustaceanvim
-
       ];
 
       extraLuaConfig = ''
