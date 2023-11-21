@@ -12,6 +12,7 @@
     wofi
     wl-clipboard
     dunst
+    swww
   ];
 
   programs.wlogout = {
@@ -32,7 +33,7 @@
 
   # xdg.configFile."hypr/hyprland.conf".source = ./config/hyprland.conf;
   xdg.configFile."hypr/machine.conf".source = ./config/${machine}.conf;
-  xdg.configFile."hypr/hyprpaper.conf".source = ./config/hyprpaper.conf;
+  # xdg.configFile."hypr/hyprpaper.conf".source = ./config/hyprpaper.conf;
   xdg.configFile."hypr/start-apps.sh".source = ./config/start-apps.sh;
   xdg.configFile."hypr/start-swaylock.sh".source = ./config/start-swaylock.sh;
   xdg.configFile."hypr/toggle-tailscale.sh".source = ./config/toggle-tailscale.sh;
