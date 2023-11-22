@@ -6,13 +6,14 @@
   home.packages = with pkgs; [
     hyprpaper
     wlr-randr
-    swayidle
     xwayland
     slurp
     wofi
     wl-clipboard
+    swayidle
     dunst
     swww
+    kanshi
   ];
 
   programs.wlogout = {

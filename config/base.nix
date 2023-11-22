@@ -17,6 +17,7 @@
       "veracrypt"
       "teams"
       "spotify"
+      "google-chrome"
     ];
 
   # Use the latest kernel
@@ -45,13 +46,11 @@
     settings = {
       substituters = [
         "https://cache.nixos.org"
-        "https://cuda-maintainers.cachix.org"
         "https://hyprland.cachix.org"
         "https://mattcairns-cachix.cachix.org"
       ];
       trusted-public-keys = [
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-        "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
         "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
         "mattcairns-cachix.cachix.org-1:bl0XYmyFCxApUSk4Eo9xAqjI7HeWBym1arunM4hLvHQ="
       ];
@@ -81,7 +80,7 @@
   networking.firewall = {
     enable = true;
     checkReversePath = "loose";
-    allowedUDPPorts = [14557];
+    allowedUDPPorts = [14557 5000 5001];
     allowedTCPPorts = [14557];
   };
   services.openssh.enable = true;
@@ -92,21 +91,31 @@
   time.timeZone = "America/Vancouver";
   i18n.defaultLocale = "en_CA.UTF-8";
 
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-  services.xserver = {
-    displayManager = {
-      gdm.enable = true;
-      defaultSession = "hyprland";
-    };
-    windowManager.bspwm.enable = true;
-    desktopManager.gnome.enable = true;
-    windowManager.bspwm.configFile = "/home/${user}/.config/bspwm/bspwmrc";
-  };
+  # services.xserver.enable = true;
+  # services.xserver = {
+  #   displayManager = {
+  #     gdm.enable = true;
+  #     defaultSession = "gnome";
+  #   };
+  #   # windowManager.bspwm.enable = true;
+  #   desktopManager.gnome.enable = true;
+  #   # windowManager.bspwm.configFile = "/home/${user}/.config/bspwm/bspwmrc";
+  # };
 
   programs.hyprland = {
     enable = true;
     package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+  };
+
+  services.greetd = {
+    enable = true;
+    settings = rec {
+      initial_session = {
+        command = "${inputs.hyprland.packages.${pkgs.system}.hyprland}/bin/Hyprland";
+        user = "${user}";
+      };
+      default_session = initial_session;
+    };
   };
 
   fonts.packages = with pkgs; [
@@ -165,8 +174,8 @@
     enable = true;
     openDefaultPorts = true;
     configDir = "/home/${user}/.config/syncthing";
+    dataDir = "/home/${user}/.config/syncthing";
     user = "${user}";
-    group = "users";
   };
 
   # Set XDG environment
@@ -176,6 +185,7 @@
     XDG_BIN_HOME = "\${HOME}/.local/bin";
     XDG_DATA_HOME = "\${HOME}/.local/share";
     PATH = ["\${XDG_BIN_HOME}"];
+    XCURSOR_SIZE = "32";
   };
 
   # Globally available packages
@@ -186,6 +196,8 @@
     pkgs.qjackctl
     pkgs.v4l-utils
     pkgs.distrobox
+    pkgs.swaylock
+    pkgs.google-chrome
   ];
 
   virtualisation.docker.enable = true;

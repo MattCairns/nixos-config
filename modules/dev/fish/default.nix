@@ -19,6 +19,7 @@
       mkenv = "echo 'use flake' >> .envrc";
       du = "dust";
       grep = "rg";
+      cd = "z";
     };
   };
 }

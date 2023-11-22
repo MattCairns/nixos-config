@@ -15,7 +15,7 @@
     ++ [(import ../modules/desktop/rofi)]
     ++ [(import ../modules/desktop/picom)]
     ++ [(import ../modules/desktop/dunst)]
-    ++ [(import ../modules/desktop/betterlockscreen)]
+    # ++ [(import ../modules/deskto/betterlockscreen)]
     ++ [(import ../modules/desktop/hyprland)]
     ++ [(import ../modules/apps/firefox)];
 }

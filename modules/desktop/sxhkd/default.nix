@@ -10,8 +10,8 @@
       "super + shift + s" = "slack";
 
       # terminal emulator
-      "super + Return" = "wezterm -e /home/$USER/.config/bin/ta";
-      "super + ctrl + Return" = "wezterm";
+      "super + Return" = "kitty -e /home/$USER/.config/bin/ta";
+      "super + ctrl + Return" = "kitty";
 
       # program launcher
       "super + space" = "rofi -show drun";

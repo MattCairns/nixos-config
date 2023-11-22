@@ -77,20 +77,20 @@
     "cpu": {
         "interval": 10,
         "format": "{usage}% ",
-        "on-click": "wezterm btop"
+        "on-click": "kitty btop"
     },
 
     "memory": {
         "interval": 10,
         "format": "{}% ",
-        "on-click": "wezterm btop"
+        "on-click": "kitty btop"
     },
 
     "temperature": {
         "interval": 30,
         "critical-threshold": 80,
         "format": "{temperatureC}°C ",
-        "on-click": "wezterm btop"
+        "on-click": "kitty btop"
     },
 
     "backlight": {

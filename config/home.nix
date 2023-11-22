@@ -29,6 +29,11 @@
     enableFishIntegration = true;
   };
 
+  programs.zoxide = {
+    enable = true;
+    enableFishIntegration = true;
+  };
+
   home = {
     username = "${user}";
     homeDirectory = "/home/${user}";
@@ -96,6 +101,7 @@
       nodePackages_latest.dockerfile-language-server-nodejs
       nodePackages.vim-language-server
       lua-language-server
+      buf-language-server
 
       # Keyboards
       qmk

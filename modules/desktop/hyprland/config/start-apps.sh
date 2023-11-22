@@ -12,19 +12,20 @@ current_day=$(date +%u)
 
 pcid=`hostname`
 thinkpadid=laptop
+frameworkid=framework
 oorid=nuc
 desktopid=sun
 
 FIREFOX_WORK=4
 FIREFOX_HOME=4
 SLACK=6
-WEZTERM=1
+KITTY=1
 
-if [ "$pcid" = "$thinkpadid" ]; then
-    FIREFOX_WORK=3
-    FIREFOX_HOME=2
-    SLACK=4
-    WEZTERM=1
+if [ "$pcid" = "$thinkpadid" ] || [ "$pcid" = "$frameworkid" ]; then
+    FIREFOX_WORK=7
+    FIREFOX_HOME=7
+    SLACK=9
+    KITTY=4
 elif [ "$pcid" = "$desktopid" ]; then
     echo "Desktop uses default workspaces"
 elif [ "$pcid" = "$oorid" ]; then
@@ -42,7 +43,7 @@ else
     echo "It's not work hours or a weekend, work apps not starting."
 fi
     hyprctl dispatch -- exec "[workspace ${FIREFOX_HOME} silent]" firefox -p home
-    hyprctl dispatch -- exec "[workspace ${WEZTERM} silent]" wezterm -e /home/matthew/.config/bin/ta
+    hyprctl dispatch -- exec "[workspace ${KITTY} silent]" kitty -e /home/matthew/.config/bin/ta
     hyprctl dispatch -- exec "[workspace special:spotify silent]" spotify 
  
 
