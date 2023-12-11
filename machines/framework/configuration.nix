@@ -1,4 +1,4 @@
-{pkgs,...}: {
+{pkgs, ...}: {
   imports = [
     ./hardware-configuration.nix
     ../../config/base.nix
@@ -47,8 +47,8 @@
 
   systemd.services.lock-after-suspend = {
     description = "Lock screen after suspending";
-    wantedBy = [ "post-resume.target" ];
-    after = [ "post-resume.target" ];
+    wantedBy = ["post-resume.target"];
+    after = ["post-resume.target"];
     script = ''
       ${pkgs.swaylock}/bin/swaylock
     '';
