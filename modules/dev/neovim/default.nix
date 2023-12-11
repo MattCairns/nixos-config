@@ -76,7 +76,6 @@ in {
         pkgs.vimPlugins.nvim-web-devicons
         pkgs.vimPlugins.surround-nvim
         pkgs.vimPlugins.nui-nvim
-        pkgs.vimPlugins.nvim-notify
         pkgs.vimPlugins.lazygit-nvim
         pkgs.vimPlugins.nvim-code-action-menu
         {
