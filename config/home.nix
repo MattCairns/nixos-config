@@ -77,10 +77,10 @@
       killall
       veracrypt
       cura
-      obsidian
+      # obsidian # electron insecure
       libnotify
       flameshot
-      bitwarden
+      # bitwarden # electron insecure
       texstudio
       texlive.combined.scheme-full
 
@@ -102,6 +102,7 @@
       nodePackages.vim-language-server
       lua-language-server
       buf-language-server
+      codeium
 
       # Keyboards
       qmk

@@ -18,11 +18,12 @@
       "teams"
       "spotify"
       "google-chrome"
+      "codeium"
     ];
 
   # Use the latest kernel
   boot = {
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackages_testing;
     extraModulePackages = with config.boot.kernelPackages; [v4l2loopback.out];
     kernelModules = ["v4l2loopback"];
     extraModprobeConfig = ''

@@ -69,13 +69,13 @@ in {
         pkgs.vimPlugins.vim-sleuth
         pkgs.vimPlugins.vim-repeat
         pkgs.vimPlugins.copilot-vim
+        # pkgs.vimPlugins.codeium-vim
 
         ## QoL
         pkgs.vimPlugins.lspkind-nvim
         pkgs.vimPlugins.rainbow
         pkgs.vimPlugins.nvim-web-devicons
         pkgs.vimPlugins.surround-nvim
-        pkgs.vimPlugins.nui-nvim
         pkgs.vimPlugins.lazygit-nvim
         pkgs.vimPlugins.nvim-code-action-menu
         {
