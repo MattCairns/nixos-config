@@ -16,10 +16,10 @@ frameworkid=framework
 oorid=nuc
 desktopid=sun
 
-FIREFOX_WORK=4
-FIREFOX_HOME=4
-SLACK=6
-KITTY=1
+FIREFOX_WORK=7
+FIREFOX_HOME=7
+SLACK=9
+KITTY=4
 
 if [ "$pcid" = "$thinkpadid" ] || [ "$pcid" = "$frameworkid" ]; then
     FIREFOX_WORK=7

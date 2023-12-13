@@ -81,7 +81,7 @@
   networking.firewall = {
     enable = true;
     checkReversePath = "loose";
-    allowedUDPPorts = [14557 5000 5001];
+    allowedUDPPorts = [14557 5000];
     allowedTCPPorts = [14557];
   };
   services.openssh.enable = true;
@@ -92,16 +92,13 @@
   time.timeZone = "America/Vancouver";
   i18n.defaultLocale = "en_CA.UTF-8";
 
-  # services.xserver.enable = true;
-  # services.xserver = {
-  #   displayManager = {
-  #     gdm.enable = true;
-  #     defaultSession = "gnome";
-  #   };
-  #   # windowManager.bspwm.enable = true;
-  #   desktopManager.gnome.enable = true;
-  #   # windowManager.bspwm.configFile = "/home/${user}/.config/bspwm/bspwmrc";
-  # };
+  services.xserver.enable = true;
+  services.xserver = {
+    displayManager.gdm.enable = false;
+    # windowManager.bspwm.enable = true;
+    desktopManager.gnome.enable = true;
+    # windowManager.bspwm.configFile = "/home/${user}/.config/bspwm/bspwmrc";
+  };
 
   programs.hyprland = {
     enable = true;
