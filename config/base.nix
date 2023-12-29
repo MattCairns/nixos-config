@@ -122,11 +122,7 @@
     siji
   ];
 
-  # Configure keymap in X11
-  services.xserver = {
-    layout = "us";
-    xkbVariant = "";
-  };
+
 
   # Enable CUPS to print documents.
   services.printing = {
@@ -196,6 +192,7 @@
     pkgs.distrobox
     pkgs.swaylock
     pkgs.google-chrome
+    pkgs.fw-ectool
   ];
 
   virtualisation.docker.enable = true;
