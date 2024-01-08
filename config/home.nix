@@ -77,7 +77,7 @@
       killall
       veracrypt
       cura
-      # obsidian # electron insecure
+      obsidian # electron insecure
       libnotify
       flameshot
       # bitwarden # electron insecure

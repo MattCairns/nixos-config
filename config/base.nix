@@ -21,6 +21,10 @@
       "codeium"
     ];
 
+    nixpkgs.config.permittedInsecurePackages = [
+      "electron-25.9.0"
+    ];
+
   # Use the latest kernel
   boot = {
     kernelPackages = pkgs.linuxPackages_testing;
@@ -191,6 +195,7 @@
     pkgs.swaylock
     pkgs.google-chrome
     pkgs.fw-ectool
+    pkgs.xkeyboard_config
   ];
 
   virtualisation.docker.enable = true;

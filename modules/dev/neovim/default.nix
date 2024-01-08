@@ -88,6 +88,20 @@ in {
           config = "require('hlargs').setup()";
           type = "lua";
         }
+        {
+          plugin = fromGitHub "1764a8d8c25d7f6de58953362e7de79d3b3d970e" "main" "epwalsh/obsidian.nvim";
+          config = ''
+            require("obsidian").setup({
+              workspaces = {
+                {
+                  name = "notes",
+                  path = "~/dev/notes",
+                },
+              },
+            })
+          '';
+          type = "lua";
+        }
         (fromGitHub "f30f899c30d91bb35574ff5962103f00cc4ea23a" "main" "MattCairns/telescope-cargo-workspace.nvim")
         {
           plugin = pkgs.vimPlugins.oil-nvim;

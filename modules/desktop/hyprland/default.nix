@@ -22,7 +22,7 @@
 
   programs.swaylock = {
     enable = true;
-    package = pkgs.swaylock-effects;
+    package = pkgs.swaylock-fancy;
   };
 
   wayland.windowManager.hyprland = {

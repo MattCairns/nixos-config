@@ -15,6 +15,13 @@
 
   #boot.kernelParams = ["amdgpu.abmlevel=4"];
 
+  # Configure keymap in X11
+  services.xserver = {
+    layout = "us,";
+    xkbVariant = "colemak,";
+    xkbOptions = "grp:shifts_toggle";
+  };
+
   networking.hostName = "framework";
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
