@@ -53,7 +53,6 @@
       eza
       xclip
       magic-wormhole
-      nvtop
       du-dust
       jq
 
@@ -76,7 +75,7 @@
       # Misc Apps
       killall
       veracrypt
-      cura
+      # cura
       obsidian # electron insecure
       libnotify
       flameshot
