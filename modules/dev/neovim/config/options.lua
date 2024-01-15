@@ -16,6 +16,8 @@ vim.opt.splitright = true
 vim.opt.splitbelow = true
 vim.opt.relativenumber = true
 vim.opt.clipboard = 'unnamedplus'
+vim.opt.wrap = false
+vim.opt.colorcolumn = '100'
 
 vim.cmd([[
 set completeopt=menu,menuone,noselect
