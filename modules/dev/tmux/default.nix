@@ -49,6 +49,7 @@
       # ==================
       # Hotkeys for switching sessions and selecting projects
       bind -r C-f run-shell -b "PATH=$PATH:/home/$USER/.fzf/bin/ /home/$USER/.config/bin/tmux-switch-session"
+      bind -r C-s run-shell "PATH=$PATH:/home/$USER/.fzf/bin/ tmux neww /home/$USER/.config/bin/tmux-switch-ssh-session"
       bind -r f run-shell "PATH=$PATH:/home/$USER/.fzf/bin/ tmux neww /home/$USER/.config/bin/tmux-sessionizer"
       bind K run-shell 'tmux switch-client -n \; kill-session -t "$(tmux display-message -p "#S")" || tmux kill-s'
       bind -r N run-shell "/home/$USER/.config/bin/tmux-sessionizer /home/$USER/nixos-config/"
