@@ -26,14 +26,14 @@ selected_name=$(echo "$selected" | tr . _)
 tmux_running=$(pgrep tmux)
 if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
     # Start a new tmux session and open an SSH session
-    tmux new-session -s $selected_name -c $selected_name "ssh $selected"
+    tmux new-session -s $selected_name -c $selected_name "mosh-ssh $selected"
     exit 0
 fi
 
 # Check if the tmux session with the selected name exists
 if ! tmux has-session -t=$selected_name 2> /dev/null; then
     # Start a new detached tmux session and open an SSH session
-    tmux new-session -ds $selected_name -c $selected_name "ssh $selected"
+    tmux new-session -ds $selected_name -c $selected_name "mosh-ssh $selected"
 fi
 
 # Switch to the tmux session with the selected name

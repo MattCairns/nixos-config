@@ -43,6 +43,7 @@
       home-manager
 
       # Terminal
+      mosh
       btop
       ripgrep
       fzf
