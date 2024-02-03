@@ -27,15 +27,15 @@
   # Use the latest kernel
   boot = {
     kernelPackages = pkgs.linuxPackages_testing;
-    extraModulePackages = with config.boot.kernelPackages; [v4l2loopback.out];
-    kernelModules = ["v4l2loopback"];
-    extraModprobeConfig = ''
-      options v4l2loopback exclusive_caps=1
-      options v4l2loopback devices=1
-      options v4l2loopback video_nr=2
-      options v4l2loopback max_buffers=2
-      options v4l2loopback card_label="fake-cam"
-    '';
+    # extraModulePackages = with config.boot.kernelPackages; [v4l2loopback.out];
+    # kernelModules = ["v4l2loopback"];
+    # extraModprobeConfig = ''
+    #   options v4l2loopback exclusive_caps=1
+    #   options v4l2loopback devices=1
+    #   options v4l2loopback video_nr=2
+    #   options v4l2loopback max_buffers=2
+    #   options v4l2loopback card_label="fake-cam"
+    # '';
   };
 
   nix = {
@@ -195,6 +195,8 @@
     pkgs.google-chrome
     pkgs.fw-ectool
     pkgs.xkeyboard_config
+    pkgs.nodejs
+    pkgs.libde265
   ];
 
   virtualisation.docker.enable = true;

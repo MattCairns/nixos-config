@@ -66,6 +66,7 @@
       feh # Image Viewer
       scrot
       mpv # Media Player
+      vlc
       spotify
 
       # File Management

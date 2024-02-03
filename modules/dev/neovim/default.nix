@@ -68,7 +68,16 @@ in {
         pkgs.vimPlugins.vim-surround
         pkgs.vimPlugins.vim-sleuth
         pkgs.vimPlugins.vim-repeat
-        pkgs.vimPlugins.copilot-vim
+        # pkgs.vimPlugins.copilot-vim
+        {
+          plugin = fromGitHub "213191e34b473c53366a18820a1444c3b1cfdb63" "main" "TabbyML/vim-tabby";
+          config = ''
+            vim.cmd([[
+              let g:tabby_keybinding_accept = '<Tab>'
+            ]])
+          '';
+          type = "lua";
+        }
         # pkgs.vimPlugins.codeium-vim
 
         ## QoL
@@ -182,7 +191,50 @@ in {
           config = "require('crates').setup{}";
           type = "lua";
         }
-        pkgs.vimPlugins.rustaceanvim
+        {
+          plugin = pkgs.vimPlugins.rustaceanvim;
+          config = ''
+            vim.g.rustaceanvim = {
+              -- Plugin configuration
+              tools = {
+              },
+              -- LSP configuration
+              server = {
+                on_attach = function(client, bufnr)
+                  -- you can also put keymaps in here
+                end,
+                settings = {
+                  -- rust-analyzer language server configuration
+                  ['rust-analyzer'] = {
+                   cargo = {
+                      allFeatures = true,
+                      loadOutDirsFromCheck = true,
+                      runBuildScripts = true,
+                    },
+                    checkOnSave = {
+                      allFeatures = true,
+                      command = "clippy",
+                      extraArgs = { "--no-deps" },
+                    },
+                    procMacro = {
+                      enable = true,
+                      ignored = {
+                        ["async-trait"] = { "async_trait" },
+                        ["napi-derive"] = { "napi" },
+                        ["async-recursion"] = { "async_recursion" },
+                      },
+                    },
+                  },
+                },
+              },
+              -- DAP configuration
+              dap = {
+              },
+            }
+          '';
+          type = "lua";
+        }
+
       ];
 
       extraLuaConfig = ''
