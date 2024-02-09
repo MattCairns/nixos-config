@@ -84,6 +84,7 @@
       # bitwarden # electron insecure
       texstudio
       texlive.combined.scheme-full
+      qgroundcontrol
 
       # Dev tools
       pre-commit

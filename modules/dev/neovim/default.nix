@@ -68,7 +68,6 @@ in {
         pkgs.vimPlugins.vim-surround
         pkgs.vimPlugins.vim-sleuth
         pkgs.vimPlugins.vim-repeat
-        # pkgs.vimPlugins.copilot-vim
         {
           plugin = fromGitHub "213191e34b473c53366a18820a1444c3b1cfdb63" "main" "TabbyML/vim-tabby";
           config = ''
@@ -78,7 +77,6 @@ in {
           '';
           type = "lua";
         }
-        # pkgs.vimPlugins.codeium-vim
 
         ## QoL
         pkgs.vimPlugins.lspkind-nvim
@@ -234,7 +232,6 @@ in {
           '';
           type = "lua";
         }
-
       ];
 
       extraLuaConfig = ''
