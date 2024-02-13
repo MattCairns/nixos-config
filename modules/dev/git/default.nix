@@ -7,7 +7,10 @@
       init = {defaultBranch = "main";};
       pull = {rebase = true;};
       push = {autoSetupRemote = true;};
+      commit = {gpgsign = true;};
       rerere = {enabled = true;};
+      gpg = {format = "ssh";};
+      user = {signingkey = "/home/matthew/.ssh/id_ed25519.pub";};
       core = {
         whitespace = "trailing-space,space-before-tab";
         editor = "vim";
