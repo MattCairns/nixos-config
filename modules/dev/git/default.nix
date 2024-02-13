@@ -7,6 +7,7 @@
       init = {defaultBranch = "main";};
       pull = {rebase = true;};
       push = {autoSetupRemote = true;};
+      rerere = {enabled = true;};
       core = {
         whitespace = "trailing-space,space-before-tab";
         editor = "vim";

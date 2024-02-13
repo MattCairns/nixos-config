@@ -16,10 +16,10 @@
   #boot.kernelParams = ["amdgpu.abmlevel=4"];
 
   # Configure keymap in X11
-  services.xserver = {
+  services.xserver.xkb = {
     layout = "us,";
-    xkbVariant = "colemak,";
-    xkbOptions = "grp:shifts_toggle";
+    variant = "colemak,";
+    options = "grp:shifts_toggle";
   };
 
   networking.hostName = "framework";

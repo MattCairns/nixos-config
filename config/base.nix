@@ -20,9 +20,9 @@
       "codeium"
     ];
 
-    nixpkgs.config.permittedInsecurePackages = [
-      "electron-25.9.0"
-    ];
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-25.9.0"
+  ];
 
   # Use the latest kernel
   boot = {
