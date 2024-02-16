@@ -6,6 +6,10 @@
     extraConfig = {
       init = {defaultBranch = "main";};
       pull = {rebase = true;};
+      rebase = {
+        autostash = true;
+        autosquash = true;
+      };
       push = {autoSetupRemote = true;};
       commit = {gpgsign = true;};
       rerere = {enabled = true;};
