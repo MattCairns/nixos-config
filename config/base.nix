@@ -26,7 +26,7 @@
 
   # Use the latest kernel
   boot = {
-    kernelPackages = pkgs.linuxPackages_testing;
+    kernelPackages = pkgs.linuxPackages_latest;
     # extraModulePackages = with config.boot.kernelPackages; [v4l2loopback.out];
     # kernelModules = ["v4l2loopback"];
     # extraModprobeConfig = ''
@@ -85,7 +85,7 @@
   networking.firewall = {
     enable = true;
     checkReversePath = "loose";
-    allowedUDPPorts = [14557 5000];
+    allowedUDPPorts = [14559 14557 5000 51820];
     allowedTCPPorts = [14557];
   };
   services.openssh.enable = true;
