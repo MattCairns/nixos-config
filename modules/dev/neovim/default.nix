@@ -185,11 +185,6 @@ in {
           type = "lua";
         }
         {
-          plugin = pkgs.vimPlugins.crates-nvim;
-          config = "require('crates').setup{}";
-          type = "lua";
-        }
-        {
           plugin = pkgs.vimPlugins.rustaceanvim;
           config = ''
             vim.g.rustaceanvim = {

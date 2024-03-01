@@ -62,6 +62,7 @@
         "/var/lib/bluetooth"
         "/var/lib/blueman"
         "/var/lib/fprint"
+        "/var/lib/docker"
         "/etc/NetworkManager"
         "/etc/ssh"
       ];
