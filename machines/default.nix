@@ -14,31 +14,6 @@
 
   lib = nixpkgs.lib;
 in {
-  sun = lib.nixosSystem {
-    inherit system;
-    specialArgs = {inherit inputs user pkgs;};
-    modules = [
-      ./sun/configuration.nix
-      ../config/optin-persistence.nix
-      inputs.sops-nix.nixosModules.sops
-      home-manager.nixosModules.home-manager
-      {
-        home-manager.useGlobalPkgs = true;
-        home-manager.useUserPackages = true;
-        home-manager.extraSpecialArgs = let
-          machine = "sun";
-        in {
-          inherit user inputs machine;
-        };
-        home-manager.users.${user} = {
-          imports = [
-            (import ../config/home.nix)
-          ];
-        };
-      }
-    ];
-  };
-
   framework = lib.nixosSystem {
     inherit system;
     specialArgs = {inherit inputs user;};
