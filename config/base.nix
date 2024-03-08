@@ -24,19 +24,7 @@
     "electron-25.9.0"
   ];
 
-  # Use the latest kernel
-  boot = {
-    kernelPackages = pkgs.linuxPackages_latest;
-    # extraModulePackages = with config.boot.kernelPackages; [v4l2loopback.out];
-    # kernelModules = ["v4l2loopback"];
-    # extraModprobeConfig = ''
-    #   options v4l2loopback exclusive_caps=1
-    #   options v4l2loopback devices=1
-    #   options v4l2loopback video_nr=2
-    #   options v4l2loopback max_buffers=2
-    #   options v4l2loopback card_label="fake-cam"
-    # '';
-  };
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   nix = {
     package = pkgs.nixFlakes;
@@ -93,15 +81,13 @@
   services.tailscale.enable = true;
 
   # Set your time zone and locale
-  time.timeZone = "America/Vancouver";
+  time.timeZone = "Etc/GMT";
   i18n.defaultLocale = "en_CA.UTF-8";
 
   services.xserver.enable = true;
   services.xserver = {
     displayManager.gdm.enable = false;
-    # windowManager.bspwm.enable = true;
     desktopManager.gnome.enable = true;
-    # windowManager.bspwm.configFile = "/home/${user}/.config/bspwm/bspwmrc";
   };
 
   programs.hyprland = {

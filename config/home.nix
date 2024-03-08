@@ -83,7 +83,6 @@
       flameshot
       # bitwarden # electron insecure
       texstudio
-      texlive.combined.scheme-full
       qgroundcontrol
 
       # Dev tools
@@ -93,6 +92,7 @@
       cmake-format
       kubectl
       cppcheck
+      jira-cli-go
 
       # LSP Servers
       nodePackages_latest.pyright
