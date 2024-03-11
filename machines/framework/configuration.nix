@@ -9,11 +9,9 @@
   sops.age.sshKeyPaths = ["/home/matthew/.ssh/id_ed25519"];
   sops.secrets.user-matthew-password.neededForUsers = true;
 
-  #:Wusers.users.matthew.passwordFile = config.sops.secrets.user-matthew-password.path;
+  #users.users.matthew.passwordFile = config.sops.secrets.user-matthew-password.path;
   users.users.matthew.hashedPasswordFile = "/persist/passwords/matthew";
   users.users.root.hashedPasswordFile = "/persist/passwords/root";
-
-  #boot.kernelParams = ["amdgpu.abmlevel=4"];
 
   # Configure keymap in X11
   services.xserver.xkb = {

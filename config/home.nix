@@ -77,11 +77,9 @@
       # Misc Apps
       killall
       veracrypt
-      # cura
       obsidian # electron insecure
       libnotify
       flameshot
-      # bitwarden # electron insecure
       texstudio
       qgroundcontrol
 

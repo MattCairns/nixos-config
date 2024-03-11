@@ -63,9 +63,12 @@
   '';
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.timeout = 1;
+  boot.loader.timeout = 5;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.systemd-boot.enable = false;
+  boot.loader.grub.enable = true;
+  boot.loader.grub.efiSupport = true;
+  boot.loader.grub.device = "nodev";
   boot.binfmt.emulatedSystems = ["aarch64-linux"];
 
   # Enable networking
