@@ -16,16 +16,16 @@ frameworkid=framework
 oorid=nuc
 desktopid=sun
 
-FIREFOX_WORK=2
-FIREFOX_HOME=3
-SLACK=4
-KITTY=1
+FIREFOX_WORK=7
+FIREFOX_HOME=7
+SLACK=9
+KITTY=4
 
 if [ "$pcid" = "$thinkpadid" ] || [ "$pcid" = "$frameworkid" ]; then
-    FIREFOX_WORK=2
-    FIREFOX_HOME=3
-    SLACK=4
-    KITTY=1
+    FIREFOX_WORK=7
+    FIREFOX_HOME=7
+    SLACK=9
+    KITTY=4
 elif [ "$pcid" = "$desktopid" ]; then
     echo "Desktop uses default workspaces"
 elif [ "$pcid" = "$oorid" ]; then

@@ -84,7 +84,7 @@
   services.tailscale.enable = true;
 
   # Set your time zone and locale
-  time.timeZone = "Etc/GMT";
+  time.timeZone = "America/Vancouver";
   i18n.defaultLocale = "en_CA.UTF-8";
 
   services.xserver.enable = true;
@@ -187,6 +187,7 @@
     pkgs.xkeyboard_config
     pkgs.nodejs
     pkgs.libde265
+    pkgs.pavucontrol
   ];
 
   virtualisation.docker.enable = true;

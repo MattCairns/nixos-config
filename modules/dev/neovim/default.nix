@@ -69,7 +69,7 @@ in {
         pkgs.vimPlugins.vim-sleuth
         pkgs.vimPlugins.vim-repeat
         {
-          plugin = fromGitHub "213191e34b473c53366a18820a1444c3b1cfdb63" "main" "TabbyML/vim-tabby";
+          plugin = fromGitHub "afd76df166ed0f223ede1071e0cfde8075cc4a24" "main" "TabbyML/vim-tabby";
           config = ''
             vim.cmd([[
               let g:tabby_keybinding_accept = '<Tab>'
@@ -94,6 +94,9 @@ in {
           plugin = fromGitHub "6218a401824c5733ac50b264991b62d064e85ab2" "main" "m-demare/hlargs.nvim";
           config = "require('hlargs').setup()";
           type = "lua";
+        }
+        {
+          plugin = fromGitHub "4c3bc2cd46085b36b2873c1ae9086aee404b3d90" "main" "apple/pkl-neovim";
         }
         {
           plugin = fromGitHub "1764a8d8c25d7f6de58953362e7de79d3b3d970e" "main" "epwalsh/obsidian.nvim";
