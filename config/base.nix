@@ -171,6 +171,7 @@
     PATH = ["\${XDG_BIN_HOME}"];
     EDITOR = "nvim";
     XCURSOR_SIZE = "32";
+    FLAKE = "\${HOME}/nixos-config";
   };
 
   # Globally available packages
@@ -188,6 +189,7 @@
     pkgs.nodejs
     pkgs.libde265
     pkgs.pavucontrol
+    pkgs.nh
   ];
 
   virtualisation.docker.enable = true;
