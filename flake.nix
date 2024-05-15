@@ -2,6 +2,7 @@
   description = "Matthews System Flake";
 
   inputs = {
+    nixpkgs.url = "nixpkgs/nixos-unstable";
     impermanence.url = "github:nix-community/impermanence";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     sops-nix = {
