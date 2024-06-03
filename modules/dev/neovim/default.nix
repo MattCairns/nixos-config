@@ -112,7 +112,7 @@ in {
           '';
           type = "lua";
         }
-        (fromGitHub "f30f899c30d91bb35574ff5962103f00cc4ea23a" "main" "MattCairns/telescope-cargo-workspace.nvim")
+        (fromGitHub "8843b72822151bb7792f3fdad4b63df0bc1dd4a6" "main" "MattCairns/telescope-cargo-workspace.nvim")
         {
           plugin = pkgs.vimPlugins.oil-nvim;
           config = "require('oil').setup()";
