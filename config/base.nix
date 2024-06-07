@@ -24,7 +24,7 @@
     "electron-25.9.0"
   ];
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages_6_8;
 
   nix = {
     package = pkgs.nixFlakes;
