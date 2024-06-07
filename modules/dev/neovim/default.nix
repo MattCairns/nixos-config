@@ -91,15 +91,18 @@ in {
           type = "lua";
         }
         {
-          plugin = fromGitHub "6218a401824c5733ac50b264991b62d064e85ab2" "main" "m-demare/hlargs.nvim";
+          # Updated 07/06/24
+          plugin = fromGitHub "30fe1b3de2b7614f061be4fc9c71984a2b87e50a" "main" "m-demare/hlargs.nvim";
           config = "require('hlargs').setup()";
           type = "lua";
         }
         {
-          plugin = fromGitHub "4c3bc2cd46085b36b2873c1ae9086aee404b3d90" "main" "apple/pkl-neovim";
+          # Updated 07/06/24
+          plugin = fromGitHub "a0ae099c7eb926150ee0a126b1dd78086edbe3fc" "main" "apple/pkl-neovim";
         }
         {
-          plugin = fromGitHub "1764a8d8c25d7f6de58953362e7de79d3b3d970e" "main" "epwalsh/obsidian.nvim";
+          # Updated 07/06/24
+          plugin = fromGitHub "c6bd6d93e4724ac2dc0cae73ebe1d568bf406537" "main" "epwalsh/obsidian.nvim";
           config = ''
             require("obsidian").setup({
               workspaces = {
