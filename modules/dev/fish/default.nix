@@ -6,6 +6,7 @@
       end
       export OPENAI_API_KEY=$(cat ~/.config/secrets/openai-api-key)
       export TOGGL_API_KEY=$(cat ~/.config/secrets/toggl-api-key)
+      atuin init fish | source
     '';
     plugins = [
       {

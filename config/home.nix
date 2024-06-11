@@ -56,6 +56,8 @@
       magic-wormhole
       du-dust
       jq
+      atuin
+
 
       # Communication
       zoom-us
