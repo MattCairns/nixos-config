@@ -58,7 +58,6 @@
       jq
       atuin
 
-
       # Communication
       zoom-us
       slack
@@ -70,6 +69,7 @@
       mpv # Media Player
       vlc
       spotify
+      rnnoise-plugin
 
       # File Management
       ranger
@@ -95,7 +95,7 @@
       jira-cli-go
 
       # LSP Servers
-      nodePackages_latest.pyright
+      pyright
       cmake-language-server
       nil
       rust-analyzer
