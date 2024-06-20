@@ -1,8 +1,4 @@
-{
-  config,
-  pkgs,
-  ...
-}: let
+{...}: let
   lock-false = {
     Value = false;
     Status = "locked";
