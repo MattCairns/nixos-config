@@ -1,6 +1,5 @@
 {
   config,
-  pkgs,
   ...
 }: {
   imports = [
@@ -37,13 +36,6 @@
     fsType = "nfs";
     options = ["x-systemd.automount" "noauto"];
   };
-
-  networking.interfaces.enp0s13f0u3.ipv4.addresses = [
-    {
-      address = "192.168.168.183";
-      prefixLength = 24;
-    }
-  ];
 
   system.stateVersion = "22.11";
 }
