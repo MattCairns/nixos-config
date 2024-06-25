@@ -1,7 +1,4 @@
-{
-  config,
-  ...
-}: {
+{config, ...}: {
   imports = [
     ./hardware-configuration.nix
     ../../config/base.nix

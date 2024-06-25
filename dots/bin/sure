@@ -1,4 +1,0 @@
-#!/bin/bash
-
-SSH_URI=$1
-ssh-ping ${SSH_URI} | grep --line-buffered "Pong" | head -1 && ssh ${SSH_URI}

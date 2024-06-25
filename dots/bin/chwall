@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-wallpaper_dir=$1
-if command -v swww >/dev/null 2>&1; then
-    random_wallpaper=$(ls "$wallpaper_dir" | shuf -n 1)
-    swww img "$wallpaper_dir/$random_wallpaper"
-fi
-

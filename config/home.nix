@@ -10,7 +10,7 @@
   ];
   programs.home-manager.enable = true;
   xdg.configFile."wallpapers".source = ../assets/wallpapers;
-  xdg.configFile."bin".source = ../dots/bin;
+  xdg.configFile."bin".source = ../scripts/bin;
 
   sops.age.sshKeyPaths = ["/home/${user}/.ssh/id_ed25519"];
   sops.secrets = {
@@ -110,6 +110,15 @@
       qmk
       dfu-util
       dfu-programmer
+
+      # Custom scripts
+      (import ../scripts/tmux-sessionizer.nix {inherit pkgs;})
+      (import ../scripts/tmux-windowizer.nix {inherit pkgs;})
+      (import ../scripts/tmux-switch-session.nix {inherit pkgs;})
+      (import ../scripts/tmux-switch-ssh-session.nix {inherit pkgs;})
+      (import ../scripts/chwall.nix {inherit pkgs;})
+      (import ../scripts/mosh-ssh.nix {inherit pkgs;})
+      (import ../scripts/warp.nix {inherit pkgs;})
     ];
 
     stateVersion = "22.11";
