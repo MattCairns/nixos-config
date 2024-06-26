@@ -119,6 +119,7 @@
       (import ../scripts/chwall.nix {inherit pkgs;})
       (import ../scripts/mosh-ssh.nix {inherit pkgs;})
       (import ../scripts/warp.nix {inherit pkgs;})
+      (import ../scripts/fs-diff.nix {inherit pkgs;})
     ];
 
     stateVersion = "22.11";
