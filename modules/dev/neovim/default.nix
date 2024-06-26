@@ -103,7 +103,7 @@ in {
         {
           # Updated 07/06/24
           plugin = fromGitHub "c6bd6d93e4724ac2dc0cae73ebe1d568bf406537" "main" "epwalsh/obsidian.nvim";
-          config = ''
+          config = /*lua*/ ''
             require("obsidian").setup({
               workspaces = {
                 {
@@ -159,7 +159,7 @@ in {
         }
         {
           plugin = pkgs.vimPlugins.noice-nvim;
-          config = ''
+          config = /*lua*/ ''
             require("noice").setup({
               lsp = {
                 -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
@@ -192,7 +192,7 @@ in {
         }
         {
           plugin = pkgs.vimPlugins.rustaceanvim;
-          config = ''
+          config = /*lua*/ ''
             vim.g.rustaceanvim = {
               -- Plugin configuration
               tools = {
