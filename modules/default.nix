@@ -8,11 +8,9 @@
     ++ [(import ../modules/dev/tmux)]
     ++ [(import ../modules/dev/fish)]
     ++ [(import ../modules/dev/direnv)]
-    ++ [(import ../modules/desktop/sxhkd)]
     ++ [(import ../modules/desktop/waybar)]
     ++ [(import ../modules/desktop/picom)]
     ++ [(import ../modules/desktop/dunst)]
-    # ++ [(import ../modules/deskto/betterlockscreen)]
     ++ [(import ../modules/desktop/hyprland)]
     ++ [(import ../modules/apps/firefox)];
 }
