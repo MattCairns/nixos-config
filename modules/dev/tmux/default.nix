@@ -53,6 +53,7 @@
       bind -r f run-shell "PATH=$PATH:/home/$USER/.fzf/bin/ tmux neww tmux-sessionizer"
       bind K run-shell 'tmux switch-client -n \; kill-session -t "$(tmux display-message -p "#S")" || tmux kill-s'
       bind -r N run-shell "tmux-sessionizer /home/$USER/nixos-config/"
+      bind -r O run-shell "tmux-sessionizer /home/$USER/dev/oor/hydromanteia/"
       # ==================
 
       # Vim-like pane switching
