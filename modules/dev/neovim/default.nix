@@ -79,17 +79,18 @@ in {
         }
 
         ## QoL
+        (fromGitHub "2a566f03eb06859298eff837f3a6686dfa5304a5" "main" "tris203/precognition.nvim")
         pkgs.vimPlugins.lspkind-nvim
         pkgs.vimPlugins.rainbow
         pkgs.vimPlugins.nvim-web-devicons
         pkgs.vimPlugins.surround-nvim
         pkgs.vimPlugins.lazygit-nvim
         pkgs.vimPlugins.nvim-code-action-menu
-        {
-          plugin = pkgs.vimPlugins.neorg;
-          config = builtins.readFile config/setup/neorg.lua;
-          type = "lua";
-        }
+        # {
+        #   plugin = pkgs.vimPlugins.neorg;
+        #   config = builtins.readFile config/setup/neorg.lua;
+        #   type = "lua";
+        # }
         {
           # Updated 07/06/24
           plugin = fromGitHub "30fe1b3de2b7614f061be4fc9c71984a2b87e50a" "main" "m-demare/hlargs.nvim";

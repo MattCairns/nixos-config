@@ -47,7 +47,7 @@
   };
 
   powerManagement.resumeCommands = ''
-    echo "This should show up in the journal after resuming."
+      ${pkgs.utillinux}/bin/rfkill unblock wlan
   '';
 
   systemd.services.lock-after-suspend = {
@@ -61,10 +61,6 @@
   };
 
   systemd.services.lock-after-suspend.enable = true;
-
-  systemd.sleep.extraConfig = ''
-    HibernateDelaySec=30m
-  '';
 
   system.stateVersion = "22.11";
 }
