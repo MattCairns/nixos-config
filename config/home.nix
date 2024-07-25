@@ -111,6 +111,8 @@
       dfu-util
       dfu-programmer
 
+      blender
+
       # Custom scripts
       (import ../scripts/tmux-sessionizer.nix {inherit pkgs;})
       (import ../scripts/tmux-windowizer.nix {inherit pkgs;})

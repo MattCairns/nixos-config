@@ -13,6 +13,7 @@
     dunst
     swww
     kanshi
+    hyprcursor
   ];
 
   programs.wlogout = {
