@@ -104,16 +104,20 @@ in {
         {
           # Updated 07/06/24
           plugin = fromGitHub "c6bd6d93e4724ac2dc0cae73ebe1d568bf406537" "main" "epwalsh/obsidian.nvim";
-          config = /*lua*/ ''
-            require("obsidian").setup({
-              workspaces = {
-                {
-                  name = "notes",
-                  path = "~/dev/notes",
+          config =
+            /*
+            lua
+            */
+            ''
+              require("obsidian").setup({
+                workspaces = {
+                  {
+                    name = "notes",
+                    path = "~/dev/notes",
+                  },
                 },
-              },
-            })
-          '';
+              })
+            '';
           type = "lua";
         }
         (fromGitHub "8843b72822151bb7792f3fdad4b63df0bc1dd4a6" "main" "MattCairns/telescope-cargo-workspace.nvim")
@@ -160,26 +164,30 @@ in {
         }
         {
           plugin = pkgs.vimPlugins.noice-nvim;
-          config = /*lua*/ ''
-            require("noice").setup({
-              lsp = {
-                -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
-                override = {
-                  ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-                  ["vim.lsp.util.stylize_markdown"] = true,
-                  ["cmp.entry.get_documentation"] = true,
+          config =
+            /*
+            lua
+            */
+            ''
+              require("noice").setup({
+                lsp = {
+                  -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+                  override = {
+                    ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+                    ["vim.lsp.util.stylize_markdown"] = true,
+                    ["cmp.entry.get_documentation"] = true,
+                  },
                 },
-              },
-              -- you can enable a preset for easier configuration
-              presets = {
-                bottom_search = true, -- use a classic bottom cmdline for search
-                command_palette = true, -- position the cmdline and popupmenu together
-                long_message_to_split = true, -- long messages will be sent to a split
-                inc_rename = false, -- enables an input dialog for inc-rename.nvim
-                lsp_doc_border = false, -- add a border to hover docs and signature help
-              },
-            })
-          '';
+                -- you can enable a preset for easier configuration
+                presets = {
+                  bottom_search = true, -- use a classic bottom cmdline for search
+                  command_palette = true, -- position the cmdline and popupmenu together
+                  long_message_to_split = true, -- long messages will be sent to a split
+                  inc_rename = false, -- enables an input dialog for inc-rename.nvim
+                  lsp_doc_border = false, -- add a border to hover docs and signature help
+                },
+              })
+            '';
           type = "lua";
         }
 
@@ -193,45 +201,49 @@ in {
         }
         {
           plugin = pkgs.vimPlugins.rustaceanvim;
-          config = /*lua*/ ''
-            vim.g.rustaceanvim = {
-              -- Plugin configuration
-              tools = {
-              },
-              -- LSP configuration
-              server = {
-                on_attach = function(client, bufnr)
-                  -- you can also put keymaps in here
-                end,
-                settings = {
-                  -- rust-analyzer language server configuration
-                  ['rust-analyzer'] = {
-                   cargo = {
-                      allFeatures = true,
-                      loadOutDirsFromCheck = true,
-                      runBuildScripts = true,
-                    },
-                    checkOnSave = {
-                      allFeatures = true,
-                      command = "clippy",
-                      extraArgs = { "--no-deps" },
-                    },
-                    procMacro = {
-                      enable = true,
-                      ignored = {
-                        ["async-trait"] = { "async_trait" },
-                        ["napi-derive"] = { "napi" },
-                        ["async-recursion"] = { "async_recursion" },
+          config =
+            /*
+            lua
+            */
+            ''
+              vim.g.rustaceanvim = {
+                -- Plugin configuration
+                tools = {
+                },
+                -- LSP configuration
+                server = {
+                  on_attach = function(client, bufnr)
+                    -- you can also put keymaps in here
+                  end,
+                  settings = {
+                    -- rust-analyzer language server configuration
+                    ['rust-analyzer'] = {
+                     cargo = {
+                        allFeatures = true,
+                        loadOutDirsFromCheck = true,
+                        runBuildScripts = true,
+                      },
+                      checkOnSave = {
+                        allFeatures = true,
+                        command = "clippy",
+                        extraArgs = { "--no-deps" },
+                      },
+                      procMacro = {
+                        enable = true,
+                        ignored = {
+                          ["async-trait"] = { "async_trait" },
+                          ["napi-derive"] = { "napi" },
+                          ["async-recursion"] = { "async_recursion" },
+                        },
                       },
                     },
                   },
                 },
-              },
-              -- DAP configuration
-              dap = {
-              },
-            }
-          '';
+                -- DAP configuration
+                dap = {
+                },
+              }
+            '';
           type = "lua";
         }
       ];

@@ -124,6 +124,13 @@
       (import ../scripts/fs-diff.nix {inherit pkgs;})
     ];
 
+    pointerCursor = {
+      name = "phinger-cursors-light";
+      package = pkgs.phinger-cursors;
+      size = 64;
+      gtk.enable = true;
+    };
+
     stateVersion = "22.11";
   };
 }

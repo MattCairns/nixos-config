@@ -47,7 +47,7 @@
   };
 
   powerManagement.resumeCommands = ''
-      ${pkgs.utillinux}/bin/rfkill unblock wlan
+    ${pkgs.utillinux}/bin/rfkill unblock wlan
   '';
 
   systemd.services.lock-after-suspend = {
