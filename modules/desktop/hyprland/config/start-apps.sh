@@ -38,7 +38,7 @@ fi
 if [ $current_day -ge 1 ] && [ $current_day -le 5 ] && [ $current_hour -ge $start_hour ] && [ $current_hour -lt $end_hour ]; then
     # Start Firefox
     hyprctl dispatch -- exec "[workspace ${FIREFOX_WORK} silent]" firefox -p work 
-    hyprctl dispatch -- exec "[workspace ${SLACK} silent]" slack 
+    hyprctl dispatch -- exec "[workspace ${SLACK} silent]" slack --disable-gpu
 else
     echo "It's not work hours or a weekend, work apps not starting."
 fi

@@ -88,11 +88,14 @@
       # Dev tools
       pre-commit
       lazygit
-      nixpkgs-fmt
-      cmake-format
       kubectl
       cppcheck
       jira-cli-go
+
+      # Formatters
+      alejandra
+      nixpkgs-fmt
+      cmake-format
 
       # LSP Servers
       pyright
@@ -127,7 +130,7 @@
     pointerCursor = {
       name = "phinger-cursors-light";
       package = pkgs.phinger-cursors;
-      size = 64;
+      size = 32;
       gtk.enable = true;
     };
 

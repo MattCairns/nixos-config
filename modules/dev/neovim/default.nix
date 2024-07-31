@@ -27,6 +27,11 @@ in {
           config = "vim.cmd[[colorscheme tokyonight-night]]";
           type = "lua";
         }
+        {
+          plugin = pkgs.vimPlugins.nightfox-nvim;
+          # config = "vim.cmd[[colorscheme nightfox]]";
+          # type = "lua";
+        }
 
         ## Treesitter
         {
@@ -86,6 +91,35 @@ in {
         pkgs.vimPlugins.surround-nvim
         pkgs.vimPlugins.lazygit-nvim
         pkgs.vimPlugins.nvim-code-action-menu
+
+        {
+          plugin =
+            pkgs.vimPlugins.conform-nvim;
+          config =
+            /*
+            lua
+            */
+            ''
+              require("conform").setup({
+                formatters_by_ft = {
+                  lua = { "stylua" },
+                  python = { "isort", "black" },
+                  rust = { "rustfmt", lsp_format = "fallback" },
+                  javascript = { "prettierd", "prettier", stop_after_first = true },
+                  nix = { "alejandra", "nixfmt", stop_after_first = true },
+                  cmake = { "gersemi", "cmake_format", lsp_format = "fallback", stop_after_first = true },
+
+                },
+                format_on_save = {
+                  -- These options will be passed to conform.format()
+                  timeout_ms = 500,
+                  lsp_format = "fallback",
+                },
+              })
+            '';
+          type = "lua";
+        }
+
         # {
         #   plugin = pkgs.vimPlugins.neorg;
         #   config = builtins.readFile config/setup/neorg.lua;
