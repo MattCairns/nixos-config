@@ -13,15 +13,10 @@
   xdg.configFile."bin".source = ../scripts/bin;
 
   sops.age.sshKeyPaths = ["/home/${user}/.ssh/id_ed25519"];
+  sops.defaultSopsFile = ../secrets/secrets.yaml;
   sops.secrets = {
-    openai-api-key = {
-      sopsFile = ../secrets/secrets.yaml;
-      path = "/home/${user}/.config/secrets/openai-api-key";
-    };
-    toggl-api-key = {
-      sopsFile = ../secrets/secrets.yaml;
-      path = "/home/${user}/.config/secrets/toggl-api-key";
-    };
+    openai-api-key = {};
+    bitwarden-session-key = {};
   };
 
   programs.nix-index = {
@@ -84,6 +79,7 @@
       flameshot
       texstudio
       qgroundcontrol
+      bitwarden-cli
 
       # Dev tools
       pre-commit
@@ -125,6 +121,7 @@
       (import ../scripts/mosh-ssh.nix {inherit pkgs;})
       (import ../scripts/warp.nix {inherit pkgs;})
       (import ../scripts/fs-diff.nix {inherit pkgs;})
+      (import ../scripts/oor-bw-pw.nix {inherit pkgs;})
     ];
 
     pointerCursor = {
