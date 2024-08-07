@@ -51,7 +51,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.api.nvim_set_keymap('n', '<leader>ca', '<cmd>CodeActionMenu<cr>', { noremap = true })
     vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
     vim.keymap.set('n', '<leader>fm', function()
-      vim.lsp.buf.format { async = true }
+      require('conform').format({async = true})
     end, opts)
   end,
 })

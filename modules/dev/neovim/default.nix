@@ -90,6 +90,17 @@ in {
         pkgs.vimPlugins.nvim-web-devicons
         pkgs.vimPlugins.surround-nvim
         pkgs.vimPlugins.lazygit-nvim
+        {
+          plugin = pkgs.vimPlugins.nvim-autopairs;
+          config =
+            /*
+            lua
+            */
+            ''
+              require('nvim-autopairs').setup {}
+            '';
+          type = "lua";
+        }
         pkgs.vimPlugins.nvim-code-action-menu
 
         {
@@ -108,13 +119,12 @@ in {
                   javascript = { "prettierd", "prettier", stop_after_first = true },
                   nix = { "alejandra", "nixfmt", stop_after_first = true },
                   cmake = { "gersemi", "cmake_format", lsp_format = "fallback", stop_after_first = true },
-
                 },
-                format_on_save = {
-                  -- These options will be passed to conform.format()
-                  timeout_ms = 500,
-                  lsp_format = "fallback",
-                },
+                -- format_on_save = {
+                --   -- These options will be passed to conform.format()
+                --   timeout_ms = 500,
+                --   lsp_format = "fallback",
+                -- },
               })
             '';
           type = "lua";
