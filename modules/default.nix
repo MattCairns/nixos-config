@@ -10,7 +10,6 @@
     ++ [(import ../modules/dev/direnv)]
     ++ [(import ../modules/desktop/waybar)]
     ++ [(import ../modules/desktop/picom)]
-    ++ [(import ../modules/desktop/dunst)]
     ++ [(import ../modules/desktop/hyprland)]
     ++ [(import ../modules/apps/firefox)];
 }
