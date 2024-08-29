@@ -195,13 +195,17 @@ in {
           config = "require('gitsigns').setup()";
           type = "lua";
         }
+        (fromGitHub "e2dcf63ba74e6111b53e1520a4f8a17a3d7427a1" "main" "yavorski/lualine-macro-recording.nvim")
         {
           plugin = pkgs.vimPlugins.lualine-nvim;
           config = ''
             require('lualine').setup {
-                options = {
-                    theme = 'tokyonight',
-                }
+              options = {
+                theme = 'tokyonight',
+              },
+              sections = {
+                lualine_c = { "macro_recording", "%S" },
+              }
             }
           '';
           type = "lua";

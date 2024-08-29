@@ -93,7 +93,7 @@ in {
             name = uuid;
             value = {
               install_url = "https://addons.mozilla.org/en-US/firefox/downloads/latest/${shortId}/latest.xpi";
-              installation_mode = "normal_installed";
+              installation_mode = "force_installed";
             };
           };
         in
@@ -101,7 +101,7 @@ in {
             (extension "ublock-origin" "uBlock0@raymondhill.net")
             (extension "bitwarden-password-manager" "{446900e4-71c2-419f-a6a7-df9c091e268b}")
             (extension "youtube-shorts-block" "{34daeb50-c2d2-4f14-886a-7160b24d66a4}")
-            (extension "sponsorBlocker@ajay.app" "sponsorblock")
+            (extension "sponsorblock" "sponsorBlocker@ajay.app")
             (extension "toolkit-for-ynab" "{4F1FB113-D7D8-40AE-A5BA-9300EAEA0F51}")
             (extension "nicothin-dark-theme" "{99c277af-d778-4a0b-9faa-b1d8165f0a55}")
             (extension "nicothin-space" "{22b0eca1-8c02-4c0d-a5d7-6604ddd9836e}")
