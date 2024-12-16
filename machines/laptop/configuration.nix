@@ -18,7 +18,7 @@
   services.blueman.enable = true;
 
   # Enable touchpad support
-  services.xserver.libinput.enable = true;
+  services.libinput.enable = true;
 
   # Fingerprint
   services.fprintd.enable = true;

@@ -25,7 +25,7 @@
   services.blueman.enable = true;
 
   # Enable touchpad support
-  services.xserver.libinput.enable = true;
+  services.libinput.enable = true;
 
   # Firmware updates
   services.fwupd = {
@@ -47,7 +47,7 @@
   };
 
   powerManagement.resumeCommands = ''
-    ${pkgs.utillinux}/bin/rfkill unblock wlan
+    ${pkgs.util-linux}/bin/rfkill unblock wlan
   '';
 
   systemd.services.lock-after-suspend = {
@@ -61,6 +61,8 @@
   };
 
   systemd.services.lock-after-suspend.enable = true;
+
+  virtualisation.libvirtd.enable = true;
 
   system.stateVersion = "22.11";
 }

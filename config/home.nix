@@ -17,6 +17,8 @@
   sops.secrets = {
     openai-api-key = {};
     bitwarden-session-key = {};
+    jira-cli-api-key = {};
+    gitlab-token = {};
   };
 
   programs.nix-index = {
@@ -80,6 +82,7 @@
       texstudio
       qgroundcontrol
       bitwarden-cli
+      gnome-solanum
 
       # Dev tools
       pre-commit
@@ -87,6 +90,7 @@
       kubectl
       cppcheck
       jira-cli-go
+      glab 
 
       # Formatters
       alejandra
@@ -102,7 +106,7 @@
       nodePackages_latest.dockerfile-language-server-nodejs
       nodePackages.vim-language-server
       lua-language-server
-      buf-language-server
+      buf
       codeium
 
       # Keyboards
@@ -111,6 +115,10 @@
       dfu-programmer
 
       blender
+      bottles
+
+      # Sharing
+      tmate
 
       # Custom scripts
       (import ../scripts/tmux-sessionizer.nix {inherit pkgs;})

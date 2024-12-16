@@ -84,7 +84,6 @@ in {
         }
 
         ## QoL
-        (fromGitHub "2a566f03eb06859298eff837f3a6686dfa5304a5" "main" "tris203/precognition.nvim")
         pkgs.vimPlugins.lspkind-nvim
         pkgs.vimPlugins.rainbow
         pkgs.vimPlugins.nvim-web-devicons
@@ -165,6 +164,24 @@ in {
           type = "lua";
         }
         (fromGitHub "8843b72822151bb7792f3fdad4b63df0bc1dd4a6" "main" "MattCairns/telescope-cargo-workspace.nvim")
+        {
+          # Updated 24/12/13
+          plugin = fromGitHub "b8dbf2223649d7b5bf47d6ea56c0d77acc49129e" "main" "Goose97/timber.nvim";
+          config =
+            /*
+            lua
+            */
+            ''
+              require('timber').setup({
+                  log_templates = {
+                      default = {
+                          rust = [[tracing::debug!("%log_target", %log_target)]],
+                      },
+                  },
+              })
+            '';
+          type = "lua";
+        }
         {
           plugin = pkgs.vimPlugins.oil-nvim;
           config = "require('oil').setup()";

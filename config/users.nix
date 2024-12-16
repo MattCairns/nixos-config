@@ -3,6 +3,6 @@
   users.users.matthew = {
     isNormalUser = true;
     description = "Matthew Cairns";
-    extraGroups = ["dialout" "networkmanager" "wheel" "plugdev"];
+    extraGroups = ["dialout" "networkmanager" "wheel" "plugdev" "qemu-libvirtd" "libvirtd"];
   };
 }

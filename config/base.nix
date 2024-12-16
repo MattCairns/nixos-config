@@ -60,7 +60,7 @@ in {
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
   nix = {
-    package = pkgs.nixFlakes;
+    package = pkgs.nixVersions.stable;
     extraOptions = "experimental-features = nix-command flakes";
     gc = {
       automatic = true;
@@ -129,6 +129,7 @@ in {
   programs.hyprland = {
     enable = true;
     package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+    portalPackage = inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
   };
 
   services.greetd = {
@@ -143,7 +144,8 @@ in {
   };
 
   fonts.packages = with pkgs; [
-    (nerdfonts.override {fonts = ["SourceCodePro" "FiraCode"];})
+    nerd-fonts.sauce-code-pro
+    nerd-fonts.fira-code
     font-awesome
     siji
   ];

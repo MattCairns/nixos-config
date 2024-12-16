@@ -14,6 +14,7 @@
       confirm_os_window_close = 0;
       copy_and_clear_or_interrupt = true;
       term = "tmux-256color";
+      cursor_trail = 3;
     };
   };
 }
