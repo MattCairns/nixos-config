@@ -58,7 +58,6 @@
       # Communication
       zoom-us
       slack
-      signal-desktop
 
       # Video/Audio
       feh # Image Viewer
@@ -119,6 +118,7 @@
 
       # Sharing
       tmate
+      junction
 
       # Custom scripts
       (import ../scripts/tmux-sessionizer.nix {inherit pkgs;})
