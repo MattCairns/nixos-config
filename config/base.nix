@@ -211,6 +211,10 @@ in {
 
   # Globally available packages
   environment.systemPackages = [
+    (pkgs.perl.withPackages(p: [
+      p.PLS
+      p.XMLSimple
+    ]))
     pkgs.nixos-generators
     pkgs.docker-compose
     pkgs.brightnessctl

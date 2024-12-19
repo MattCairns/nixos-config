@@ -2,11 +2,10 @@
 vim.api.nvim_set_keymap('n', '<leader>lg', '<cmd>LazyGit<cr>', { noremap = true, silent = true })
 
 -- lsp trouble
-vim.api.nvim_set_keymap('n', '<leader>tt', '<cmd>TroubleToggle document_diagnostics<cr>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>tw', '<cmd>TroubleToggle workspace_diagnostics<cr>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>tq', '<cmd>TroubleToggle quickfix<cr>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>td', '<cmd>TroubleToggle lsp_definitions<cr>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>tr', '<cmd>TroubleToggle lsp_references<cr>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>tt', '<cmd>Trouble diagnostics toggle<cr>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>tq', '<cmd>Trouble quickfix toggle<cr>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>td', '<cmd>Trouble lsp_definitions toggle<cr>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>tr', '<cmd>Troubl lsp_references toggle<cr>', { noremap = true })
 
 -- telescope
 vim.api.nvim_set_keymap('n', '<leader>ff', "<cmd>lua require('telescope.builtin').find_files()<cr>", { noremap = true })

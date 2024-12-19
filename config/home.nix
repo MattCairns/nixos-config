@@ -8,7 +8,6 @@
     (import ../modules)
     inputs.sops-nix.homeManagerModule
   ];
-  programs.home-manager.enable = true;
   xdg.configFile."wallpapers".source = ../assets/wallpapers;
   xdg.configFile."bin".source = ../scripts/bin;
 
@@ -90,6 +89,7 @@
       cppcheck
       jira-cli-go
       glab 
+      perl
 
       # Formatters
       alejandra
@@ -107,6 +107,7 @@
       lua-language-server
       buf
       codeium
+      perl540Packages.PerlLanguageServer
 
       # Keyboards
       qmk

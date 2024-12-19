@@ -26,6 +26,7 @@ if [ "$pcid" = "$thinkpadid" ] || [ "$pcid" = "$frameworkid" ]; then
     FIREFOX_HOME=7
     SLACK=9
     KITTY=4
+    OBSIDIAN=5
 elif [ "$pcid" = "$desktopid" ]; then
     echo "Desktop uses default workspaces"
 elif [ "$pcid" = "$oorid" ]; then
@@ -39,6 +40,7 @@ if [ $current_day -ge 1 ] && [ $current_day -le 5 ] && [ $current_hour -ge $star
     # Start Firefox
     hyprctl dispatch -- exec "[workspace ${FIREFOX_WORK} silent]" firefox -p work 
     hyprctl dispatch -- exec "[workspace ${SLACK} silent]" slack --disable-gpu
+    hyprctl dispatch -- exec "[workspace ${OBSIDIAN} silent]" obsidian
 else
     echo "It's not work hours or a weekend, work apps not starting."
 fi

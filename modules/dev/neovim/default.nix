@@ -215,15 +215,15 @@ in {
         (fromGitHub "e2dcf63ba74e6111b53e1520a4f8a17a3d7427a1" "main" "yavorski/lualine-macro-recording.nvim")
         {
           plugin = pkgs.vimPlugins.lualine-nvim;
-          config = ''
-            require('lualine').setup {
-              options = {
-                theme = 'tokyonight',
-              },
-              sections = {
-                lualine_c = { "macro_recording", "%S" },
-              }
-            }
+          config = /*lua*/''
+             require('lualine').setup {
+               options = {
+                 theme = 'tokyonight',
+            },
+                 sections = {
+                 lualine_c = { "macro_recording", "%S" },
+               }
+             }
           '';
           type = "lua";
         }
@@ -257,6 +257,28 @@ in {
         }
 
         ## Debugging
+        {
+          # Updated 24/19/12
+          plugin = fromGitHub "f20ebfbaf64a1c6d2a3268a80431df697a4d2bbe" "main" "olimorris/codecompanion.nvim";
+          config =
+            /*
+            lua
+            */
+            ''
+                require("codecompanion").setup({
+                adapters = {
+                  openai = function()
+                    return require("codecompanion.adapters").extend("openai", {
+                      env = {
+                        api_key = "cmd:echo $OPENAI_API_KEY",
+                      },
+                    })
+                  end,
+                },
+              })
+            '';
+          type = "lua";
+        }
         pkgs.vimPlugins.nvim-dap-ui
         pkgs.vimPlugins.nvim-dap-virtual-text
         {

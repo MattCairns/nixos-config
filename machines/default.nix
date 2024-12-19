@@ -24,9 +24,6 @@ in {
       inputs.sops-nix.nixosModules.sops
       home-manager.nixosModules.home-manager
       {
-        home-manager.useGlobalPkgs = true;
-        home-manager.useUserPackages = true;
-        home-manager.backupFileExtension = "backup";
         home-manager.extraSpecialArgs = let
           machine = "framework";
         in {
@@ -35,6 +32,9 @@ in {
         home-manager.users.${user} = {
           imports = [(import ../config/home.nix)];
         };
+        home-manager.backupFileExtension = "backup-" + pkgs.lib.readFile "${pkgs.runCommand "timestamp" {} "echo -n `date '+%Y%m%d%H%M%S'` > $out"}";
+        home-manager.useGlobalPkgs = true;
+        home-manager.useUserPackages = true;
       }
     ];
   };
@@ -49,8 +49,6 @@ in {
       inputs.sops-nix.nixosModules.sops
       home-manager.nixosModules.home-manager
       {
-        home-manager.useGlobalPkgs = true;
-        home-manager.useUserPackages = true;
         home-manager.extraSpecialArgs = let
           machine = "laptop";
         in {
@@ -59,6 +57,9 @@ in {
         home-manager.users.${user} = {
           imports = [(import ../config/home.nix)];
         };
+        home-manager.backupFileExtension = "backup-" + pkgs.lib.readFile "${pkgs.runCommand "timestamp" {} "echo -n `date '+%Y%m%d%H%M%S'` > $out"}";
+        home-manager.useGlobalPkgs = true;
+        home-manager.useUserPackages = true;
       }
     ];
   };
@@ -73,8 +74,6 @@ in {
       inputs.sops-nix.nixosModules.sops
       home-manager.nixosModules.home-manager
       {
-        home-manager.useGlobalPkgs = true;
-        home-manager.useUserPackages = true;
         home-manager.extraSpecialArgs = let
           machine = "nuc";
         in {
@@ -83,6 +82,9 @@ in {
         home-manager.users.${user} = {
           imports = [(import ../config/home.nix)];
         };
+        home-manager.backupFileExtension = "backup-" + pkgs.lib.readFile "${pkgs.runCommand "timestamp" {} "echo -n `date '+%Y%m%d%H%M%S'` > $out"}";
+        home-manager.useGlobalPkgs = true;
+        home-manager.useUserPackages = true;
       }
     ];
   };

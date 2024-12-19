@@ -4,8 +4,9 @@ require'lspconfig'.clangd.setup{capabilities=capabilities}
 require'lspconfig'.cmake.setup{capabilities=capabilities}
 require'lspconfig'.dockerls.setup{capabilities=capabilities}
 require'lspconfig'.nil_ls.setup{capabilities=capabilities}
-require'lspconfig'.bufls.setup{capabilities=capabilities}
+require'lspconfig'.buf_ls.setup{capabilities=capabilities}
 require'lspconfig'.ansiblels.setup{}
+require'lspconfig'.perlls.setup{}
 require'lspconfig'.pyright.setup{
   capabilities=capabilities,
   settings = {
@@ -17,7 +18,7 @@ require'lspconfig'.pyright.setup{
   }
 }
 require'lspconfig'.vimls.setup{}
-
+vim.lsp.set_log_level("debug")
 -- Global mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float)
