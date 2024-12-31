@@ -51,6 +51,7 @@ in {
       "spotify"
       "google-chrome"
       "codeium"
+      "parsec-bin"
     ];
 
   nixpkgs.config.permittedInsecurePackages = [
@@ -230,6 +231,8 @@ in {
     pkgs.pavucontrol
     pkgs.nh
     pkgs.git-lfs
+    pkgs.parsec-bin
+    pkgs.moonlight-qt
   ];
 
   virtualisation.docker.enable = true;

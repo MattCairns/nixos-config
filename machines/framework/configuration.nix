@@ -9,6 +9,11 @@
   sops.age.sshKeyPaths = ["/home/matthew/.ssh/id_ed25519"];
   sops.secrets.user-matthew-password.neededForUsers = true;
 
+
+  users.users.matthew.openssh.authorizedKeys.keys = [
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC1qMj3QQYsUCzTaEzOembl/EC9uk4s9e5wWaiRUklau ha@cairns.pro" 
+  ];
+
   #users.users.matthew.passwordFile = config.sops.secrets.user-matthew-password.path;
   users.users.matthew.hashedPasswordFile = "/persist/passwords/matthew";
   users.users.root.hashedPasswordFile = "/persist/passwords/root";
@@ -24,9 +29,10 @@
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
 
+  hardware.xpadneo.enable = true;
+
   # Enable touchpad support
   services.libinput.enable = true;
-
   # Firmware updates
   services.fwupd = {
     enable = true;

@@ -1,12 +1,11 @@
 {
   pkgs,
   user,
-  inputs,
+  config,
   ...
 }: {
   imports = [
     (import ../modules)
-    inputs.sops-nix.homeManagerModule
   ];
   xdg.configFile."wallpapers".source = ../assets/wallpapers;
   xdg.configFile."bin".source = ../scripts/bin;
@@ -88,7 +87,7 @@
       kubectl
       cppcheck
       jira-cli-go
-      glab 
+      glab
       perl
 
       # Formatters
