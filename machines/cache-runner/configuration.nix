@@ -124,7 +124,7 @@ in {
   users.users.nixos = {
     isNormalUser = true;
     description = "nixos-runner";
-    extraGroups = ["networkmanager" "wheel" "docker"];
+    extraGroups = ["networkmanager" "wheel" "docker" "adbusers"];
     packages = with pkgs; [git tmux magic-wormhole];
   };
 

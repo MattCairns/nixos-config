@@ -65,6 +65,10 @@
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
   # networking.interfaces.enp193s0f3u1.useDHCP = lib.mkDefault true;
+  # networking.interfaces.enp193s0f3u2.ipv4.addresses = [ {
+  #   address = "192.168.168.29";
+  #   prefixLength = 24;
+  # } ];
   # networking.interfaces.wlp1s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";

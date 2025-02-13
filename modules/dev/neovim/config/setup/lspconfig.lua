@@ -18,7 +18,6 @@ require'lspconfig'.pyright.setup{
   }
 }
 require'lspconfig'.vimls.setup{}
-vim.lsp.set_log_level("debug")
 -- Global mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float)

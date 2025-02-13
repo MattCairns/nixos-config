@@ -9,11 +9,40 @@
     xwayland
     slurp
     wl-clipboard
-    swayidle
     swww
     kanshi
     hyprcursor
   ];
+
+  programs.hyprlock.enable = true;
+
+  services.hypridle = {
+    enable = true;
+    settings = {
+      general = {
+        after_sleep_cmd = "hyprctl dispatch dpms on";
+        before_sleep_cmd = "loginctl lock-session";
+        ignore_dbus_inhibit = false;
+        lock_cmd = "pidof hyprlock || hyprlock";
+      };
+
+      listener = [
+        {
+          timeout = 150;
+          on-timeout = "loginctl lock-session";
+        }
+        {
+          timeout = 300;
+          on-timeout = "hyprctl dispatch dpms off";
+          on-resume = "hyprctl dispatch dpms on";
+        }
+        {
+          timeout = 1800;
+          on-timeout = "systemctl suspend";
+        }
+      ];
+    };
+  };
 
   services.dunst = {
     enable = true;
@@ -38,11 +67,6 @@
 
   programs.wlogout = {
     enable = true;
-  };
-
-  programs.swaylock = {
-    enable = true;
-    package = pkgs.swaylock-fancy;
   };
 
   programs.wofi = {
@@ -114,8 +138,7 @@
   };
 
   xdg.configFile."hypr/machine.conf".source = ./config/${machine}.conf;
-  # xdg.configFile."hypr/hyprpaper.conf".source = ./config/hyprpaper.conf;
+  xdg.configFile."hypr/hyprlock.conf".source = ./config/hyprlock.conf;
   xdg.configFile."hypr/start-apps.sh".source = ./config/start-apps.sh;
-  xdg.configFile."hypr/start-swaylock.sh".source = ./config/start-swaylock.sh;
   xdg.configFile."hypr/toggle-tailscale.sh".source = ./config/toggle-tailscale.sh;
 }

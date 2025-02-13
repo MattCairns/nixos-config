@@ -1,13 +1,13 @@
 {
   pkgs,
   lib,
-  config,
   ...
 }: let
   fromGitHub = rev: ref: repo:
     pkgs.vimUtils.buildVimPlugin {
       pname = "${lib.strings.sanitizeDerivationName repo}";
       version = ref;
+      doCheck = false;
       src = builtins.fetchGit {
         url = "https://github.com/${repo}.git";
         ref = ref;
@@ -28,11 +28,7 @@ in {
           config = "vim.cmd[[colorscheme tokyonight-night]]";
           type = "lua";
         }
-        {
-          plugin = pkgs.vimPlugins.nightfox-nvim;
-          # config = "vim.cmd[[colorscheme nightfox]]";
-          # type = "lua";
-        }
+        pkgs.vimPlugins.nightfox-nvim
 
         ## Treesitter
         {
@@ -57,7 +53,6 @@ in {
           type = "lua";
         }
         pkgs.vimPlugins.telescope-fzf-native-nvim
-        pkgs.vimPlugins.harpoon
 
         ## cmp
         {
@@ -74,22 +69,17 @@ in {
         pkgs.vimPlugins.vim-surround
         pkgs.vimPlugins.vim-sleuth
         pkgs.vimPlugins.vim-repeat
-        {
-          plugin = fromGitHub "afd76df166ed0f223ede1071e0cfde8075cc4a24" "main" "TabbyML/vim-tabby";
-          config = ''
-            vim.cmd([[
-              let g:tabby_keybinding_accept = '<Tab>'
-            ]])
-          '';
-          type = "lua";
-        }
 
         ## QoL
+        {
+          plugin = fromGitHub "1491b543ef1d8a0eb29a6ebc35db4fb808dcb47f" "main" "folke/snacks.nvim";
+          config = builtins.readFile config/setup/snacks.lua;
+          type = "lua";
+        }
         pkgs.vimPlugins.lspkind-nvim
         pkgs.vimPlugins.rainbow
         pkgs.vimPlugins.nvim-web-devicons
         pkgs.vimPlugins.surround-nvim
-        pkgs.vimPlugins.lazygit-nvim
         {
           plugin = pkgs.vimPlugins.nvim-autopairs;
           config =
@@ -120,69 +110,18 @@ in {
                   nix = { "alejandra", "nixfmt", stop_after_first = true },
                   cmake = { "gersemi", "cmake_format", lsp_format = "fallback", stop_after_first = true },
                 },
-                -- format_on_save = {
-                --   -- These options will be passed to conform.format()
-                --   timeout_ms = 500,
-                --   lsp_format = "fallback",
-                -- },
               })
             '';
           type = "lua";
         }
-
-        # {
-        #   plugin = pkgs.vimPlugins.neorg;
-        #   config = builtins.readFile config/setup/neorg.lua;
-        #   type = "lua";
-        # }
         {
-          # Updated 07/06/24
-          plugin = fromGitHub "30fe1b3de2b7614f061be4fc9c71984a2b87e50a" "main" "m-demare/hlargs.nvim";
+          # Updated 25/02/12
+          plugin = fromGitHub "a5a7fdacc0ac2f7ca9d241e0e059cb85f0e733bc" "main" "m-demare/hlargs.nvim";
           config = "require('hlargs').setup()";
           type = "lua";
         }
-        {
-          # Updated 07/06/24
-          plugin = fromGitHub "a0ae099c7eb926150ee0a126b1dd78086edbe3fc" "main" "apple/pkl-neovim";
-        }
-        {
-          # Updated 07/06/24
-          plugin = fromGitHub "c6bd6d93e4724ac2dc0cae73ebe1d568bf406537" "main" "epwalsh/obsidian.nvim";
-          config =
-            /*
-            lua
-            */
-            ''
-              require("obsidian").setup({
-                workspaces = {
-                  {
-                    name = "notes",
-                    path = "~/dev/notes",
-                  },
-                },
-              })
-            '';
-          type = "lua";
-        }
+        (fromGitHub "a0ae099c7eb926150ee0a126b1dd78086edbe3fc" "main" "apple/pkl-neovim")
         (fromGitHub "8843b72822151bb7792f3fdad4b63df0bc1dd4a6" "main" "MattCairns/telescope-cargo-workspace.nvim")
-        {
-          # Updated 24/12/13
-          plugin = fromGitHub "b8dbf2223649d7b5bf47d6ea56c0d77acc49129e" "main" "Goose97/timber.nvim";
-          config =
-            /*
-            lua
-            */
-            ''
-              require('timber').setup({
-                  log_templates = {
-                      default = {
-                          rust = [[tracing::debug!("%log_target", %log_target)]],
-                      },
-                  },
-              })
-            '';
-          type = "lua";
-        }
         {
           plugin = pkgs.vimPlugins.oil-nvim;
           config = "require('oil').setup()";
@@ -206,6 +145,17 @@ in {
         {
           plugin = pkgs.vimPlugins.comment-nvim;
           config = "require('Comment').setup()";
+          type = "lua";
+        }
+        {
+          plugin = pkgs.vimPlugins.neotest;
+          config = ''
+              require("neotest").setup({
+              adapters = {
+                require("rustaceanvim.neotest"),
+              },
+            })
+          '';
           type = "lua";
         }
         {
@@ -283,20 +233,13 @@ in {
                     openai = function()
                       return require("codecompanion.adapters").extend("openai", {
                         env = {
-                          api_key = os.getenv("OPENAI_API_KEY"), 
+                          api_key = os.getenv("OPENAI_API_KEY"),
                         },
                       })
                     end,
                   },
               })
             '';
-          type = "lua";
-        }
-        pkgs.vimPlugins.nvim-dap-ui
-        pkgs.vimPlugins.nvim-dap-virtual-text
-        {
-          plugin = pkgs.vimPlugins.nvim-dap;
-          config = builtins.readFile config/setup/dap.lua;
           type = "lua";
         }
         {
@@ -309,6 +252,7 @@ in {
               vim.g.rustaceanvim = {
                 -- Plugin configuration
                 tools = {
+                  test_executor = 'background',
                 },
                 -- LSP configuration
                 server = {
@@ -338,9 +282,6 @@ in {
                       },
                     },
                   },
-                },
-                -- DAP configuration
-                dap = {
                 },
               }
             '';

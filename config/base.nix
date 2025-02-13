@@ -116,6 +116,7 @@ in {
   services.openssh.enable = true;
   programs.ssh.startAgent = true;
   services.tailscale.enable = true;
+  programs.adb.enable = true;
 
   # Set your time zone and locale
   time.timeZone = "America/Vancouver";
@@ -222,7 +223,6 @@ in {
     pkgs.qjackctl
     pkgs.v4l-utils
     pkgs.distrobox
-    pkgs.swaylock
     pkgs.google-chrome
     pkgs.fw-ectool
     pkgs.xkeyboard_config

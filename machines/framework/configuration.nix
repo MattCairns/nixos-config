@@ -9,9 +9,8 @@
   sops.age.sshKeyPaths = ["/home/matthew/.ssh/id_ed25519"];
   sops.secrets.user-matthew-password.neededForUsers = true;
 
-
   users.users.matthew.openssh.authorizedKeys.keys = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC1qMj3QQYsUCzTaEzOembl/EC9uk4s9e5wWaiRUklau ha@cairns.pro" 
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC1qMj3QQYsUCzTaEzOembl/EC9uk4s9e5wWaiRUklau ha@cairns.pro"
   ];
 
   #users.users.matthew.passwordFile = config.sops.secrets.user-matthew-password.path;
@@ -51,6 +50,10 @@
     lidSwitchDocked = "ignore";
     lidSwitchExternalPower = "suspend";
   };
+  services.logind.extraConfig = ''
+    # don’t shutdown when power button is short-pressed
+    HandlePowerKey=ignore
+  '';
 
   powerManagement.resumeCommands = ''
     ${pkgs.util-linux}/bin/rfkill unblock wlan
@@ -61,7 +64,7 @@
     wantedBy = ["post-resume.target"];
     after = ["post-resume.target"];
     script = ''
-      ${pkgs.swaylock}/bin/swaylock
+      ${pkgs.hyprlock}/bin/hyprlock
     '';
     serviceConfig.Type = "oneshot";
   };
@@ -69,6 +72,7 @@
   systemd.services.lock-after-suspend.enable = true;
 
   virtualisation.libvirtd.enable = true;
+  virtualisation.waydroid.enable = true;
 
   system.stateVersion = "22.11";
 }
