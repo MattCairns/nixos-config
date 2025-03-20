@@ -42,6 +42,7 @@ in {
   # Explicitly set which non-free packages can be installed
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (lib.getName pkg) [
+      "discord"
       "vscode-extension-ms-vscode-cpptools"
       "zoom"
       "slack"
@@ -233,6 +234,7 @@ in {
     pkgs.git-lfs
     pkgs.parsec-bin
     pkgs.moonlight-qt
+    pkgs.sccache
   ];
 
   virtualisation.docker.enable = true;

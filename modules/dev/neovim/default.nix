@@ -16,6 +16,7 @@
     };
 in {
   home.packages = with pkgs; [
+    rust-analyzer
     vscode-extensions.ms-vscode.cpptools
     vscode-extensions.vadimcn.vscode-lldb
   ];
@@ -76,6 +77,7 @@ in {
           config = builtins.readFile config/setup/snacks.lua;
           type = "lua";
         }
+        pkgs.vimPlugins.neogen
         pkgs.vimPlugins.lspkind-nvim
         pkgs.vimPlugins.rainbow
         pkgs.vimPlugins.nvim-web-devicons
@@ -147,17 +149,17 @@ in {
           config = "require('Comment').setup()";
           type = "lua";
         }
-        {
-          plugin = pkgs.vimPlugins.neotest;
-          config = ''
-              require("neotest").setup({
-              adapters = {
-                require("rustaceanvim.neotest"),
-              },
-            })
-          '';
-          type = "lua";
-        }
+        ## {
+        ##   plugin = pkgs.vimPlugins.neotest;
+        ##   config = ''
+        ##       require("neotest").setup({
+        ##       adapters = {
+        ##         require("rustaceanvim.neotest"),
+        ##       },
+        ##     })
+        ##   '';
+        ##   type = "lua";
+        ## }
         {
           plugin = pkgs.vimPlugins.gitsigns-nvim;
           config = "require('gitsigns').setup()";
@@ -262,10 +264,19 @@ in {
                   settings = {
                     -- rust-analyzer language server configuration
                     ['rust-analyzer'] = {
+                     diagnostics = {
+                         enable = true,
+                         disabled = {"unresolved-proc-macro"},
+                         enableExperimental = false,
+                     },
+                     check = {
+                         workspace = false,
+                     },
                      cargo = {
                         allFeatures = true,
                         loadOutDirsFromCheck = true,
                         runBuildScripts = true,
+                        targetDir = true,
                       },
                       checkOnSave = {
                         allFeatures = true,
@@ -274,11 +285,14 @@ in {
                       },
                       procMacro = {
                         enable = true,
-                        ignored = {
-                          ["async-trait"] = { "async_trait" },
-                          ["napi-derive"] = { "napi" },
-                          ["async-recursion"] = { "async_recursion" },
-                        },
+                        -- ignored = {
+                        --   ["async-trait"] = { "async_trait" },
+                        --   ["napi-derive"] = { "napi" },
+                        --   ["async-recursion"] = { "async_recursion" },
+                        --   ["nereus"] = { "main" },
+                        --   ["nereus-derive"] = { "main" },
+                        --   ["tracing"] = { "instrument" },
+                        -- },
                       },
                     },
                   },
