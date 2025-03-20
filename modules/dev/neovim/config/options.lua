@@ -48,3 +48,16 @@ vim.diagnostic.config({
 -- note: this setting is global and should be set only once
 vim.o.updatetime = 500
 vim.cmd [[autocmd! CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
+
+-- Stop/start rust_analyzer if in background
+-- vim.api.nvim_create_autocmd("VimSuspend", {
+--   callback = function()
+--     vim.cmd("LspStop")
+--   end,
+-- })
+--
+-- vim.api.nvim_create_autocmd("VimResume", {
+--   callback = function()
+--     vim.cmd("LspStart")
+--   end,
+-- })

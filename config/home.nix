@@ -56,6 +56,7 @@
       # Communication
       zoom-us
       slack
+      discord
 
       # Video/Audio
       feh # Image Viewer
@@ -99,7 +100,6 @@
       pyright
       cmake-language-server
       nil
-      rust-analyzer
       ansible-language-server
       nodePackages_latest.dockerfile-language-server-nodejs
       nodePackages.vim-language-server

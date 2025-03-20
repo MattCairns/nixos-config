@@ -5,7 +5,9 @@
 vim.api.nvim_set_keymap('n', '<leader>tt', '<cmd>Trouble diagnostics toggle<cr>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>tq', '<cmd>Trouble quickfix toggle<cr>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>td', '<cmd>Trouble lsp_definitions toggle<cr>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>tr', '<cmd>Troubl lsp_references toggle<cr>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>tr', '<cmd>Trouble lsp_references toggle<cr>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>tn', '<cmd>Trouble diagnostics next<cr>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>tp', '<cmd>Trouble lsp_references last<cr>', { noremap = true })
 
 -- telescope
 -- vim.api.nvim_set_keymap('n', '<leader>ff', "<cmd>lua require('telescope.builtin').find_files()<cr>", { noremap = true })

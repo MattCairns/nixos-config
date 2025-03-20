@@ -199,6 +199,16 @@ rec_ls = function()
 	});
 end
 
+ls.add_snippets("rust", {
+	s("slp", {
+		t("std::thread::sleep(std::time::Duration::from_millis("), i(1), t("));"), i(0)
+	}),
+
+	s("th", {
+		t("std::thread::spawn(move || {"), i(1), t("});"), i(0)
+	}),
+})
+
 ls.add_snippets("cpp", {
 	s("cp", {
     t("// Copyright 2023 Open Ocean Robotics"), i(0)
@@ -268,6 +278,10 @@ ls.add_snippets("cpp", {
 
 -- set type to "autosnippets" for adding autotriggered snippets.
 ls.add_snippets("all", {
+	s("cp", {
+		t("// Copyright 2025 Open Ocean Robotics"), i(0)
+	}),
+
 	s("autotrigger", {
 		t("autosnippet"),
 	}),
