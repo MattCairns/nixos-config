@@ -1,6 +1,7 @@
 {...}: {
   imports =
-    [(import ../modules/dev/neovim)]
+    # [(import ../modules/dev/neovim)]
+    [(import ../modules/dev/nvf)]
     ++ [(import ../modules/dev/git)]
     ++ [(import ../modules/dev/kitty)]
     ++ [(import ../modules/dev/wezterm)]

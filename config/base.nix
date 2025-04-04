@@ -214,7 +214,7 @@ in {
 
   # Globally available packages
   environment.systemPackages = [
-    (pkgs.perl.withPackages(p: [
+    (pkgs.perl.withPackages (p: [
       p.PLS
       p.XMLSimple
     ]))

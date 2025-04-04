@@ -32,28 +32,28 @@ in {
         pkgs.vimPlugins.nightfox-nvim
 
         ## Treesitter
-        {
-          plugin = pkgs.vimPlugins.nvim-treesitter;
-          config = builtins.readFile config/setup/treesitter.lua;
-          type = "lua";
-        }
-        pkgs.vimPlugins.nvim-treesitter.withAllGrammars
-        pkgs.vimPlugins.nvim-treesitter-textobjects
-        {
-          plugin = pkgs.vimPlugins.nvim-lspconfig;
-          config = builtins.readFile config/setup/lspconfig.lua;
-          type = "lua";
-        }
+        # {
+        #   plugin = pkgs.vimPlugins.nvim-treesitter;
+        #   config = builtins.readFile config/setup/treesitter.lua;
+        #   type = "lua";
+        # }
+        # pkgs.vimPlugins.nvim-treesitter.withAllGrammars
+        # pkgs.vimPlugins.nvim-treesitter-textobjects
+        # {
+        #   plugin = pkgs.vimPlugins.nvim-lspconfig;
+        #   config = builtins.readFile config/setup/lspconfig.lua;
+        #   type = "lua";
+        # }
 
-        pkgs.vimPlugins.plenary-nvim
-
-        ## Telescope
-        {
-          plugin = pkgs.vimPlugins.telescope-nvim;
-          config = builtins.readFile config/setup/telescope.lua;
-          type = "lua";
-        }
-        pkgs.vimPlugins.telescope-fzf-native-nvim
+        # pkgs.vimPlugins.plenary-nvim
+        #
+        # ## Telescope
+        # {
+        #   plugin = pkgs.vimPlugins.telescope-nvim;
+        #   config = builtins.readFile config/setup/telescope.lua;
+        #   type = "lua";
+        # }
+        # pkgs.vimPlugins.telescope-fzf-native-nvim
 
         ## cmp
         {
@@ -67,7 +67,7 @@ in {
         pkgs.vimPlugins.cmp_luasnip
 
         ## Tpope
-        pkgs.vimPlugins.vim-surround
+        # pkgs.vimPlugins.vim-surround
         pkgs.vimPlugins.vim-sleuth
         pkgs.vimPlugins.vim-repeat
 
@@ -77,23 +77,23 @@ in {
           config = builtins.readFile config/setup/snacks.lua;
           type = "lua";
         }
-        pkgs.vimPlugins.neogen
-        pkgs.vimPlugins.lspkind-nvim
-        pkgs.vimPlugins.rainbow
-        pkgs.vimPlugins.nvim-web-devicons
-        pkgs.vimPlugins.surround-nvim
-        {
-          plugin = pkgs.vimPlugins.nvim-autopairs;
-          config =
-            /*
-            lua
-            */
-            ''
-              require('nvim-autopairs').setup {}
-            '';
-          type = "lua";
-        }
-        pkgs.vimPlugins.nvim-code-action-menu
+        # pkgs.vimPlugins.neogen
+        # pkgs.vimPlugins.lspkind-nvim
+        # pkgs.vimPlugins.rainbow
+        # pkgs.vimPlugins.nvim-web-devicons
+        # pkgs.vimPlugins.surround-nvim
+        # {
+        #   plugin = pkgs.vimPlugins.nvim-autopairs;
+        #   config =
+        #     /*
+        #     lua
+        #     */
+        #     ''
+        #       require('nvim-autopairs').setup {}
+        #     '';
+        #   type = "lua";
+        # }
+        # pkgs.vimPlugins.nvim-code-action-menu
 
         {
           plugin =
@@ -124,47 +124,47 @@ in {
         }
         (fromGitHub "a0ae099c7eb926150ee0a126b1dd78086edbe3fc" "main" "apple/pkl-neovim")
         (fromGitHub "8843b72822151bb7792f3fdad4b63df0bc1dd4a6" "main" "MattCairns/telescope-cargo-workspace.nvim")
-        {
-          plugin = pkgs.vimPlugins.oil-nvim;
-          config = "require('oil').setup()";
-          type = "lua";
-        }
-        {
-          plugin = pkgs.vimPlugins.fidget-nvim;
-          config = "require('fidget').setup{}";
-          type = "lua";
-        }
-        {
-          plugin = pkgs.vimPlugins.trouble-nvim;
-          config = "require('trouble').setup {}";
-          type = "lua";
-        }
-        {
-          plugin = pkgs.vimPlugins.luasnip;
-          config = builtins.readFile config/setup/luasnip.lua;
-          type = "lua";
-        }
-        {
-          plugin = pkgs.vimPlugins.comment-nvim;
-          config = "require('Comment').setup()";
-          type = "lua";
-        }
-        ## {
-        ##   plugin = pkgs.vimPlugins.neotest;
-        ##   config = ''
-        ##       require("neotest").setup({
-        ##       adapters = {
-        ##         require("rustaceanvim.neotest"),
-        ##       },
-        ##     })
-        ##   '';
-        ##   type = "lua";
-        ## }
-        {
-          plugin = pkgs.vimPlugins.gitsigns-nvim;
-          config = "require('gitsigns').setup()";
-          type = "lua";
-        }
+        # {
+        #   plugin = pkgs.vimPlugins.oil-nvim;
+        #   config = "require('oil').setup()";
+        #   type = "lua";
+        # }
+        # {
+        #   plugin = pkgs.vimPlugins.fidget-nvim;
+        #   config = "require('fidget').setup{}";
+        #   type = "lua";
+        # }
+        # {
+        #   plugin = pkgs.vimPlugins.trouble-nvim;
+        #   config = "require('trouble').setup {}";
+        #   type = "lua";
+        # }
+        # {
+        #   plugin = pkgs.vimPlugins.luasnip;
+        #   config = builtins.readFile config/setup/luasnip.lua;
+        #   type = "lua";
+        # }
+        # {
+        #   plugin = pkgs.vimPlugins.comment-nvim;
+        #   config = "require('Comment').setup()";
+        #   type = "lua";
+        # }
+        # {
+        #   plugin = pkgs.vimPlugins.neotest;
+        #   config = ''
+        #       require("neotest").setup({
+        #       adapters = {
+        #         require("rustaceanvim.neotest"),
+        #       },
+        #     })
+        #   '';
+        #   type = "lua";
+        # }
+        # {
+        #   plugin = pkgs.vimPlugins.gitsigns-nvim;
+        #   config = "require('gitsigns').setup()";
+        #   type = "lua";
+        # }
         (fromGitHub "e2dcf63ba74e6111b53e1520a4f8a17a3d7427a1" "main" "yavorski/lualine-macro-recording.nvim")
         {
           plugin = pkgs.vimPlugins.lualine-nvim;

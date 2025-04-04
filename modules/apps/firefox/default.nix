@@ -9,10 +9,10 @@
   };
   searchEngines = {
     "SearXNG" = {
-      urls = [{ template = "http://192.168.1.10:8129/search?q={searchTerms}"; }];
+      urls = [{template = "http://192.168.1.10:8129/search?q={searchTerms}";}];
       iconUpdateURL = "https://nixos.wiki/favicon.png";
       updateInterval = 24 * 60 * 60 * 1000; # every day
-      definedAliases = [ "@searx" ];
+      definedAliases = ["@searx"];
     };
   };
 in {
@@ -108,36 +108,37 @@ in {
           name = "work";
           isDefault = false;
           search = {
-            engines = searchEngines; 
+            engines = searchEngines;
           };
         };
       };
     };
   };
 }
-        #     {
-        #       Name = "SearXNG";
-        #       Alias = "searx";
-        #       Method = "GET";
-        #       Description = "Search on the SearXNG engine.";
-        #       PostData = "";
-        #       URLTemplate = "http://192.168.1.10:8129/search?q={searchTerms}";
-        #     }
-        #     {
-        #       Name = "NixOS Search";
-        #       Alias = "nix";
-        #       Method = "GET";
-        #       Description = "Search NixOS packages";
-        #       PostData = "";
-        #       URLTemplate = "https://search.nixos.org/packages?channel=unstable&query={searchTerms}";
-        #     }
-        #     {
-        #       Name = "Brave Search";
-        #       Alias = "brave";
-        #       Method = "GET";
-        #       Description = "Search on the Brave search engine.";
-        #       PostData = "";
-        #       URLTemplate = "https://search.brave.com/search?q={searchTerms}";
-        #     }
-        #   ];
-        # };
+#     {
+#       Name = "SearXNG";
+#       Alias = "searx";
+#       Method = "GET";
+#       Description = "Search on the SearXNG engine.";
+#       PostData = "";
+#       URLTemplate = "http://192.168.1.10:8129/search?q={searchTerms}";
+#     }
+#     {
+#       Name = "NixOS Search";
+#       Alias = "nix";
+#       Method = "GET";
+#       Description = "Search NixOS packages";
+#       PostData = "";
+#       URLTemplate = "https://search.nixos.org/packages?channel=unstable&query={searchTerms}";
+#     }
+#     {
+#       Name = "Brave Search";
+#       Alias = "brave";
+#       Method = "GET";
+#       Description = "Search on the Brave search engine.";
+#       PostData = "";
+#       URLTemplate = "https://search.brave.com/search?q={searchTerms}";
+#     }
+#   ];
+# };
+

@@ -36,6 +36,7 @@ in {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
         home-manager.sharedModules = [
+          inputs.nvf.homeManagerModules.default
           inputs.sops-nix.homeManagerModules.sops
         ];
       }
