@@ -36,7 +36,7 @@ in {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
         home-manager.sharedModules = [
-          inputs.nvf.homeManagerModules.default
+          inputs.nixvim.homeManagerModules.nixvim
           inputs.sops-nix.homeManagerModules.sops
         ];
       }

@@ -32,28 +32,28 @@ in {
         pkgs.vimPlugins.nightfox-nvim
 
         ## Treesitter
-        # {
-        #   plugin = pkgs.vimPlugins.nvim-treesitter;
-        #   config = builtins.readFile config/setup/treesitter.lua;
-        #   type = "lua";
-        # }
-        # pkgs.vimPlugins.nvim-treesitter.withAllGrammars
-        # pkgs.vimPlugins.nvim-treesitter-textobjects
-        # {
-        #   plugin = pkgs.vimPlugins.nvim-lspconfig;
-        #   config = builtins.readFile config/setup/lspconfig.lua;
-        #   type = "lua";
-        # }
+        {
+          plugin = pkgs.vimPlugins.nvim-treesitter;
+          config = builtins.readFile config/setup/treesitter.lua;
+          type = "lua";
+        }
+        pkgs.vimPlugins.nvim-treesitter.withAllGrammars
+        pkgs.vimPlugins.nvim-treesitter-textobjects
+        {
+          plugin = pkgs.vimPlugins.nvim-lspconfig;
+          config = builtins.readFile config/setup/lspconfig.lua;
+          type = "lua";
+        }
 
-        # pkgs.vimPlugins.plenary-nvim
-        #
-        # ## Telescope
-        # {
-        #   plugin = pkgs.vimPlugins.telescope-nvim;
-        #   config = builtins.readFile config/setup/telescope.lua;
-        #   type = "lua";
-        # }
-        # pkgs.vimPlugins.telescope-fzf-native-nvim
+        pkgs.vimPlugins.plenary-nvim
+
+        ## Telescope
+        {
+          plugin = pkgs.vimPlugins.telescope-nvim;
+          config = builtins.readFile config/setup/telescope.lua;
+          type = "lua";
+        }
+        pkgs.vimPlugins.telescope-fzf-native-nvim
 
         ## cmp
         {
@@ -68,8 +68,8 @@ in {
 
         ## Tpope
         # pkgs.vimPlugins.vim-surround
-        pkgs.vimPlugins.vim-sleuth
-        pkgs.vimPlugins.vim-repeat
+        # pkgs.vimPlugins.vim-sleuth
+        # pkgs.vimPlugins.vim-repeat
 
         ## QoL
         {

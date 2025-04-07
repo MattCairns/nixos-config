@@ -18,14 +18,14 @@
       url = "https://github.com/hyprwm/Hyprland";
       submodules = true;
     };
-    nvf.url = "github:notashelf/nvf";
+    nixvim.url = "github:nix-community/nixvim";
   };
 
   outputs = inputs @ {
     nixpkgs,
     home-manager,
     hyprland,
-    nvf,
+    nixvim,
     ...
   }: let
     user = "matthew";
@@ -33,7 +33,7 @@
     nixosConfigurations = (
       import ./machines {
         inherit (nixpkgs) lib;
-        inherit inputs nixpkgs home-manager hyprland nvf user;
+        inherit inputs nixpkgs home-manager hyprland user;
       }
     );
 
