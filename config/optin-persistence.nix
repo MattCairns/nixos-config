@@ -65,6 +65,7 @@
         "/var/lib/docker"
         "/etc/NetworkManager"
         "/etc/ssh"
+        "/var/lib/nixos"
       ];
       files = [
       ];

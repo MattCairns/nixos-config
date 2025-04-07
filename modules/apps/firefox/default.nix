@@ -10,7 +10,7 @@
   searchEngines = {
     "SearXNG" = {
       urls = [{template = "http://192.168.1.10:8129/search?q={searchTerms}";}];
-      iconUpdateURL = "https://nixos.wiki/favicon.png";
+      icon = "https://nixos.wiki/favicon.png";
       updateInterval = 24 * 60 * 60 * 1000; # every day
       definedAliases = ["@searx"];
     };
