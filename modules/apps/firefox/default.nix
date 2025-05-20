@@ -74,6 +74,7 @@ in {
           "browser.newtabpage.activity-stream.showSponsored" = lock-false;
           "browser.newtabpage.activity-stream.system.showSponsored" = lock-false;
           "browser.newtabpage.activity-stream.showSponsoredTopSites" = lock-false;
+          "svg.context-properties.content.enabled" = lock-false;
         };
         ExtensionSettings = with builtins; let
           extension = shortId: uuid: {
@@ -92,6 +93,7 @@ in {
             (extension "toolkit-for-ynab" "{4F1FB113-D7D8-40AE-A5BA-9300EAEA0F51}")
             (extension "nicothin-dark-theme" "{99c277af-d778-4a0b-9faa-b1d8165f0a55}")
             (extension "nicothin-space" "{22b0eca1-8c02-4c0d-a5d7-6604ddd9836e}")
+            (extension "proxy-toggle" "{0c3ab5c8-57ac-4ad8-9dd1-ee331517884d}")
           ];
       };
       profiles = {
@@ -115,30 +117,3 @@ in {
     };
   };
 }
-#     {
-#       Name = "SearXNG";
-#       Alias = "searx";
-#       Method = "GET";
-#       Description = "Search on the SearXNG engine.";
-#       PostData = "";
-#       URLTemplate = "http://192.168.1.10:8129/search?q={searchTerms}";
-#     }
-#     {
-#       Name = "NixOS Search";
-#       Alias = "nix";
-#       Method = "GET";
-#       Description = "Search NixOS packages";
-#       PostData = "";
-#       URLTemplate = "https://search.nixos.org/packages?channel=unstable&query={searchTerms}";
-#     }
-#     {
-#       Name = "Brave Search";
-#       Alias = "brave";
-#       Method = "GET";
-#       Description = "Search on the Brave search engine.";
-#       PostData = "";
-#       URLTemplate = "https://search.brave.com/search?q={searchTerms}";
-#     }
-#   ];
-# };
-

@@ -90,6 +90,7 @@
       jira-cli-go
       glab
       perl
+      codex
 
       # Formatters
       alejandra

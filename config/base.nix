@@ -42,6 +42,7 @@ in {
   # Explicitly set which non-free packages can be installed
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (lib.getName pkg) [
+      "teamviewer"
       "discord"
       "vscode-extension-ms-vscode-cpptools"
       "zoom"
@@ -235,6 +236,7 @@ in {
     pkgs.parsec-bin
     pkgs.moonlight-qt
     pkgs.sccache
+    pkgs.teamviewer
   ];
 
   virtualisation.docker.enable = true;
