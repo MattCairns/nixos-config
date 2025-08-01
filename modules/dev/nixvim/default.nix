@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   programs.nixvim = {
     enable = true;
     viAlias = true;
@@ -25,7 +26,7 @@
       ignorecase = true;
       smartcase = true;
       updatetime = 250;
-      timeoutlen = 300;
+      timeoutlen = 500;
       splitright = true;
       splitbelow = true;
       inccommand = "split";
@@ -65,8 +66,8 @@
     ];
 
     colorschemes.tokyonight.enable = true;
-    colorschemes.catppuccin.settings.flavour = "latte";
-    colorschemes.catppuccin.enable = false;
+    # colorschemes.catppuccin.settings.flavour = "latte";
+    # colorschemes.catppuccin.enable = f;
 
     extraPlugins = [
       (pkgs.vimUtils.buildVimPlugin {
@@ -137,9 +138,9 @@
             completeopt = "menu,menuone,noinsert";
           };
           sources = [
-            {name = "nvim_lsp";}
-            {name = "path";}
-            {name = "buffer";}
+            { name = "nvim_lsp"; }
+            { name = "path"; }
+            { name = "buffer"; }
           ];
           mapping = {
             "<C-n>" = "cmp.mapping.select_next_item()";
@@ -257,6 +258,7 @@
                 };
                 cargo = {
                   allFeatures = true;
+                  allTargets = true;
                   runBuildScripts = true;
                   targetDir = true;
                 };
