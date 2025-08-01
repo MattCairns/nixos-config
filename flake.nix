@@ -25,7 +25,6 @@
     nixpkgs,
     home-manager,
     hyprland,
-    nixvim,
     ...
   }: let
     user = "matthew";
