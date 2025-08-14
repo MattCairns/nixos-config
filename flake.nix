@@ -19,24 +19,34 @@
       submodules = true;
     };
     nixvim.url = "github:nix-community/nixvim";
+    ghostty.url = "github:ghostty-org/ghostty";
   };
 
-  outputs = inputs @ {
-    nixpkgs,
-    home-manager,
-    hyprland,
-    nixvim,
-    ...
-  }: let
-    user = "matthew";
-  in {
-    nixosConfigurations = (
-      import ./machines {
-        inherit (nixpkgs) lib;
-        inherit inputs nixpkgs home-manager hyprland user;
-      }
-    );
+  outputs =
+    inputs@{
+      nixpkgs,
+      home-manager,
+      hyprland,
+      nixvim,
+      ...
+    }:
+    let
+      user = "matthew";
+    in
+    {
+      nixosConfigurations = (
+        import ./machines {
+          inherit (nixpkgs) lib;
+          inherit
+            inputs
+            nixpkgs
+            home-manager
+            hyprland
+            user
+            ;
+        }
+      );
 
-    formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
-  };
+      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
+    };
 }

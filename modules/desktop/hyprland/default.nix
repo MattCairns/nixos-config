@@ -2,7 +2,8 @@
   pkgs,
   machine,
   ...
-}: {
+}:
+{
   home.packages = with pkgs; [
     hyprpaper
     wlr-randr
@@ -13,6 +14,21 @@
     kanshi
     hyprcursor
   ];
+
+  services.hyprpaper = {
+    enable = true;
+    settings = {
+      ipc = "off";
+      splash = false;
+      preload = [
+        (builtins.toString /home/matthew/.config/wallpapers/pexels-eberhard-grossgasteiger-730981.jpg)
+      ];
+
+      wallpapers = [
+        ",${builtins.toString /home/matthew/.config/wallpapers/pexels-eberhard-grossgasteiger-730981.jpg}"
+      ];
+    };
+  };
 
   programs.hyprlock.enable = true;
 
@@ -72,9 +88,7 @@
   programs.wofi = {
     enable = true;
     style =
-      /*
-      css
-      */
+      # css
       ''
         *{
             font-family: monospace;
