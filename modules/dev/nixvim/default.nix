@@ -13,8 +13,10 @@
       register = "unnamedplus";
     };
 
-    diagnostics = {
-      virtual_text = true;
+    diagnostic = {
+      settings = {
+        virtual_text = true;
+      };
     };
 
     opts = {

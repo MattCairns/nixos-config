@@ -4,7 +4,6 @@
     # [(import ../modules/dev/neovim)]
     [ (import ../modules/dev/nixvim) ]
     ++ [ (import ../modules/dev/git) ]
-    ++ [ (import ../modules/dev/kitty) ]
     ++ [ (import ../modules/dev/ghostty) ]
     ++ [ (import ../modules/dev/wezterm) ]
     ++ [ (import ../modules/dev/starship) ]

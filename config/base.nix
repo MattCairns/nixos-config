@@ -61,6 +61,7 @@ in
       "veracrypt"
       "vscode-extension-ms-vscode-cpptools"
       "zoom"
+      "claude-code"
     ];
 
   nixpkgs.config.permittedInsecurePackages = [
@@ -145,23 +146,13 @@ in
     xserver = {
       enable = true;
       displayManager.startx.enable = true;
-      displayManager.lightdm.enable = false;
-      displayManager.gdm.enable = false;
+    };
+    displayManager = {
+      gdm.enable = false;
     };
   };
 
   systemd.services.display-manager.enable = false;
-
-  # services.greetd = {
-  #   enable = true;
-  #   settings = rec {
-  #     initial_session = {
-  #       command = "${inputs.hyprland.packages.${pkgs.system}.hyprland}/bin/Hyprland";
-  #       user = "${user}";
-  #     };
-  #     default_session = initial_session;
-  #   };
-  # };
 
   fonts.packages = with pkgs; [
     nerd-fonts.sauce-code-pro
@@ -253,11 +244,20 @@ in
     pkgs.moonlight-qt
     pkgs.sccache
     pkgs.teamviewer
+    # Audio tools
+    pkgs.alsa-utils
+    pkgs.alsa-tools
+    pkgs.wireplumber
     # pkgs.vagrant
   ];
 
+  # Audio firmware and hardware support
+  hardware.firmware = [ pkgs.linux-firmware ];
+  hardware.enableRedistributableFirmware = true;
+
   virtualisation.docker.enable = true;
   users.extraGroups.docker.members = [ "${user}" ];
+  users.extraGroups.audio.members = [ "${user}" ];
 
   # Set up shell
   users.defaultUserShell = pkgs.fish;

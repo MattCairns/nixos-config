@@ -19,13 +19,13 @@ desktopid=sun
 FIREFOX_WORK=7
 FIREFOX_HOME=7
 SLACK=9
-KITTY=4
+GHOSTTY=4
 
 if [ "$pcid" = "$thinkpadid" ] || [ "$pcid" = "$frameworkid" ]; then
     FIREFOX_WORK=7
     FIREFOX_HOME=7
     SLACK=9
-    KITTY=4
+    GHOSTTY=4
     OBSIDIAN=5
 elif [ "$pcid" = "$desktopid" ]; then
     echo "Desktop uses default workspaces"
@@ -45,7 +45,7 @@ else
     echo "It's not work hours or a weekend, work apps not starting."
 fi
     hyprctl dispatch -- exec "[workspace ${FIREFOX_HOME} silent]" firefox -p home
-    hyprctl dispatch -- exec "[workspace ${KITTY} silent]" kitty -e /home/matthew/.config/bin/ta
+    hyprctl dispatch -- exec "[workspace ${GHOSTTY} silent]" ghostty --command /home/matthew/.config/bin/ta
     hyprctl dispatch -- exec "[workspace special:spotify silent]" spotify 
  
 
