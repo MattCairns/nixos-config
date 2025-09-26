@@ -11,7 +11,7 @@
     '';
 
     # theme = "Tokyo Night";
-    themeFile = "kanagawa_lotus";
+    themeFile = "kanagawa_dragon";
     settings = {
       confirm_os_window_close = 0;
       copy_and_clear_or_interrupt = true;

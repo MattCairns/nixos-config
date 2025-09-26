@@ -33,6 +33,7 @@ let
           "capture.props" = {
             "node.name" = "effect_input.rnnoise";
             "node.passive" = true;
+            "node.target" = "alsa_input.usb-Focusrite_Scarlett_2i2_USB-00.HiFi__Mic1__source";
           };
           "playback.props" = {
             "node.name" = "effect_output.rnnoise";
@@ -61,6 +62,7 @@ in
       "veracrypt"
       "vscode-extension-ms-vscode-cpptools"
       "zoom"
+      "claude-code"
     ];
 
   nixpkgs.config.permittedInsecurePackages = [
@@ -106,9 +108,9 @@ in
   # Bootloader.
   boot.loader.timeout = 5;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.systemd-boot.enable = false;
-  boot.loader.grub.enable = true;
-  boot.loader.grub.efiSupport = true;
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.grub.enable = false;
+  boot.loader.grub.efiSupport = false;
   boot.loader.grub.device = "nodev";
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
@@ -145,23 +147,13 @@ in
     xserver = {
       enable = true;
       displayManager.startx.enable = true;
-      displayManager.lightdm.enable = false;
-      displayManager.gdm.enable = false;
+    };
+    displayManager = {
+      gdm.enable = false;
     };
   };
 
   systemd.services.display-manager.enable = false;
-
-  # services.greetd = {
-  #   enable = true;
-  #   settings = rec {
-  #     initial_session = {
-  #       command = "${inputs.hyprland.packages.${pkgs.system}.hyprland}/bin/Hyprland";
-  #       user = "${user}";
-  #     };
-  #     default_session = initial_session;
-  #   };
-  # };
 
   fonts.packages = with pkgs; [
     nerd-fonts.sauce-code-pro
@@ -199,6 +191,7 @@ in
 
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;
+  services.pulseaudio.support32Bit = true;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -208,6 +201,7 @@ in
     jack.enable = true;
     extraConfig.pipewire."99-input-denoising" = rnnoise_config;
   };
+  users.extraGroups.audio.members = [ "${user}" ];
 
   # Enable syncthing
   services.syncthing = {
@@ -253,8 +247,16 @@ in
     pkgs.moonlight-qt
     pkgs.sccache
     pkgs.teamviewer
+    # Audio tools
+    pkgs.alsa-utils
+    pkgs.alsa-tools
+    pkgs.wireplumber
     # pkgs.vagrant
   ];
+
+  # Audio firmware and hardware support
+  hardware.firmware = [ pkgs.linux-firmware ];
+  hardware.enableRedistributableFirmware = true;
 
   virtualisation.docker.enable = true;
   users.extraGroups.docker.members = [ "${user}" ];

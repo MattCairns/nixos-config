@@ -36,7 +36,7 @@ in {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
         home-manager.sharedModules = [
-          inputs.nixvim.homeManagerModules.nixvim
+          inputs.nixvim.homeModules.nixvim
           inputs.sops-nix.homeManagerModules.sops
         ];
       }
@@ -64,6 +64,10 @@ in {
         home-manager.backupFileExtension = "backup-" + pkgs.lib.readFile "${pkgs.runCommand "timestamp" {} "echo -n `date '+%Y%m%d%H%M%S'` > $out"}";
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
+        home-manager.sharedModules = [
+          inputs.nixvim.homeModules.nixvim
+          inputs.sops-nix.homeManagerModules.sops
+        ];
       }
     ];
   };
@@ -89,15 +93,22 @@ in {
         home-manager.backupFileExtension = "backup-" + pkgs.lib.readFile "${pkgs.runCommand "timestamp" {} "echo -n `date '+%Y%m%d%H%M%S'` > $out"}";
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
+        home-manager.sharedModules = [
+          inputs.nixvim.homeModules.nixvim
+          inputs.sops-nix.homeManagerModules.sops
+        ];
       }
     ];
   };
 
   cache-runner = lib.nixosSystem {
     inherit system;
-    specialArgs = {inherit inputs user pkgs;};
+    specialArgs = {inherit inputs user;};
     modules = [
       ./cache-runner/configuration.nix
+      {
+        nixpkgs.pkgs = pkgs;
+      }
     ];
   };
 }

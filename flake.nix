@@ -18,6 +18,8 @@
       url = "https://github.com/hyprwm/Hyprland";
       submodules = true;
     };
+    hyprpaper.url = "github:hyprwm/hyprpaper";
+    hyprpaper.inputs.nixpkgs.follows = "nixpkgs";
     nixvim.url = "github:nix-community/nixvim";
     ghostty.url = "github:ghostty-org/ghostty";
   };
@@ -27,6 +29,7 @@
       nixpkgs,
       home-manager,
       hyprland,
+      hyprpaper,
       nixvim,
       ...
     }:

@@ -13,8 +13,10 @@
       register = "unnamedplus";
     };
 
-    diagnostics = {
-      virtual_text = true;
+    diagnostic = {
+      settings = {
+        virtual_text = true;
+      };
     };
 
     opts = {
@@ -117,7 +119,6 @@
           clangd.enable = true;
           buf_ls.enable = true;
           dockerls.enable = true;
-          ansiblels.enable = true;
           pyright.enable = true;
           bashls.enable = true;
         };

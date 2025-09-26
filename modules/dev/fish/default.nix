@@ -2,17 +2,17 @@
   pkgs,
   config,
   ...
-}: {
+}:
+{
   programs.bash.initExtra = ''
     export OPENAI_API_KEY $(cat ${config.sops.secrets.openai-api-key.path})
   '';
 
   programs.fish = {
     enable = true;
+    generateCompletions = true;
     interactiveShellInit =
-      /*
-      fish
-      */
+      # fish
       ''
         function fish_greeting
         end

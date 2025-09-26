@@ -3,20 +3,21 @@
   user,
   config,
   ...
-}: {
+}:
+{
   imports = [
     (import ../modules)
   ];
   xdg.configFile."wallpapers".source = ../assets/wallpapers;
   xdg.configFile."bin".source = ../scripts/bin;
 
-  sops.age.sshKeyPaths = ["/home/${user}/.ssh/id_ed25519"];
+  sops.age.sshKeyPaths = [ "/home/${user}/.ssh/id_ed25519" ];
   sops.defaultSopsFile = ../secrets/secrets.yaml;
   sops.secrets = {
-    openai-api-key = {};
-    bitwarden-session-key = {};
-    jira-cli-api-key = {};
-    gitlab-token = {};
+    openai-api-key = { };
+    bitwarden-session-key = { };
+    jira-cli-api-key = { };
+    gitlab-token = { };
   };
 
   programs.nix-index = {
@@ -32,7 +33,7 @@
   home = {
     username = "${user}";
     homeDirectory = "/home/${user}";
-    sessionPath = ["/home/${user}/.config/bin"];
+    sessionPath = [ "/home/${user}/.config/bin" ];
 
     packages = with pkgs; [
       home-manager
@@ -91,6 +92,7 @@
       glab
       perl
       codex
+      claude-code
 
       # Formatters
       alejandra
@@ -102,7 +104,7 @@
       cmake-language-server
       nil
       ansible-language-server
-      nodePackages_latest.dockerfile-language-server-nodejs
+      dockerfile-language-server
       nodePackages.vim-language-server
       lua-language-server
       buf
@@ -122,15 +124,15 @@
       junction
 
       # Custom scripts
-      (import ../scripts/tmux-sessionizer.nix {inherit pkgs;})
-      (import ../scripts/tmux-windowizer.nix {inherit pkgs;})
-      (import ../scripts/tmux-switch-session.nix {inherit pkgs;})
-      (import ../scripts/tmux-switch-ssh-session.nix {inherit pkgs;})
-      (import ../scripts/chwall.nix {inherit pkgs;})
-      (import ../scripts/mosh-ssh.nix {inherit pkgs;})
-      (import ../scripts/warp.nix {inherit pkgs;})
-      (import ../scripts/fs-diff.nix {inherit pkgs;})
-      (import ../scripts/oor-bw-pw.nix {inherit pkgs;})
+      (import ../scripts/tmux-sessionizer.nix { inherit pkgs; })
+      (import ../scripts/tmux-windowizer.nix { inherit pkgs; })
+      (import ../scripts/tmux-switch-session.nix { inherit pkgs; })
+      (import ../scripts/tmux-switch-ssh-session.nix { inherit pkgs; })
+      (import ../scripts/chwall.nix { inherit pkgs; })
+      (import ../scripts/mosh-ssh.nix { inherit pkgs; })
+      (import ../scripts/warp.nix { inherit pkgs; })
+      (import ../scripts/fs-diff.nix { inherit pkgs; })
+      (import ../scripts/oor-bw-pw.nix { inherit pkgs; })
     ];
 
     pointerCursor = {

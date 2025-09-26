@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   imports = [
     ./hardware-configuration.nix
     ../../config/base.nix
@@ -6,7 +7,7 @@
   ];
 
   sops.defaultSopsFile = ../../secrets/secrets.yaml;
-  sops.age.sshKeyPaths = ["/home/matthew/.ssh/id_ed25519"];
+  sops.age.sshKeyPaths = [ "/home/matthew/.ssh/id_ed25519" ];
   sops.secrets.user-matthew-password.neededForUsers = true;
 
   users.users.matthew.openssh.authorizedKeys.keys = [
@@ -35,25 +36,25 @@
   # Firmware updates
   services.fwupd = {
     enable = true;
-    extraRemotes = ["lvfs-testing"];
+    extraRemotes = [ "lvfs-testing" ];
   };
 
   fileSystems."/mnt/backup" = {
     device = "192.168.1.10:/mnt/user/backup";
     fsType = "nfs";
-    options = ["x-systemd.automount" "noauto"];
+    options = [
+      "x-systemd.automount"
+      "noauto"
+    ];
   };
 
   ## Power Management ##
-  services.logind = {
-    lidSwitch = "suspend-then-hibernate";
-    lidSwitchDocked = "ignore";
-    lidSwitchExternalPower = "suspend";
+  services.logind.settings.Login = {
+    HandlePowerKey = "ignore";
+    HandleLidSwitch = "suspend-then-hibernate";
+    HandleLidSwitchDocked = "ignore";
+    HandleLidSwitchExternalPower = "suspend";
   };
-  services.logind.extraConfig = ''
-    # don’t shutdown when power button is short-pressed
-    HandlePowerKey=ignore
-  '';
 
   powerManagement.resumeCommands = ''
     ${pkgs.util-linux}/bin/rfkill unblock wlan
@@ -61,8 +62,8 @@
 
   systemd.services.lock-after-suspend = {
     description = "Lock screen after suspending";
-    wantedBy = ["post-resume.target"];
-    after = ["post-resume.target"];
+    wantedBy = [ "post-resume.target" ];
+    after = [ "post-resume.target" ];
     script = ''
       ${pkgs.hyprlock}/bin/hyprlock
     '';
