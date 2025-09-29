@@ -166,23 +166,13 @@
       };
 
       input = {
-        kb_layout = "us,us";
-        kb_variant = ",colemak";
-        kb_options = "grp:shifts_toggle";
+        kb_layout = "us";
         follow_mouse = 1;
         sensitivity = 0;
         touchpad = {
           natural_scroll = false;
         };
-      }
-      // (
-        if machine == "framework" || machine == "laptop" then
-          {
-            kb_options = "caps:swapescape,grp:shifts_toggle";
-          }
-        else
-          { }
-      );
+      };
 
       general = {
         gaps_in = 4;
@@ -232,8 +222,8 @@
       "$mainMod" = "SUPER";
 
       bind = [
-        "$mainMod, Return, exec, ghostty --command ~/.config/bin/ta"
-        "$mainMod + CONTROL, Return, exec, ghostty"
+        "$mainMod, Return, exec, kitty -e ~/.config/bin/ta"
+        "$mainMod + CONTROL, Return, exec, kitty"
         "$mainMod + SHIFT, W, exec, firefox -p work"
         "$mainMod + SHIFT, H, exec, firefox -P home"
         "$mainMod + ALT, W, exec, ~/.config/bin/chwall ~/.config/wallpapers"
@@ -371,6 +361,10 @@
             {
               name = "at-translated-set-2-keyboard";
               kb_options = "caps:swapescape";
+            }
+            {
+              name = "cantor-keyboard";
+              kb_layout = "us";
             }
           ]
         else
