@@ -20,9 +20,7 @@
 
   # Configure keymap in X11
   services.xserver.xkb = {
-    layout = "us,";
-    variant = "colemak,";
-    options = "grp:shifts_toggle";
+    layout = "us";
   };
 
   networking.hostName = "framework";

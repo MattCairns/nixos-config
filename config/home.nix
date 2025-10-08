@@ -103,7 +103,6 @@
       pyright
       cmake-language-server
       nil
-      ansible-language-server
       dockerfile-language-server
       nodePackages.vim-language-server
       lua-language-server
