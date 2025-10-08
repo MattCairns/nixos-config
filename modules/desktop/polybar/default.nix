@@ -50,7 +50,6 @@
 
       "module/title" = {
         type = "internal/xwindow";
-        format = "%title%";
         label = "%title:0:60:...%";
         label-empty = "Desktop";
       };
@@ -58,7 +57,8 @@
       "module/pulseaudio" = {
         type = "internal/pulseaudio";
         interval = 2;
-        format-volume = "VOL %percentage%%%";
+        format-volume = "VOL <label-volume>";
+        label-volume = "%percentage%%";
         label-muted = "MUTED";
         label-muted-foreground = "\${colors.muted}";
         click-right = "pavucontrol &";
@@ -67,20 +67,21 @@
       "module/memory" = {
         type = "internal/memory";
         interval = 5;
-        format = "RAM %percentage_used%%%";
+        label = "RAM %percentage_used%%";
       };
 
       "module/cpu" = {
         type = "internal/cpu";
         interval = 5;
-        format = "CPU %percentage%%%";
+        label = "CPU %percentage%%";
       };
 
       "module/wlan" = {
         type = "internal/network";
         interface-type = "wireless";
         interval = 5;
-        format-connected = "NET %essid% %signal%%%";
+        format-connected = "<label-connected>";
+        label-connected = "NET %essid% %signal%%";
         format-disconnected = "NET down";
       };
 

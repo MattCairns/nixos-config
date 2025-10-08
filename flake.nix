@@ -22,6 +22,14 @@
     hyprpaper.inputs.nixpkgs.follows = "nixpkgs";
     nixvim.url = "github:nix-community/nixvim";
     ghostty.url = "github:ghostty-org/ghostty";
+    talon-nix = {
+      url = "github:nix-community/talon-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    talon-community = {
+      url = "github:talonhub/community";
+      flake = false;
+    };
   };
 
   outputs =

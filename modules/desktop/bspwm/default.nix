@@ -2,7 +2,8 @@
   pkgs,
   machine,
   ...
-}: let
+}:
+let
   lib = pkgs.lib;
 
   wallpaperPath = "/home/matthew/.config/wallpapers/pexels-eberhard-grossgasteiger-730981.jpg";
@@ -17,8 +18,12 @@
   };
 
   perMachineWorkspace = {
-    framework = defaultWorkspaceMap // {OBSIDIAN = "5";};
-    laptop = defaultWorkspaceMap // {OBSIDIAN = "5";};
+    framework = defaultWorkspaceMap // {
+      OBSIDIAN = "5";
+    };
+    laptop = defaultWorkspaceMap // {
+      OBSIDIAN = "5";
+    };
     nuc = {
       FIREFOX_WORK = "4";
       FIREFOX_HOME = "4";
@@ -29,95 +34,84 @@
     };
   };
 
-  machineWorkspaceOverrides = lib.attrByPath [machine] {} perMachineWorkspace;
+  machineWorkspaceOverrides = lib.attrByPath [ machine ] { } perMachineWorkspace;
 
   workspaceMap = defaultWorkspaceMap // machineWorkspaceOverrides;
 
   workspaceExports = lib.concatStringsSep "\n" (
-    lib.mapAttrsToList (
-      name: value: "export ${name}=\"${value}\""
-    )
-    workspaceMap
+    lib.mapAttrsToList (name: value: "export ${name}=\"${value}\"") workspaceMap
   );
 
   monitorSetup =
-    if machine == "framework"
-    then ''
-      monitors=$(bspc query -M --names)
-      internal_monitor="eDP-1"
+    if machine == "framework" then
+      ''
+        xrandr --output eDP-1 --primary --mode 2256x1504 --pos 0x1224 --rotate normal --output DP-1 --off --output DP-2 --off --output DP-3 --off --output DP-4 --off --output DP-5 --off --output DP-6 --off --output DP-7 --off --output DP-8 --off --output DP-9 --off --output DP-10 --off --output DP-11 --mode 2560x1440 --pos 2256x560 --rotate normal --output DP-12 --off --output DP-13 --mode 2560x1440 --pos 4816x0 --rotate right
 
-      if echo "$monitors" | grep -qx "$internal_monitor"; then
-        bspc monitor "$internal_monitor" -d 1 2 3
-      fi
+        monitors=$(bspc query -M --names)
+        internal_monitor="eDP-1"
 
-      externals=$(printf '%s\n' $monitors | grep -v "^$internal_monitor$")
-      set -- $externals
-      if [ $# -ge 1 ]; then
-        bspc monitor "$1" -d 4 5 6
-      fi
-      if [ $# -ge 2 ]; then
-        bspc monitor "$2" -d 7 8 9
-      fi
-      if [ $# -ge 3 ]; then
-        bspc monitor "$3" -d 10
-      fi
-    ''
-    else if machine == "laptop"
-    then ''
-      monitors=$(bspc query -M --names)
-      internal_monitor="eDP-1"
+        if echo "$monitors" | grep -qx "$internal_monitor"; then
+          bspc monitor "$internal_monitor" -d 1 2 3
+        fi
 
-      if echo "$monitors" | grep -qx "$internal_monitor"; then
-        bspc monitor "$internal_monitor" -d 1 2 3 4 5
-      fi
+        externals=$(printf '%s\n' $monitors | grep -v "^$internal_monitor$")
+        set -- $externals
+        if [ $# -ge 1 ]; then
+          bspc monitor "$1" -d 4 5 6
+        fi
+        if [ $# -ge 2 ]; then
+          bspc monitor "$2" -d 7 8 9
+        fi
+        if [ $# -ge 3 ]; then
+          bspc monitor "$3" -d 10
+        fi
+      ''
+    else if machine == "laptop" then
+      ''
+        monitors=$(bspc query -M --names)
+        internal_monitor="eDP-1"
 
-      externals=$(printf '%s\n' $monitors | grep -v "^$internal_monitor$")
-      set -- $externals
-      if [ $# -ge 1 ]; then
-        bspc monitor "$1" -d 6 7 8 9 10
-      fi
-    ''
-    else if machine == "nuc"
-    then ''
-      monitors=$(bspc query -M --names)
-      set -- $monitors
-      if [ $# -ge 1 ]; then
-        bspc monitor "$1" -d 4 5 6
-      fi
-      if [ $# -ge 2 ]; then
-        bspc monitor "$2" -d 7 8 9
-      fi
-      if [ $# -ge 3 ]; then
-        bspc monitor "$3" -d 10
-      fi
-    ''
-    else ''
-      monitors=$(bspc query -M --names)
-      if [ -z "$monitors" ]; then
-        exit 0
-      fi
+        if echo "$monitors" | grep -qx "$internal_monitor"; then
+          bspc monitor "$internal_monitor" -d 1 2 3 4 5
+        fi
 
-      for m in $monitors; do
-        bspc monitor "$m" -d 1 2 3 4 5 6 7 8 9 10
-      done
-    '';
+        externals=$(printf '%s\n' $monitors | grep -v "^$internal_monitor$")
+        set -- $externals
+        if [ $# -ge 1 ]; then
+          bspc monitor "$1" -d 6 7 8 9 10
+        fi
+      ''
+    else
+      ''
+        monitors=$(bspc query -M --names)
+        if [ -z "$monitors" ]; then
+          exit 0
+        fi
 
-  spotifyBindings = let
-    value = workspaceMap.SPOTIFY;
-  in
-    if value != ""
-    then ''
-      super + s
-          bspc desktop -f ^${value}
+        for m in $monitors; do
+          bspc monitor "$m" -d 1 2 3 4 5 6 7 8 9 10
+        done
+      '';
 
-      super + shift + s
-          bspc node -d ^${value}
-    ''
-    else ''
-      super + s
-          bspc desktop -f next.local
-    '';
-in {
+  spotifyBindings =
+    let
+      value = workspaceMap.SPOTIFY;
+    in
+    if value != "" then
+      ''
+        super + s
+            bspc desktop -f ^${value}
+
+        super + shift + s
+            bspc node -d ^${value}
+      ''
+    else
+      ''
+        super + s
+            bspc desktop -f next.local
+      '';
+in
+{
   home.packages = with pkgs; [
     bspwm
     sxhkd
@@ -176,9 +170,6 @@ in {
       shadow-offset-x = -15;
       shadow-offset-y = -15;
       shadow-opacity = 0.25;
-      inactive-opacity = 0.9;
-      frame-opacity = 0.9;
-      inactive-opacity-override = false;
       blur-background = false;
     };
   };

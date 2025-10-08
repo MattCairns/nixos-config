@@ -43,28 +43,38 @@
     ];
   };
 in {
-  # Explicitly set which non-free packages can be installed
-  nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) [
-      "codeium"
-      "discord"
-      "google-chrome"
-      "obsidian"
-      "parsec-bin"
-      "slack"
-      "spotify"
-      "teams"
-      "teamviewer"
-      "vagrant"
-      "veracrypt"
-      "vscode-extension-ms-vscode-cpptools"
-      "zoom"
-      "claude-code"
-    ];
-
-  nixpkgs.config.permittedInsecurePackages = [
-    "electron-25.9.0"
+  imports = [
+    inputs.talon-nix.nixosModules.talon
   ];
+
+  nixpkgs.config = {
+    # Required for hardware.enableAllFirmware and Talon; predicate keeps the allowlist tight.
+    allowUnfree = true;
+
+    # Explicitly set which non-free packages can be installed
+    allowUnfreePredicate = pkg:
+      builtins.elem (lib.getName pkg) [
+        "codeium"
+        "discord"
+        "google-chrome"
+        "obsidian"
+        "parsec-bin"
+        "slack"
+        "spotify"
+        "teams"
+        "teamviewer"
+        "vagrant"
+        "veracrypt"
+        "vscode-extension-ms-vscode-cpptools"
+        "zoom"
+        "claude-code"
+        "talon"
+      ];
+
+    permittedInsecurePackages = [
+      "electron-25.9.0"
+    ];
+  };
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
@@ -140,6 +150,8 @@ in {
     package = inputs.hyprland.packages.${pkgs.system}.hyprland;
     portalPackage = inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
   };
+
+  programs.talon.enable = true;
 
   services = {
     getty.autologinUser = "matthew";

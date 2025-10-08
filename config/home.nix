@@ -2,12 +2,40 @@
   pkgs,
   user,
   config,
+  inputs,
   ...
 }:
 {
   imports = [
     (import ../modules)
   ];
+  home.file.".talon/user/community" = {
+    source = inputs.talon-community;
+    recursive = true;
+  };
+
+  home.file.".talon/user/custom/demo.talon".text = ''
+    tag(): user.demo
+
+    demo hello:
+        user.demo_notify("Hello from your Nix-managed Talon config!")
+  '';
+
+  home.file.".talon/user/custom/demo.py".text = ''
+    from talon import Context, Module, app
+
+    mod = Module()
+    mod.tag("demo", desc="Demo commands managed by Nix")
+
+    ctx = Context()
+    ctx.matches = "tag: user.demo"
+
+    @mod.action_class
+    class Actions:
+        def demo_notify(message: str):
+            """Show a notification for the demo command"""
+            app.notify(message)
+  '';
   xdg.configFile."wallpapers".source = ../assets/wallpapers;
   xdg.configFile."bin".source = ../scripts/bin;
 

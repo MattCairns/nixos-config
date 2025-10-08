@@ -37,3 +37,9 @@ sudo reboot now
 ```
 
 If you dont have NixOS feel free to pull stuff out of here for your own purposes.
+
+## Talon Voice
+- The configuration vendors in [`talon-nix`](https://github.com/nix-community/talon-nix) and enables `programs.talon`, which places the Talon FHS wrapper on the system path and installs the matching udev rules.
+- After rebuilding (`sudo nixos-rebuild switch --flake .#<MACHINE>`), launch Talon with `talon`. On first run you'll be prompted for the license email/key from [talonvoice.com](https://talonvoice.com).
+- Home Manager drops the [`talonhub/community`](https://github.com/talonhub/community) bundle into `~/.talon/user/community` and provisions a sample `demo hello` voice command so every machine starts with usable scripts.
+- Optional: run `snixembed` if you want the tray icon in environments without legacy systray support, and sync your voice command repositories into `~/.talon/user` as usual.
