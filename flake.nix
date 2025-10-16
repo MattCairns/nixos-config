@@ -13,11 +13,11 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hyprland = {
-      type = "git";
-      url = "https://github.com/hyprwm/Hyprland";
-      submodules = true;
-    };
+    # hyprland = {
+    #   type = "git";
+    #   url = "https://github.com/hyprwm/Hyprland";
+    #   submodules = true;
+    # };
     hyprpaper.url = "github:hyprwm/hyprpaper";
     hyprpaper.inputs.nixpkgs.follows = "nixpkgs";
     nixvim.url = "github:nix-community/nixvim";
@@ -36,7 +36,7 @@
     inputs@{
       nixpkgs,
       home-manager,
-      hyprland,
+      # hyprland,
       hyprpaper,
       nixvim,
       ...
@@ -52,7 +52,7 @@
             inputs
             nixpkgs
             home-manager
-            hyprland
+            # hyprland
             user
             ;
         }

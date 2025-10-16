@@ -1,122 +1,133 @@
-{ pkgs, ... }: {
+{
+  pkgs,
+  lib,
+  ...
+}:
+let
+  mypolybar = pkgs.polybar.override {
+    alsaSupport = true;
+    githubSupport = true;
+    mpdSupport = true;
+    pulseSupport = true;
+  };
+
+  colors = {
+    background = "#0d0d0d";
+    foreground = "#ffffff";
+    theme = "#89adfa";
+  };
+
+  bluetoothScript = pkgs.callPackage ./scripts/bluetooth.nix { };
+
+  bctl = ''
+    [module/bluetooth]
+    type = custom/script
+    interval = 10
+    exec = ${bluetoothScript}/bin/bluetooth-ctl
+    label-foreground = ${colors.foreground}
+    format-foreground = ${colors.theme}
+  '';
+
+  tailscaleScript = pkgs.callPackage ./scripts/tailscale.nix { };
+  tctl = ''
+    [module/tailscale]
+    type = custom/script
+    interval = 15
+    exec = ${tailscaleScript}/bin/tailscale-ctl
+    label-foreground = ${colors.foreground}
+    format-foreground = ${colors.theme}
+  '';
+
+  cmusctl = ''
+    [module/cmus]
+    type = custom/script
+    tail = true
+    format =♫  <label>
+    interval = 5
+    exec-if = "sh /etc/profiles/per-user/synchronous/bin/cmus-status 2> /dev/null | rg -v 'NO_MUSIC'"
+    exec = "sh /etc/profiles/per-user/synchronous/bin/cmus-status 2> /dev/null | rg -v 'NO_MUSIC'"
+    label-foreground = ${colors.foreground}
+    format-foreground = ${colors.theme}
+  '';
+
+  qhd = ''
+    [bar/mybar]
+    height = 25
+    font-0 = "NotoSans-Regular:size=11;2.5"
+    font-1 = "JetBrainsMono Nerd Font:style=Regular:size=11;2.5"
+    font-2 = "Noto Sans Symbols:size=13;1"
+    offset-x = 4
+    offset-y = 3
+  '';
+
+  mon = qhd;
+
+  internets = ''
+    [module/network]
+    type = internal/network
+    interface-type = wireless
+    interval = 4.0
+    udspeed-minwidth = 5
+    accumulate-stats = true
+    unknown-as-up = true
+
+    format-connected = <ramp-signal> <label-connected>
+    format-connected-foreground = ${colors.theme}
+    label-connected = %essid% %downspeed%
+    label-connected-foreground = ${colors.foreground}
+
+    format-disconnected = 睊  <label-disconnected>
+    format-disconnected-foreground = ${colors.theme}
+    label-disconnected = no wifi
+    label-disconnected-foreground = ${colors.foreground}
+
+    ramp-signal-0 = 睊
+    ramp-signal-1 = 直
+    ramp-signal-2 = 
+    ramp-signal-3 = 
+    ramp-signal-4 = 
+    ramp-signal-foreground = ${colors.theme}
+  '';
+in
+{
   services.polybar = {
     enable = true;
-    package = pkgs.polybar;
-
-    settings = {
-      "colors" = {
-        background = "#1e1e2e";
-        foreground = "#cdd6f4";
-        accent = "#89b4fa";
-        muted = "#6c7086";
-        warning = "#f9e2af";
-        danger = "#f38ba8";
-      };
-
-      "bar/main" = {
-        monitor = "\${env:MONITOR}";
-        width = "100%";
-        height = "28";
-        radius = 0;
-        background = "\${colors.background}";
-        foreground = "\${colors.foreground}";
-        border-size = 0;
-        padding-left = 2;
-        padding-right = 2;
-        module-margin = 1;
-        font-0 = "FiraCode Nerd Font:size=11;2";
-        font-1 = "Font Awesome 6 Free Solid:size=11";
-        modules-left = "bspwm";
-        modules-center = "title";
-        modules-right = "pulseaudio memory cpu wlan clock";
-        enable-ipc = true;
-      };
-
-      "module/bspwm" = {
-        type = "internal/bspwm";
-        label-focused = "%name%";
-        label-focused-padding = 1;
-        label-focused-foreground = "\${colors.background}";
-        label-focused-background = "\${colors.accent}";
-        label-occupied = "%name%";
-        label-occupied-padding = 1;
-        label-urgent = "!%name%!";
-        label-urgent-padding = 1;
-        label-urgent-background = "\${colors.danger}";
-        label-empty = "%name%";
-        label-empty-padding = 1;
-        label-empty-foreground = "\${colors.muted}";
-      };
-
-      "module/title" = {
-        type = "internal/xwindow";
-        label = "%title:0:60:...%";
-        label-empty = "Desktop";
-      };
-
-      "module/pulseaudio" = {
-        type = "internal/pulseaudio";
-        interval = 2;
-        format-volume = "VOL <label-volume>";
-        label-volume = "%percentage%%";
-        label-muted = "MUTED";
-        label-muted-foreground = "\${colors.muted}";
-        click-right = "pavucontrol &";
-      };
-
-      "module/memory" = {
-        type = "internal/memory";
-        interval = 5;
-        label = "RAM %percentage_used%%";
-      };
-
-      "module/cpu" = {
-        type = "internal/cpu";
-        interval = 5;
-        label = "CPU %percentage%%";
-      };
-
-      "module/wlan" = {
-        type = "internal/network";
-        interface-type = "wireless";
-        interval = 5;
-        format-connected = "<label-connected>";
-        label-connected = "NET %essid% %signal%%";
-        format-disconnected = "NET down";
-      };
-
-      "module/clock" = {
-        type = "internal/date";
-        interval = 5;
-        date = "%a %b %d";
-        time = "%H:%M";
-        label = "%time%  %date%";
-      };
-    };
-
+    package = mypolybar;
+    config = ./config.ini;
+    extraConfig = bctl + internets + mon + tctl + cmusctl;
     script = ''
-      polybar-msg cmd quit >/dev/null 2>&1 || true
-      while pgrep -x polybar >/dev/null; do sleep 0.2; done
-
-      if command -v xrandr >/dev/null 2>&1; then
-        PRIMARY=$(xrandr --query | awk '/ connected primary/{print $1; exit}')
-        if [ -z "$PRIMARY" ]; then
-          PRIMARY=$(xrandr --query | awk '/ connected/{print $1; exit}')
+      battery_device=""
+      for path in /sys/class/power_supply/BAT*; do
+        if [ -e "$path" ]; then
+          battery_device=$(${pkgs.coreutils}/bin/basename "$path")
+          break
         fi
-      fi
+      done
+      [ -n "$battery_device" ] || battery_device="BAT0"
 
-      FALLBACK=$(polybar --list-monitors 2>/dev/null | head -n1 | cut -d: -f1)
-      TARGET="$PRIMARY"
-      if [ -z "$TARGET" ]; then
-        TARGET="$MONITOR"
-      fi
-      if [ -z "$TARGET" ]; then
-        TARGET="$FALLBACK"
-      fi
-      if [ -n "$TARGET" ]; then
-        export MONITOR="$TARGET"
-      fi
-      polybar --reload main &
+      adapter_device=""
+      for path in /sys/class/power_supply/AC* /sys/class/power_supply/ADP*; do
+        if [ -e "$path" ]; then
+          adapter_device=$(${pkgs.coreutils}/bin/basename "$path")
+          break
+        fi
+      done
+      [ -n "$adapter_device" ] || adapter_device="AC0"
+
+      polybar --list-monitors | while IFS=$'\n' read line; do
+        monitor=$(echo $line | ${pkgs.coreutils}/bin/cut -d':' -f1)
+        primary=$(echo $line | ${pkgs.coreutils}/bin/cut -d' ' -f3)
+        tray_position=$([ -n "$primary" ] && echo "right" || echo "none")
+        MONITOR=$monitor TRAY_POSITION=$tray_position POLYBAR_BATTERY=$battery_device POLYBAR_ADAPTER=$adapter_device polybar --reload mybar &
+      done
     '';
+  };
+
+  home.activation.polybarRestart = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    ${pkgs.systemd}/bin/systemctl --user restart polybar
+  '';
+
+  systemd.user.services.polybar = {
+    Install.WantedBy = [ "graphical-session.target" ];
   };
 }

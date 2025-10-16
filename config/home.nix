@@ -133,6 +133,7 @@
       nil
       dockerfile-language-server
       nodePackages.vim-language-server
+      nodePackages.vscode-json-languageserver
       lua-language-server
       buf
       codeium

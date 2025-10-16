@@ -121,6 +121,7 @@
           dockerls.enable = true;
           pyright.enable = true;
           bashls.enable = true;
+          jsonls.enable = true;
         };
       };
 
