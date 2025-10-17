@@ -4,111 +4,109 @@
   home-manager,
   user,
   ...
-}: let
-  system = "x86_64-linux";
+}:
+let
+  inherit (nixpkgs) lib;
 
-  pkgs = import nixpkgs {
-    inherit system;
-    config.allowUnfree = true;
+  defaultSystem = "x86_64-linux";
+
+  mkPkgs = system:
+    import nixpkgs {
+      inherit system;
+      config.allowUnfree = true;
+    };
+
+  mkHomeManagerModule = { machine, pkgs }:
+    {
+      home-manager.extraSpecialArgs = {
+        inherit user inputs machine;
+      };
+
+      home-manager.users.${user}.imports = [
+        (import ../config/home.nix)
+      ];
+
+      home-manager.backupFileExtension =
+        "backup-" + pkgs.lib.readFile "${pkgs.runCommand "timestamp" {} "echo -n `date '+%Y%m%d%H%M%S'` > $out"}";
+
+      home-manager.useGlobalPkgs = true;
+      home-manager.useUserPackages = true;
+      home-manager.sharedModules = [
+        inputs.nixvim.homeModules.nixvim
+        inputs.sops-nix.homeManagerModules.sops
+      ];
+    };
+
+  mkBaseModules = { machine, pkgs }:
+    [
+      inputs.sops-nix.nixosModules.sops
+      home-manager.nixosModules.home-manager
+      (mkHomeManagerModule { inherit machine pkgs; })
+    ];
+
+  persistenceModule = ../config/optin-persistence.nix;
+
+  hostDefaults = {
+    system = defaultSystem;
+    useHomeManager = true;
+    enablePersistence = true;
+    modules = [];
+    extraModules = [];
+    specialArgs = {};
   };
 
-  lib = nixpkgs.lib;
-in {
-  framework = lib.nixosSystem {
-    inherit system;
-    specialArgs = {inherit inputs user;};
-    modules = [
+  mkHost =
+    name: hostCfg:
+    let
+      cfg = lib.recursiveUpdate hostDefaults hostCfg;
+      system = cfg.system;
+      pkgs = mkPkgs system;
+
+      hmModules =
+        if cfg.useHomeManager then
+          mkBaseModules { machine = name; inherit pkgs; }
+        else
+          [];
+
+      persistenceModules =
+        lib.optionals cfg.enablePersistence [ persistenceModule ];
+
+      modules =
+        cfg.modules
+        ++ persistenceModules
+        ++ hmModules
+        ++ cfg.extraModules;
+
+      specialArgs =
+        {inherit inputs user;}
+        // cfg.specialArgs;
+    in
+      lib.nixosSystem {
+        inherit system modules specialArgs;
+      };
+
+  hosts = {
+    framework.modules = [
       ./framework/configuration.nix
-      ../config/optin-persistence.nix
       inputs.nixos-hardware.nixosModules.framework-13-7040-amd
-      inputs.sops-nix.nixosModules.sops
-      home-manager.nixosModules.home-manager
-      {
-        home-manager.extraSpecialArgs = let
-          machine = "framework";
-        in {
-          inherit user inputs machine;
-        };
-        home-manager.users.${user} = {
-          imports = [(import ../config/home.nix)];
-        };
-        home-manager.backupFileExtension = "backup-" + pkgs.lib.readFile "${pkgs.runCommand "timestamp" {} "echo -n `date '+%Y%m%d%H%M%S'` > $out"}";
-        home-manager.useGlobalPkgs = true;
-        home-manager.useUserPackages = true;
-        home-manager.sharedModules = [
-          inputs.nixvim.homeModules.nixvim
-          inputs.sops-nix.homeManagerModules.sops
-        ];
-      }
     ];
-  };
 
-  laptop = lib.nixosSystem {
-    inherit system;
-    specialArgs = {inherit inputs user;};
-    modules = [
+    laptop.modules = [
       ./laptop/configuration.nix
-      ../config/optin-persistence.nix
       inputs.nixos-hardware.nixosModules.lenovo-thinkpad-l13-yoga
-      inputs.sops-nix.nixosModules.sops
-      home-manager.nixosModules.home-manager
-      {
-        home-manager.extraSpecialArgs = let
-          machine = "laptop";
-        in {
-          inherit user inputs machine;
-        };
-        home-manager.users.${user} = {
-          imports = [(import ../config/home.nix)];
-        };
-        home-manager.backupFileExtension = "backup-" + pkgs.lib.readFile "${pkgs.runCommand "timestamp" {} "echo -n `date '+%Y%m%d%H%M%S'` > $out"}";
-        home-manager.useGlobalPkgs = true;
-        home-manager.useUserPackages = true;
-        home-manager.sharedModules = [
-          inputs.nixvim.homeModules.nixvim
-          inputs.sops-nix.homeManagerModules.sops
-        ];
-      }
     ];
-  };
 
-  nuc = lib.nixosSystem {
-    inherit system;
-    specialArgs = {inherit inputs user;};
-    modules = [
-      # inputs.nixos-hardware.nixosModules.intel-nuc-8i7beh
+    nuc.modules = [
       ./nuc/configuration.nix
-      ../config/optin-persistence.nix
-      inputs.sops-nix.nixosModules.sops
-      home-manager.nixosModules.home-manager
-      {
-        home-manager.extraSpecialArgs = let
-          machine = "nuc";
-        in {
-          inherit user inputs machine;
-        };
-        home-manager.users.${user} = {
-          imports = [(import ../config/home.nix)];
-        };
-        home-manager.backupFileExtension = "backup-" + pkgs.lib.readFile "${pkgs.runCommand "timestamp" {} "echo -n `date '+%Y%m%d%H%M%S'` > $out"}";
-        home-manager.useGlobalPkgs = true;
-        home-manager.useUserPackages = true;
-        home-manager.sharedModules = [
-          inputs.nixvim.homeModules.nixvim
-          inputs.sops-nix.homeManagerModules.sops
-        ];
-      }
     ];
-  };
 
-  cache-runner = lib.nixosSystem {
-    inherit system;
-    specialArgs = {inherit inputs user;};
-    modules = [
-      ./cache-runner/configuration.nix
-      {
-        nixpkgs.pkgs = pkgs;
-      }
-    ];
+    cache-runner = {
+      useHomeManager = false;
+      enablePersistence = false;
+      modules = [
+        ./cache-runner/configuration.nix
+      ];
+    };
   };
-}
+in
+  lib.mapAttrs mkHost hosts
