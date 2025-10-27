@@ -123,8 +123,25 @@ in
     '';
   };
 
-  home.activation.polybarRestart = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    ${pkgs.systemd}/bin/systemctl --user restart polybar
+  # Restart polybar after home-manager configuration is applied with a delay to ensure bspwm is ready
+  home.activation.restartPolybar = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    # Give the desktop environment time to fully initialize before starting polybar
+    sleep 3
+    ${pkgs.systemd}/bin/systemctl --user restart polybar 2>/dev/null || true
+  '';
+
+  # Custom activation to restart polybar after monitor changes
+  home.activation.restartPolybarOnMonitorChange = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    # Function to restart polybar, can be called externally
+    restart_polybar() {
+      pkill polybar
+      sleep 1
+      # Wait for polybar to fully stop
+      while pgrep -x polybar >/dev/null; do sleep 0.5; done
+      # Start polybar again (it will detect all current monitors)
+      ${pkgs.systemd}/bin/systemctl --user restart polybar 2>/dev/null || true
+    }
+    export -f restart_polybar
   '';
 
   systemd.user.services.polybar = {

@@ -31,6 +31,8 @@ launch_to_workspace() {
   fi
 }
 
+
+
 if [ $current_day -ge 1 ] && [ $current_day -le 5 ] && [ $current_hour -ge $start_hour ] && [ $current_hour -lt $end_hour ]; then
   launch_to_workspace "$FIREFOX_WORK" firefox -p work
   launch_to_workspace "$SLACK" slack --disable-gpu

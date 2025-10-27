@@ -84,17 +84,41 @@ let
       ''
     else if machine == "laptop" then
       ''
-        monitors=$(bspc query -M --names)
-        internal_monitor="eDP-1"
+        # Use mons for automatic monitor detection and configuration
+        if command -v mons >/dev/null 2>&1; then
+          # Run mons to detect and configure monitors, then configure bspwm accordingly
+          monitors=$(bspc query -M --names)
+          internal_monitor="eDP-1"
+          
+          # Check if only internal monitor is present
+          if [ $(echo "$monitors" | wc -l) -eq 1 ] && echo "$monitors" | grep -qx "$internal_monitor"; then
+            bspc monitor "$internal_monitor" -d 1 2 3 4 5
+          else
+            # Multiple monitors detected, assign desktops appropriately
+            if echo "$monitors" | grep -qx "$internal_monitor"; then
+              bspc monitor "$internal_monitor" -d 1 2 3
+            fi
+            
+            externals=$(printf '%s\n' $monitors | grep -v "^$internal_monitor$")
+            set -- $externals
+            if [ $# -ge 1 ]; then
+              bspc monitor "$1" -d 4 5 6 7 8 9 10
+            fi
+          fi
+        else
+          # Fallback to original logic if mons is not available
+          monitors=$(bspc query -M --names)
+          internal_monitor="eDP-1"
 
-        if echo "$monitors" | grep -qx "$internal_monitor"; then
-          bspc monitor "$internal_monitor" -d 1 2 3 4 5
-        fi
+          if echo "$monitors" | grep -qx "$internal_monitor"; then
+            bspc monitor "$internal_monitor" -d 1 2 3 4 5
+          fi
 
-        externals=$(printf '%s\n' $monitors | grep -v "^$internal_monitor$")
-        set -- $externals
-        if [ $# -ge 1 ]; then
-          bspc monitor "$1" -d 6 7 8 9 10
+          externals=$(printf '%s\n' $monitors | grep -v "^$internal_monitor$")
+          set -- $externals
+          if [ $# -ge 1 ]; then
+            bspc monitor "$1" -d 6 7 8 9 10
+          fi
         fi
       ''
     else
@@ -136,6 +160,7 @@ in
     xorg.xrandr
     xorg.xset
     i3lock
+    mons
   ];
 
   xsession.enable = true;
@@ -158,6 +183,7 @@ in
       focused_border_color = "#33ccff";
       normal_border_color = "#595959";
       presel_feedback_color = "#33ccff";
+      top_padding = 25;  # Reserve space for polybar at the top
     };
 
     extraConfigEarly = ''
@@ -193,7 +219,7 @@ in
   xdg.configFile."sxhkd/sxhkdrc" = {
     text = ''
       super + Return
-          kitty -e ~/.config/bin/ta
+          kitty -c ~/.config/kitty/kitty.conf -e bash -c 'exec ~/.config/bin/ta || $SHELL'
 
       super + ctrl + Return
           kitty
@@ -289,6 +315,9 @@ in
 
       super + shift + b
           bluetoothctl connect 88:C9:E8:44:61:64
+
+      super + shift + d
+          ~/.config/bspwm/monitor-hotplug.sh
     '';
   };
 
@@ -300,5 +329,58 @@ in
   xdg.configFile."bspwm/set-wallpaper.sh" = {
     source = ./config/set-wallpaper.sh;
     executable = true;
+  };
+
+  xdg.configFile."bspwm/monitor-hotplug.sh" = {
+    source = ./config/monitor-hotplug.sh;
+    executable = true;
+  };
+  
+  # Enable the monitor hotplug detection service
+  systemd.user.services.mons-hotplug = {
+    Unit = {
+      Description = "Automatic monitor hotplug detection with mons";
+      After = [ "graphical-session.target" ];
+      PartOf = "graphical-session.target";
+    };
+
+    Service = {
+      Type = "simple";
+      Environment = [
+        "DISPLAY=:0"
+        "XAUTHORITY=%h/.Xauthority"
+      ];
+      ExecStart = "${pkgs.writeScript "monitor-hotplug-daemon" ''
+        #!/usr/bin/env bash
+        
+        # Monitor for changes in connected displays
+        # This approach polls xrandr, but it's the most reliable for automatic detection
+        PREV_OUTPUT=""
+        
+        # Wait a bit to ensure X session is fully loaded
+        sleep 3
+        
+        while true; do
+            CURRENT_OUTPUT=$(xrandr --query | grep " connected" | sort)
+            
+            if [ "$CURRENT_OUTPUT" != "$PREV_OUTPUT" ]; then
+                echo "$(date): Monitor configuration changed, running mons..."
+                
+                # Run the monitor hotplug script
+                DISPLAY=:0 ~/.config/bspwm/monitor-hotplug.sh
+                
+                PREV_OUTPUT=$CURRENT_OUTPUT
+            fi
+            
+            sleep 2  # Check every 2 seconds
+        done
+      ''}";
+      Restart = "always";
+      RestartSec = 5;
+    };
+
+    Install = {
+      WantedBy = [ "graphical-session.target" ];
+    };
   };
 }

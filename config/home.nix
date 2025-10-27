@@ -121,6 +121,8 @@
       perl
       codex
       claude-code
+      qwen-code
+      lmstudio
 
       # Formatters
       alejandra

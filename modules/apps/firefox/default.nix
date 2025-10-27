@@ -98,6 +98,7 @@ in
             (extension "nicothin-dark-theme" "{99c277af-d778-4a0b-9faa-b1d8165f0a55}")
             (extension "nicothin-space" "{22b0eca1-8c02-4c0d-a5d7-6604ddd9836e}")
             (extension "proxy-toggle" "{0c3ab5c8-57ac-4ad8-9dd1-ee331517884d}")
+            (extension "vimium-ff" "{d7742d87-e61d-4b78-b8a1-b469842139fa}")
           ];
       };
       profiles = {

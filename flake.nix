@@ -21,7 +21,7 @@
     hyprpaper.url = "github:hyprwm/hyprpaper";
     hyprpaper.inputs.nixpkgs.follows = "nixpkgs";
     nixvim.url = "github:nix-community/nixvim";
-    ghostty.url = "github:ghostty-org/ghostty";
+    # ghostty.url = "github:ghostty-org/ghostty";
     talon-nix = {
       url = "github:nix-community/talon-nix";
       inputs.nixpkgs.follows = "nixpkgs";

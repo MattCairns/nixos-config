@@ -149,7 +149,7 @@ in
   i18n.defaultLocale = "en_CA.UTF-8";
 
   programs.hyprland = {
-    enable = true;
+    enable = false;
     # package = inputs.hyprland.packages.${pkgs.system}.hyprland;
     # portalPackage = inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
   };
@@ -161,10 +161,7 @@ in
     xserver = {
       enable = true;
       displayManager.startx.enable = true;
-      windowManager.bspwm = {
-        enable = true;
-        package = pkgs.bspwm;
-      };
+      # bspwm is configured via home-manager module
     };
     displayManager = {
       gdm.enable = false;
