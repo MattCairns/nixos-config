@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Monitor hotplug script using mons
+# Enhanced monitor hotplug script using mons
 # This script runs mons to detect and configure monitors
 
 # Use mons to automatically configure monitors
@@ -29,4 +29,7 @@ if command -v mons >/dev/null 2>&1; then
     while pgrep -x polybar >/dev/null; do sleep 0.5; done
     # Start polybar again (it will detect all current monitors)
     systemctl --user restart polybar.service
+    
+    # Reset workspace assignments after monitor change
+    ~/.config/bspwm/start-apps.sh
 fi

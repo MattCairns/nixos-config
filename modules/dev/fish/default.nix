@@ -23,7 +23,7 @@
         set GITLAB_TOKEN $(cat ${config.sops.secrets.gitlab-token.path})
         set BW_SESSION $(cat ${config.sops.secrets.bitwarden-session-key.path})
         export BW_SESSION=$(cat ${config.sops.secrets.bitwarden-session-key.path})
-        atuin init fish | source
+        atuin init fish | sed "s/-k up/up/g" | source 
       '';
     plugins = [
       {

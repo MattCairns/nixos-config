@@ -183,7 +183,7 @@ in
       focused_border_color = "#33ccff";
       normal_border_color = "#595959";
       presel_feedback_color = "#33ccff";
-      top_padding = 25;  # Reserve space for polybar at the top
+      top_padding = 25; # Reserve space for polybar at the top
     };
 
     extraConfigEarly = ''
@@ -203,7 +203,8 @@ in
 
   services.picom = {
     enable = true;
-    backend = "xrender";
+    backend = "glx";
+    vSync = true;
     fade = true;
     fadeDelta = 5;
     settings = {
@@ -335,7 +336,7 @@ in
     source = ./config/monitor-hotplug.sh;
     executable = true;
   };
-  
+
   # Enable the monitor hotplug detection service
   systemd.user.services.mons-hotplug = {
     Unit = {
@@ -352,14 +353,14 @@ in
       ];
       ExecStart = "${pkgs.writeScript "monitor-hotplug-daemon" ''
         #!/usr/bin/env bash
-        
+
         # Monitor for changes in connected displays
         # This approach polls xrandr, but it's the most reliable for automatic detection
         PREV_OUTPUT=""
-        
+
         # Wait a bit to ensure X session is fully loaded
         sleep 3
-        
+
         while true; do
             CURRENT_OUTPUT=$(xrandr --query | grep " connected" | sort)
             

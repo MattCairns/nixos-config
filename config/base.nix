@@ -176,7 +176,7 @@ in
     nerd-fonts.jetbrains-mono
     nerd-fonts.sauce-code-pro
     noto-fonts
-    noto-fonts-emoji
+    noto-fonts-color-emoji
     siji
   ];
 
@@ -239,6 +239,7 @@ in
     EDITOR = "nvim";
     XCURSOR_SIZE = "32";
     FLAKE = "\${HOME}/nixos-config";
+    CARGO_BUILD_BUILD_DIR = "\${HOME}/.cargo/build-dir";
   };
 
   # Globally available packages

@@ -37,6 +37,15 @@
     extraRemotes = [ "lvfs-testing" ];
   };
 
+  fileSystems."/mnt/appdata" = {
+    device = "192.168.1.10:/mnt/user/appdata";
+    fsType = "nfs";
+    options = [
+      "x-systemd.automount"
+      "noauto"
+    ];
+  };
+
   fileSystems."/mnt/backup" = {
     device = "192.168.1.10:/mnt/user/backup";
     fsType = "nfs";

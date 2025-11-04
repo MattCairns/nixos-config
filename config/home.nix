@@ -78,7 +78,7 @@
       eza
       xclip
       magic-wormhole
-      du-dust
+      dust
       jq
       atuin
 
@@ -163,6 +163,7 @@
       (import ../scripts/warp.nix { inherit pkgs; })
       (import ../scripts/fs-diff.nix { inherit pkgs; })
       (import ../scripts/oor-bw-pw.nix { inherit pkgs; })
+      (import ../scripts/open-git.nix { inherit pkgs; })
     ];
 
     pointerCursor = {
