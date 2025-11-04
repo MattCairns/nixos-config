@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   programs.tmux = {
     enable = true;
     plugins = with pkgs; [
@@ -54,6 +55,7 @@
       bind K run-shell 'tmux switch-client -n \; kill-session -t "$(tmux display-message -p "#S")" || tmux kill-s'
       bind -r N run-shell "tmux-sessionizer /home/$USER/nixos-config/"
       bind -r O run-shell "tmux-sessionizer /home/$USER/dev/oor/hydromanteia/"
+      bind -r g run-shell "open-git"
       # ==================
 
       # Vim-like pane switching

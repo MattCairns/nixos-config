@@ -176,7 +176,7 @@ in
     nerd-fonts.jetbrains-mono
     nerd-fonts.sauce-code-pro
     noto-fonts
-    noto-fonts-emoji
+    noto-fonts-color-emoji
     siji
   ];
 
