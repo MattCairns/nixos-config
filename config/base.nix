@@ -142,7 +142,7 @@ in
   services.openssh.enable = true;
   programs.ssh.startAgent = true;
   services.tailscale.enable = true;
-  programs.adb.enable = true;
+  # programs.adb.enable = true;
 
   # Set your time zone and locale
   time.timeZone = "America/Vancouver";
@@ -172,12 +172,20 @@ in
 
   fonts.packages = with pkgs; [
     font-awesome
+    # Comprehensive Nerd Fonts collection to ensure all icons are available
+    nerd-fonts.iosevka
     nerd-fonts.fira-code
     nerd-fonts.jetbrains-mono
     nerd-fonts.sauce-code-pro
+    # Additional fonts that may contain missing icons
+    nerd-fonts.hack
+    nerd-fonts.dejavu-sans-mono
+    nerd-fonts.roboto-mono
+    # Symbol and icon fonts
     noto-fonts
     noto-fonts-color-emoji
     siji
+    liberation_ttf
   ];
 
   # Enable CUPS to print documents.

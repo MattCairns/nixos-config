@@ -4,6 +4,8 @@
   ...
 }:
 let
+  polybarHotplugDaemon = pkgs.callPackage ../../../scripts/polybar-monitor-hotplug.nix { };
+
   mypolybar = pkgs.polybar.override {
     alsaSupport = true;
     githubSupport = true;
@@ -53,11 +55,24 @@ let
   qhd = ''
     [bar/mybar]
     height = 25
-    font-0 = "NotoSans-Regular:size=11;2.5"
-    font-1 = "JetBrainsMono Nerd Font:style=Regular:size=11;2.5"
-    font-2 = "Noto Sans Symbols:size=13;1"
+    ; Use the nerd font as the main font, with fallbacks for symbols
+    font-0 = "JetBrainsMono Nerd Font:size=11;3"
+    font-1 = "Noto Sans Symbols:size=11;2"
+    font-2 = "Noto Color Emoji:scale=8"
     offset-x = 4
     offset-y = 3
+  '';
+
+  traymodule = ''
+    [module/tray]
+    type = internal/tray
+    ; Only show tray on primary monitor
+    tray-position = ${builtins.getEnv "TRAY_POSITION"}
+    tray-detached = false
+    tray-maxsize = 16
+    tray-background = ${colors.background}
+    tray-foreground = ${colors.foreground}
+    format = <tray>
   '';
 
   mon = qhd;
@@ -94,7 +109,7 @@ in
     enable = true;
     package = mypolybar;
     config = ./config.ini;
-    extraConfig = bctl + internets + mon + tctl + cmusctl;
+    extraConfig = bctl + internets + mon + traymodule + tctl + cmusctl;
     script = ''
       battery_device=""
       for path in /sys/class/power_supply/BAT*; do
@@ -147,4 +162,23 @@ in
   systemd.user.services.polybar = {
     Install.WantedBy = [ "graphical-session.target" ];
   };
+
+  # Polybar monitor hotplug detection service - DISABLED due to race condition with monitor-hotplug-daemon
+  # systemd.user.services.polybar-monitor-hotplug = {
+  #   Unit = {
+  #     Description = "Polybar Monitor Hotplug Detection Service";
+  #     After = [ "graphical-session.target" ];
+  #   };
+
+  #   Service = {
+  #     Type = "simple";
+  #     ExecStart = "${polybarHotplugDaemon}/bin/polybar-monitor-hotplug";
+  #     Restart = "always";
+  #     RestartSec = 2;
+  #   };
+
+  #   Install = {
+  #     WantedBy = [ "graphical-session.target" ];
+  #   };
+  # };
 }

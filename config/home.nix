@@ -139,7 +139,7 @@
       lua-language-server
       buf
       codeium
-      perl540Packages.PerlLanguageServer
+      perl5Packages.PerlLanguageServer
 
       # Keyboards
       qmk
@@ -153,6 +153,11 @@
       tmate
       junction
 
+      prusa-slicer
+
+      socat
+      bubblewrap
+
       # Custom scripts
       (import ../scripts/tmux-sessionizer.nix { inherit pkgs; })
       (import ../scripts/tmux-windowizer.nix { inherit pkgs; })
@@ -164,6 +169,12 @@
       (import ../scripts/fs-diff.nix { inherit pkgs; })
       (import ../scripts/oor-bw-pw.nix { inherit pkgs; })
       (import ../scripts/open-git.nix { inherit pkgs; })
+      (import ../scripts/monitor-hotplug.nix { inherit pkgs; })
+      (pkgs.callPackage ../scripts/monitor-hotplug-daemon.nix {
+        inherit pkgs;
+        monitorHotplug = pkgs.callPackage ../scripts/monitor-hotplug.nix { inherit pkgs; };
+      })
+      (import ../scripts/polybar-monitor-hotplug.nix { inherit pkgs; })
     ];
 
     pointerCursor = {

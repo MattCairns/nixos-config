@@ -150,6 +150,61 @@ in {
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
+  # Enable RabbitMQ server with MQTT plugin
+  services.rabbitmq = {
+    enable = true;
+    # Enable the MQTT plugin
+    plugins = [ "rabbitmq_mqtt" ];
+    # Configure the default admin user
+    adminEnable = true;
+    # Add the test user for MQTT
+    extraConfig = ''
+      %% Enable MQTT plugin configuration
+      mqtt.default_user = guest
+      mqtt.default_password = guest
+      %% Allow guest user to connect from any IP
+      loopback_users.guest = false
+    '';
+    # Additional configuration to set up the test user
+    extraFiles."definitions.json" = {
+      text = builtins.toJSON {
+        users = [
+          {
+            name = "guest";
+            password = "guest";
+            tags = ["administrator"];
+          }
+          {
+            name = "test";
+            password = "test";
+            tags = ["management"];
+          }
+        ];
+        vhosts = [{name="/";}];
+        permissions = [
+          {
+            user = "guest";
+            vhost = "/";
+            configure = ".*";
+            write = ".*";
+            read = ".*";
+          }
+          {
+            user = "test";
+            vhost = "/";
+            configure = ".*";
+            write = ".*";
+            read = ".*";
+          }
+        ];
+        topicPermissions = [];
+      };
+      user = "rabbitmq";
+      group = "rabbitmq";
+      permissions = "0640";
+    };
+  };
+
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ 80 ];
   # networking.firewall.allowedUDPPorts = [ 80 ];

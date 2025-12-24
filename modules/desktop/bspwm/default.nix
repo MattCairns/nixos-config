@@ -6,6 +6,10 @@
 let
   lib = pkgs.lib;
 
+  # Import monitor-hotplug scripts
+  monitorHotplug = pkgs.callPackage ../../../scripts/monitor-hotplug.nix { };
+  monitorHotplugDaemon = pkgs.callPackage ../../../scripts/monitor-hotplug-daemon.nix { inherit monitorHotplug; };
+
   wallpaperPath = "/home/matthew/.config/wallpapers/pexels-eberhard-grossgasteiger-730981.jpg";
 
   defaultWorkspaceMap = {
@@ -318,7 +322,7 @@ in
           bluetoothctl connect 88:C9:E8:44:61:64
 
       super + shift + d
-          ~/.config/bspwm/monitor-hotplug.sh
+          ~/.local/bin/monitor-hotplug
     '';
   };
 
@@ -329,11 +333,6 @@ in
 
   xdg.configFile."bspwm/set-wallpaper.sh" = {
     source = ./config/set-wallpaper.sh;
-    executable = true;
-  };
-
-  xdg.configFile."bspwm/monitor-hotplug.sh" = {
-    source = ./config/monitor-hotplug.sh;
     executable = true;
   };
 
@@ -351,31 +350,7 @@ in
         "DISPLAY=:0"
         "XAUTHORITY=%h/.Xauthority"
       ];
-      ExecStart = "${pkgs.writeScript "monitor-hotplug-daemon" ''
-        #!/usr/bin/env bash
-
-        # Monitor for changes in connected displays
-        # This approach polls xrandr, but it's the most reliable for automatic detection
-        PREV_OUTPUT=""
-
-        # Wait a bit to ensure X session is fully loaded
-        sleep 3
-
-        while true; do
-            CURRENT_OUTPUT=$(xrandr --query | grep " connected" | sort)
-            
-            if [ "$CURRENT_OUTPUT" != "$PREV_OUTPUT" ]; then
-                echo "$(date): Monitor configuration changed, running mons..."
-                
-                # Run the monitor hotplug script
-                DISPLAY=:0 ~/.config/bspwm/monitor-hotplug.sh
-                
-                PREV_OUTPUT=$CURRENT_OUTPUT
-            fi
-            
-            sleep 2  # Check every 2 seconds
-        done
-      ''}";
+      ExecStart = "${monitorHotplugDaemon}/bin/monitor-hotplug-daemon";
       Restart = "always";
       RestartSec = 5;
     };
