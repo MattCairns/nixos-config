@@ -120,7 +120,6 @@
       glab
       perl
       codex
-      claude-code
       qwen-code
       lmstudio
 

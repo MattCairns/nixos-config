@@ -18,8 +18,8 @@ pkgs.writeShellScriptBin "monitor-hotplug-daemon" ''
 
   while true; do
       # Only proceed if we can access the X server
-      if ${pkgs.xorg.xset}/bin/xset q &>/dev/null; then
-          CURRENT_OUTPUT=$(${pkgs.xorg.xrandr}/bin/xrandr --query 2>/dev/null | ${pkgs.gnugrep}/bin/grep " connected" | ${pkgs.coreutils}/bin/sort)
+      if ${pkgs.xset}/bin/xset q &>/dev/null; then
+          CURRENT_OUTPUT=$(${pkgs.xrandr}/bin/xrandr --query 2>/dev/null | ${pkgs.gnugrep}/bin/grep " connected" | ${pkgs.coreutils}/bin/sort)
       else
           # If X server is not accessible, wait a bit longer and try again
           ${pkgs.coreutils}/bin/sleep 5

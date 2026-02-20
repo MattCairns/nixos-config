@@ -247,6 +247,7 @@ in
     EDITOR = "nvim";
     XCURSOR_SIZE = "32";
     FLAKE = "\${HOME}/nixos-config";
+    NH_FLAKE = "\${HOME}/nixos-config";
     CARGO_BUILD_BUILD_DIR = "\${HOME}/.cargo/build-dir";
   };
 

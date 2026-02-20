@@ -3,9 +3,12 @@
   programs.git = {
     enable = true;
     lfs.enable = true;
-    userName = "Matthew Cairns";
-    userEmail = "git@cairns.pro";
-    extraConfig = {
+    settings = {
+      user = {
+        name = "Matthew Cairns";
+        email = "git@cairns.pro";
+        signingkey = "/home/matthew/.ssh/id_ed25519.pub";
+      };
       init = {
         defaultBranch = "main";
       };
@@ -30,9 +33,6 @@
       };
       gpg = {
         format = "ssh";
-      };
-      user = {
-        signingkey = "/home/matthew/.ssh/id_ed25519.pub";
       };
       core = {
         whitespace = "trailing-space,space-before-tab";

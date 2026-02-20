@@ -11,6 +11,7 @@
     ++ [ (import ../modules/dev/tmux) ]
     ++ [ (import ../modules/dev/fish) ]
     ++ [ (import ../modules/dev/direnv) ]
+    ++ [ (import ../modules/dev/claude-code) ]
     ++ [ (import ../modules/desktop/waybar) ]
     # ++ [(import ../modules/desktop/hyprland)]
     ++ [ (import ../modules/desktop/bspwm) ]

@@ -161,8 +161,8 @@ in
     sxhkd
     rofi
     xdotool
-    xorg.xrandr
-    xorg.xset
+    xrandr
+    xset
     i3lock
     mons
   ];
