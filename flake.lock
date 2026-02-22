@@ -61,11 +61,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1771519029,
-        "narHash": "sha256-H59Qf82wv5kBXVoyXsmUKW+9J3o8FqgY4uKaLdsLdLg=",
+        "lastModified": 1771683283,
+        "narHash": "sha256-WxAEkAbo8dP7qiyPM6VN4ZGAxfuBVlNBNPkrqkrXVEc=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "167e0b6837115e672ec5f58e2b0ea39093abe807",
+        "rev": "c6ed3eab64d23520bcbb858aa53fe2b533725d4a",
         "type": "github"
       },
       "original": {
@@ -495,11 +495,11 @@
     "talon-community": {
       "flake": false,
       "locked": {
-        "lastModified": 1771252626,
-        "narHash": "sha256-z3O/ogHWuYjSiHyBN7Situ3v+tYfU5LGjPMSJSefmj4=",
+        "lastModified": 1771695991,
+        "narHash": "sha256-PqDBM3Mmc2AZ68wO+fDiA/iHQDly9gbm8XQ9bCR1Oug=",
         "owner": "talonhub",
         "repo": "community",
-        "rev": "1614f04cbbb771705801e3e6238bb6f47df49ebd",
+        "rev": "445bcf2d88947e7d97bff0b827f37fbd45bf7b6a",
         "type": "github"
       },
       "original": {
