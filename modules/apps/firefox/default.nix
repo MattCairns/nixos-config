@@ -1,5 +1,4 @@
-{ ... }:
-let
+{...}: let
   lock-false = {
     Value = false;
     Status = "locked";
@@ -10,14 +9,13 @@ let
   };
   searchEngines = {
     "SearXNG" = {
-      urls = [ { template = "http://192.168.1.10:8129/search?q={searchTerms}"; } ];
+      urls = [{template = "http://192.168.1.10:8129/search?q={searchTerms}";}];
       icon = "https://nixos.wiki/favicon.png";
       updateInterval = 24 * 60 * 60 * 1000; # every day
-      definedAliases = [ "@searx" ];
+      definedAliases = ["@searx"];
     };
   };
-in
-{
+in {
   programs = {
     firefox = {
       enable = true;
@@ -78,17 +76,15 @@ in
           "browser.newtabpage.activity-stream.showSponsoredTopSites" = lock-false;
           "svg.context-properties.content.enabled" = lock-false;
         };
-        ExtensionSettings =
-          with builtins;
-          let
-            extension = shortId: uuid: {
-              name = uuid;
-              value = {
-                install_url = "https://addons.mozilla.org/en-US/firefox/downloads/latest/${shortId}/latest.xpi";
-                installation_mode = "force_installed";
-              };
+        ExtensionSettings = with builtins; let
+          extension = shortId: uuid: {
+            name = uuid;
+            value = {
+              install_url = "https://addons.mozilla.org/en-US/firefox/downloads/latest/${shortId}/latest.xpi";
+              installation_mode = "force_installed";
             };
-          in
+          };
+        in
           listToAttrs [
             (extension "ublock-origin" "uBlock0@raymondhill.net")
             (extension "bitwarden-password-manager" "{446900e4-71c2-419f-a6a7-df9c091e268b}")

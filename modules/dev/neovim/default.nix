@@ -2,10 +2,8 @@
   pkgs,
   lib,
   ...
-}:
-let
-  fromGitHub =
-    rev: ref: repo:
+}: let
+  fromGitHub = rev: ref: repo:
     pkgs.vimUtils.buildVimPlugin {
       pname = "${lib.strings.sanitizeDerivationName repo}";
       version = ref;
@@ -16,8 +14,7 @@ let
         rev = rev;
       };
     };
-in
-{
+in {
   home.packages = with pkgs; [
     rust-analyzer
     vscode-extensions.ms-vscode.cpptools
@@ -123,7 +120,8 @@ in
           type = "lua";
         }
         (fromGitHub "a0ae099c7eb926150ee0a126b1dd78086edbe3fc" "main" "apple/pkl-neovim")
-        (fromGitHub "8843b72822151bb7792f3fdad4b63df0bc1dd4a6" "main"
+        (
+          fromGitHub "8843b72822151bb7792f3fdad4b63df0bc1dd4a6" "main"
           "MattCairns/telescope-cargo-workspace.nvim"
         )
         # {
@@ -167,7 +165,8 @@ in
         #   config = "require('gitsigns').setup()";
         #   type = "lua";
         # }
-        (fromGitHub "e2dcf63ba74e6111b53e1520a4f8a17a3d7427a1" "main"
+        (
+          fromGitHub "e2dcf63ba74e6111b53e1520a4f8a17a3d7427a1" "main"
           "yavorski/lualine-macro-recording.nvim"
         )
         {
@@ -218,7 +217,7 @@ in
           # Updated 24/19/12
           plugin =
             fromGitHub "f4eed65f7890023104f7c1979be31baadbfb901f" "main"
-              "olimorris/codecompanion.nvim";
+            "olimorris/codecompanion.nvim";
           config =
             # lua
             ''

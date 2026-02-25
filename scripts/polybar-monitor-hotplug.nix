@@ -1,5 +1,4 @@
-{ pkgs }:
-
+{pkgs}:
 pkgs.writeShellScriptBin "polybar-monitor-hotplug" ''
   #!${pkgs.bash}/bin/bash
   export DISPLAY=:0

@@ -154,9 +154,7 @@ in {
   services.rabbitmq = {
     enable = true;
     # Enable the MQTT plugin
-    plugins = [ "rabbitmq_mqtt" ];
-    # Configure the default admin user
-    adminEnable = true;
+    plugins = ["rabbitmq_mqtt" "rabbitmq_management"];
     # Add the test user for MQTT
     extraConfig = ''
       %% Enable MQTT plugin configuration
@@ -180,7 +178,7 @@ in {
             tags = ["management"];
           }
         ];
-        vhosts = [{name="/";}];
+        vhosts = [{name = "/";}];
         permissions = [
           {
             user = "guest";

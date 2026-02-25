@@ -1,4 +1,4 @@
-{ pkgs }:
+{pkgs}:
 pkgs.writeShellScriptBin "oor-bw-pw" ''
   pw="$(${pkgs.bitwarden-cli}/bin/bw get password bitwarden.com)"
   copied=0

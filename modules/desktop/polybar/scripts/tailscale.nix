@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-let
+{pkgs, ...}: let
   tailscale = "${pkgs.tailscale}/bin/tailscale";
   rg = "${pkgs.ripgrep}/bin/rg";
   hostname = "${pkgs.hostname}/bin/hostname";
@@ -7,8 +6,8 @@ let
   cut = "${pkgs.coreutils}/bin/cut";
   awk = "${pkgs.gawk}/bin/awk";
 in
-pkgs.writeShellScriptBin "tailscale-ctl" ''
-  ${tailscale} status | ${rg} "$(${hostname})" &> /dev/null \
-    && echo "%{F#2193ff}⍀  %{F#ffffff}[ts $(${ip} addr show tailscale0 | ${rg} 'inet ' | ${awk} '{print $2}' | ${cut} -d'/' -f1 )]" \
-    || echo ""
-''
+  pkgs.writeShellScriptBin "tailscale-ctl" ''
+    ${tailscale} status | ${rg} "$(${hostname})" &> /dev/null \
+      && echo "%{F#2193ff}⍀  %{F#ffffff}[ts $(${ip} addr show tailscale0 | ${rg} 'inet ' | ${awk} '{print $2}' | ${cut} -d'/' -f1 )]" \
+      || echo ""
+  ''

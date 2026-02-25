@@ -32,32 +32,29 @@
     };
   };
 
-  outputs =
-    inputs@{
-      nixpkgs,
-      home-manager,
-      # hyprland,
-      hyprpaper,
-      nixvim,
-      ...
-    }:
-    let
-      user = "matthew";
-    in
-    {
-      nixosConfigurations = (
-        import ./machines {
-          inherit (nixpkgs) lib;
-          inherit
-            inputs
-            nixpkgs
-            home-manager
-            # hyprland
-            user
-            ;
-        }
-      );
+  outputs = inputs @ {
+    nixpkgs,
+    home-manager,
+    # hyprland,
+    hyprpaper,
+    nixvim,
+    ...
+  }: let
+    user = "matthew";
+  in {
+    nixosConfigurations = (
+      import ./machines {
+        inherit (nixpkgs) lib;
+        inherit
+          inputs
+          nixpkgs
+          home-manager
+          # hyprland
+          user
+          ;
+      }
+    );
 
-      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
-    };
+    formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
+  };
 }

@@ -1,11 +1,13 @@
-{ ... }:
-{
+{...}: {
   programs.claude-code = {
     enable = true;
     settings = {
       model = "sonnet";
       permissions = {
         default_mode = "default";
+      };
+      env = {
+        CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS = "1";
       };
     };
     skills.pdf = ''
@@ -29,7 +31,11 @@
     mcpServers = {
       nixos = {
         command = "nix";
-        args = [ "run" "github:utensils/mcp-nixos" ];
+        args = ["run" "github:utensils/mcp-nixos"];
+      };
+      atlassian = {
+        type = "http";
+        url = "https://mcp.atlassian.com/v1/mcp";
       };
     };
   };

@@ -2,9 +2,8 @@
   pkgs,
   lib,
   ...
-}:
-let
-  polybarHotplugDaemon = pkgs.callPackage ../../../scripts/polybar-monitor-hotplug.nix { };
+}: let
+  polybarHotplugDaemon = pkgs.callPackage ../../../scripts/polybar-monitor-hotplug.nix {};
 
   mypolybar = pkgs.polybar.override {
     alsaSupport = true;
@@ -19,7 +18,7 @@ let
     theme = "#89adfa";
   };
 
-  bluetoothScript = pkgs.callPackage ./scripts/bluetooth.nix { };
+  bluetoothScript = pkgs.callPackage ./scripts/bluetooth.nix {};
 
   bctl = ''
     [module/bluetooth]
@@ -30,7 +29,7 @@ let
     format-foreground = ${colors.theme}
   '';
 
-  tailscaleScript = pkgs.callPackage ./scripts/tailscale.nix { };
+  tailscaleScript = pkgs.callPackage ./scripts/tailscale.nix {};
   tctl = ''
     [module/tailscale]
     type = custom/script
@@ -103,8 +102,7 @@ let
     ramp-signal-4 = 
     ramp-signal-foreground = ${colors.theme}
   '';
-in
-{
+in {
   services.polybar = {
     enable = true;
     package = mypolybar;
@@ -139,14 +137,14 @@ in
   };
 
   # Restart polybar after home-manager configuration is applied with a delay to ensure bspwm is ready
-  home.activation.restartPolybar = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+  home.activation.restartPolybar = lib.hm.dag.entryAfter ["writeBoundary"] ''
     # Give the desktop environment time to fully initialize before starting polybar
     sleep 3
     ${pkgs.systemd}/bin/systemctl --user restart polybar 2>/dev/null || true
   '';
 
   # Custom activation to restart polybar after monitor changes
-  home.activation.restartPolybarOnMonitorChange = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+  home.activation.restartPolybarOnMonitorChange = lib.hm.dag.entryAfter ["writeBoundary"] ''
     # Function to restart polybar, can be called externally
     restart_polybar() {
       pkill polybar
@@ -160,7 +158,7 @@ in
   '';
 
   systemd.user.services.polybar = {
-    Install.WantedBy = [ "graphical-session.target" ];
+    Install.WantedBy = ["graphical-session.target"];
   };
 
   # Polybar monitor hotplug detection service - DISABLED due to race condition with monitor-hotplug-daemon

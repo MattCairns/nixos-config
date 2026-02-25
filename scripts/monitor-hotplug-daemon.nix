@@ -1,5 +1,7 @@
-{ pkgs, monitorHotplug }:
-
+{
+  pkgs,
+  monitorHotplug,
+}:
 pkgs.writeShellScriptBin "monitor-hotplug-daemon" ''
   # Monitor for changes in connected displays
   # This approach polls xrandr, but it's the most reliable for automatic detection

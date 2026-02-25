@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   programs.nixvim = {
     enable = true;
     viAlias = true;
@@ -82,7 +81,37 @@
           hash = "sha256-QlOQetD34EkUIByMOeN7pfnud/ZxIu8HlvO/Dzoa3eQ=";
         };
       })
+
+      (pkgs.vimUtils.buildVimPlugin {
+        name = "99-nvim";
+        doCheck = false;
+        src = pkgs.fetchFromGitHub {
+          owner = "ThePrimeagen";
+          repo = "99";
+          rev = "6a64e0b2f4c7f1e3911db1f8318e5d7c68cb8dff";
+          hash = "sha256-OOj2bnhxn3Ou7VQOmi3RVPcVs+CqolnJzEgfkXk2p5Q=";
+        };
+      })
     ];
+
+    extraConfigLua = ''
+      -- Configure 99 plugin
+      local _99 = require("99")
+      _99.setup({
+        provider = _99.Providers.ClaudeCodeProvider,  -- Use _99.Providers.OpenCodeProvider for OpenAI
+        tmp_dir = "./tmp",  -- Project-accessible temp directory
+        -- logger = {
+        --   path = vim.fn.stdpath("data") .. "/99.log",
+        --   level = "info"
+        -- },
+      })
+
+      -- Keybindings for 99 plugin
+      vim.keymap.set("v", "<leader>nv", function() _99.visual() end, { desc = "99: Visual selection" })
+      vim.keymap.set("n", "<leader>ns", function() _99.search() end, { desc = "99: Search project" })
+      vim.keymap.set("n", "<leader>nx", function() _99.stop_all_requests() end, { desc = "99: Stop all requests" })
+      vim.keymap.set("n", "<leader>nl", function() _99.view_logs() end, { desc = "99: View logs" })
+    '';
 
     plugins = {
       treesitter = {
@@ -140,9 +169,9 @@
             completeopt = "menu,menuone,noinsert";
           };
           sources = [
-            { name = "nvim_lsp"; }
-            { name = "path"; }
-            { name = "buffer"; }
+            {name = "nvim_lsp";}
+            {name = "path";}
+            {name = "buffer";}
           ];
           mapping = {
             "<C-n>" = "cmp.mapping.select_next_item()";
@@ -257,12 +286,26 @@
                 check = {
                   command = "clippy";
                   workspace = false;
+                  extraArgs = ["--no-deps"];
                 };
                 cargo = {
-                  allFeatures = true;
-                  allTargets = true;
+                  allFeatures = false;
+                  allTargets = false;
                   runBuildScripts = true;
                   targetDir = true;
+                };
+                procMacro = {
+                  enable = true;
+                };
+                diagnostics = {
+                  disabled = ["unresolved-proc-macro"];
+                };
+                cachePriming = {
+                  enable = true;
+                  numThreads = 2;
+                };
+                lru = {
+                  capacity = 256;
                 };
                 inlayHints = {
                   lifetimeElisionHints = {

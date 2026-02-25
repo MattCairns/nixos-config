@@ -3,8 +3,7 @@
   machine,
   inputs,
   ...
-}:
-{
+}: {
   home.packages = with pkgs; [
     hyprpaper
     wlr-randr
@@ -32,7 +31,7 @@
     enable = true;
     settings = {
       general = {
-        after_sleep_cmd = "sleep 3; hyprctl dispatch dpms on";
+        after_sleep_cmd = "sleep 5; hyprctl dispatch dpms on";
         before_sleep_cmd = "loginctl lock-session";
         ignore_dbus_inhibit = false;
         lock_cmd = "pidof hyprlock || hyprlock";
@@ -46,7 +45,7 @@
         {
           timeout = 300;
           on-timeout = "hyprctl dispatch dpms off";
-          on-resume = "sleep 3; hyprctl dispatch dpms on";
+          on-resume = "sleep 5; hyprctl dispatch dpms on";
         }
         {
           timeout = 1800;
@@ -158,6 +157,7 @@
         "waybar"
         "dunst"
         "hypridle"
+        "sleep 2 && hyprctl dispatch dpms on" # Ensure monitors wake on startup
         "~/.config/hypr/start-apps.sh"
       ];
 
@@ -285,6 +285,7 @@
         ", XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
         ", XF86WLAN, exec, nmcli radio wifi | grep -q \"enabled\" && nmcli radio wifi off || nmcli radio wifi on"
         ", XF86Display, exec, hyprctl dispatch dpms toggle"
+        "$mainMod SHIFT, D, exec, reset-monitors"
       ];
 
       binde = [
@@ -299,76 +300,73 @@
 
       # Machine-specific monitor and workspace configuration
       monitor =
-        if machine == "framework" then
-          [
-            "desc:ASUSTek COMPUTER INC PA278QV LBLMQS297570,2560x1440@59.951,4439x0,1.0"
-            "desc:ASUSTek COMPUTER INC PA278QV LBLMQS297570,transform,3"
-            "desc:ASUSTek COMPUTER INC PA278CV LCLMQS261918,2560x1440@59.951,1879x608,1.0"
-            "eDP-1,2256x1504@59.999001,0x1306,1.175"
-          ]
-        else if machine == "laptop" then
-          [
-            "eDP-1,1920x1080@60.033001,0x1376,1.0"
-            "DP-6,2560x1440@59.951,4480x0,1.0"
-            "DP-6,transform,1"
-            "DP-5,2560x1440@59.951,1920x599,1.0"
-          ]
-        else if machine == "nuc" then
-          [
-            "HDMI-A-5,highres,1920x560,auto"
-            "DP-6,highres,4480x0,auto"
-            "DP-6,transform,3"
-          ]
-        else
-          [ ];
+        if machine == "framework"
+        then [
+          "desc:ASUSTek COMPUTER INC PA278QV LBLMQS297570,2560x1440@59.951,4439x0,1.0"
+          "desc:ASUSTek COMPUTER INC PA278QV LBLMQS297570,transform,3"
+          "desc:ASUSTek COMPUTER INC PA278CV LCLMQS261918,2560x1440@59.951,1879x608,1.0"
+          "eDP-1,2256x1504@59.999001,0x1306,1.175"
+        ]
+        else if machine == "laptop"
+        then [
+          "eDP-1,1920x1080@60.033001,0x1376,1.0"
+          "DP-6,2560x1440@59.951,4480x0,1.0"
+          "DP-6,transform,1"
+          "DP-5,2560x1440@59.951,1920x599,1.0"
+        ]
+        else if machine == "nuc"
+        then [
+          "HDMI-A-5,highres,1920x560,auto"
+          "DP-6,highres,4480x0,auto"
+          "DP-6,transform,3"
+        ]
+        else [];
 
       workspace =
-        if machine == "framework" then
-          [
-            "1, monitor:eDP-1, default:true"
-            "2, monitor:eDP-1, default:true"
-            "3, monitor:eDP-1, default:true"
-            "4, monitor:desc:ASUSTek COMPUTER INC PA278CV LCLMQS261918, default:true"
-            "5, monitor:desc:ASUSTek COMPUTER INC PA278CV LCLMQS261918, default:true"
-            "6, monitor:desc:ASUSTek COMPUTER INC PA278CV LCLMQS261918, default:true"
-            "7, monitor:desc:ASUSTek COMPUTER INC PA278QV LBLMQS297570, default:true"
-            "8, monitor:desc:ASUSTek COMPUTER INC PA278QV LBLMQS297570, default:true"
-            "9, monitor:desc:ASUSTek COMPUTER INC PA278QV LBLMQS297570, default:true"
-          ]
-        else if machine == "laptop" then
-          [
-            "1,monitor:eDP-1,default:true"
-            "2,monitor:eDP-1"
-            "3,monitor:eDP-1"
-            "4,monitor:eDP-1"
-            "5,monitor:eDP-1"
-          ]
-        else if machine == "nuc" then
-          [
-            "4, monitor:HDMI-A-5"
-            "5, monitor:HDMI-A-5"
-            "6, monitor:HDMI-A-5"
-            "7, monitor:DP-6"
-            "8, monitor:DP-6"
-            "9, monitor:DP-6"
-          ]
-        else
-          [ ];
+        if machine == "framework"
+        then [
+          "1, monitor:eDP-1, default:true"
+          "2, monitor:eDP-1, default:true"
+          "3, monitor:eDP-1, default:true"
+          "4, monitor:desc:ASUSTek COMPUTER INC PA278CV LCLMQS261918, default:true"
+          "5, monitor:desc:ASUSTek COMPUTER INC PA278CV LCLMQS261918, default:true"
+          "6, monitor:desc:ASUSTek COMPUTER INC PA278CV LCLMQS261918, default:true"
+          "7, monitor:desc:ASUSTek COMPUTER INC PA278QV LBLMQS297570, default:true"
+          "8, monitor:desc:ASUSTek COMPUTER INC PA278QV LBLMQS297570, default:true"
+          "9, monitor:desc:ASUSTek COMPUTER INC PA278QV LBLMQS297570, default:true"
+        ]
+        else if machine == "laptop"
+        then [
+          "1,monitor:eDP-1,default:true"
+          "2,monitor:eDP-1"
+          "3,monitor:eDP-1"
+          "4,monitor:eDP-1"
+          "5,monitor:eDP-1"
+        ]
+        else if machine == "nuc"
+        then [
+          "4, monitor:HDMI-A-5"
+          "5, monitor:HDMI-A-5"
+          "6, monitor:HDMI-A-5"
+          "7, monitor:DP-6"
+          "8, monitor:DP-6"
+          "9, monitor:DP-6"
+        ]
+        else [];
 
       device =
-        if machine == "framework" then
-          [
-            {
-              name = "at-translated-set-2-keyboard";
-              kb_options = "caps:swapescape";
-            }
-            {
-              name = "cantor-keyboard";
-              kb_layout = "us";
-            }
-          ]
-        else
-          [ ];
+        if machine == "framework"
+        then [
+          {
+            name = "at-translated-set-2-keyboard";
+            kb_options = "caps:swapescape";
+          }
+          {
+            name = "cantor-keyboard";
+            kb_layout = "us";
+          }
+        ]
+        else [];
     };
   };
 

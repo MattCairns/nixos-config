@@ -2,13 +2,12 @@
   pkgs,
   machine,
   ...
-}:
-let
+}: let
   lib = pkgs.lib;
 
   # Import monitor-hotplug scripts
-  monitorHotplug = pkgs.callPackage ../../../scripts/monitor-hotplug.nix { };
-  monitorHotplugDaemon = pkgs.callPackage ../../../scripts/monitor-hotplug-daemon.nix { inherit monitorHotplug; };
+  monitorHotplug = pkgs.callPackage ../../../scripts/monitor-hotplug.nix {};
+  monitorHotplugDaemon = pkgs.callPackage ../../../scripts/monitor-hotplug-daemon.nix {inherit monitorHotplug;};
 
   wallpaperPath = "/home/matthew/.config/wallpapers/pexels-eberhard-grossgasteiger-730981.jpg";
 
@@ -22,12 +21,16 @@ let
   };
 
   perMachineWorkspace = {
-    framework = defaultWorkspaceMap // {
-      OBSIDIAN = "5";
-    };
-    laptop = defaultWorkspaceMap // {
-      OBSIDIAN = "5";
-    };
+    framework =
+      defaultWorkspaceMap
+      // {
+        OBSIDIAN = "5";
+      };
+    laptop =
+      defaultWorkspaceMap
+      // {
+        OBSIDIAN = "5";
+      };
     nuc = {
       FIREFOX_WORK = "4";
       FIREFOX_HOME = "4";
@@ -38,7 +41,7 @@ let
     };
   };
 
-  machineWorkspaceOverrides = lib.attrByPath [ machine ] { } perMachineWorkspace;
+  machineWorkspaceOverrides = lib.attrByPath [machine] {} perMachineWorkspace;
 
   workspaceMap = defaultWorkspaceMap // machineWorkspaceOverrides;
 
@@ -47,115 +50,111 @@ let
   );
 
   monitorSetup =
-    if machine == "framework" then
-      ''
-        xrandr --output eDP-1 \
-               --mode 2256x1504 \
-               --pos 0x1224 \
-               --rotate normal \
-               --output DP-1 --off \
-               --output DP-2 --off \
-               --output DP-3 --off \
-               --output DP-4 --off \
-               --output DP-5 --off \
-               --output DP-6 --off \
-               --output DP-7 --off \
-               --output DP-8 --off \
-               --output DP-9 --off \
-               --output DP-10 --off \
-               --output DP-11 --primary --mode 2560x1440 --pos 2256x560 --rotate normal \
-               --output DP-12 --off \
-               --output DP-13 --mode 2560x1440 --pos 4816x0 --rotate right
+    if machine == "framework"
+    then ''
+      xrandr --output eDP-1 \
+             --mode 2256x1504 \
+             --pos 0x1224 \
+             --rotate normal \
+             --output DP-1 --off \
+             --output DP-2 --off \
+             --output DP-3 --off \
+             --output DP-4 --off \
+             --output DP-5 --off \
+             --output DP-6 --off \
+             --output DP-7 --off \
+             --output DP-8 --off \
+             --output DP-9 --off \
+             --output DP-10 --off \
+             --output DP-11 --primary --mode 2560x1440 --pos 2256x560 --rotate normal \
+             --output DP-12 --off \
+             --output DP-13 --mode 2560x1440 --pos 4816x0 --rotate right
 
+      monitors=$(bspc query -M --names)
+      internal_monitor="eDP-1"
+
+      if echo "$monitors" | grep -qx "$internal_monitor"; then
+        bspc monitor "$internal_monitor" -d 1 2 3
+      fi
+
+      externals=$(printf '%s\n' $monitors | grep -v "^$internal_monitor$")
+      set -- $externals
+      if [ $# -ge 1 ]; then
+        bspc monitor "$1" -d 4 5 6
+      fi
+      if [ $# -ge 2 ]; then
+        bspc monitor "$2" -d 7 8 9
+      fi
+      if [ $# -ge 3 ]; then
+        bspc monitor "$3" -d 10
+      fi
+    ''
+    else if machine == "laptop"
+    then ''
+      # Use mons for automatic monitor detection and configuration
+      if command -v mons >/dev/null 2>&1; then
+        # Run mons to detect and configure monitors, then configure bspwm accordingly
         monitors=$(bspc query -M --names)
         internal_monitor="eDP-1"
 
-        if echo "$monitors" | grep -qx "$internal_monitor"; then
-          bspc monitor "$internal_monitor" -d 1 2 3
-        fi
-
-        externals=$(printf '%s\n' $monitors | grep -v "^$internal_monitor$")
-        set -- $externals
-        if [ $# -ge 1 ]; then
-          bspc monitor "$1" -d 4 5 6
-        fi
-        if [ $# -ge 2 ]; then
-          bspc monitor "$2" -d 7 8 9
-        fi
-        if [ $# -ge 3 ]; then
-          bspc monitor "$3" -d 10
-        fi
-      ''
-    else if machine == "laptop" then
-      ''
-        # Use mons for automatic monitor detection and configuration
-        if command -v mons >/dev/null 2>&1; then
-          # Run mons to detect and configure monitors, then configure bspwm accordingly
-          monitors=$(bspc query -M --names)
-          internal_monitor="eDP-1"
-          
-          # Check if only internal monitor is present
-          if [ $(echo "$monitors" | wc -l) -eq 1 ] && echo "$monitors" | grep -qx "$internal_monitor"; then
-            bspc monitor "$internal_monitor" -d 1 2 3 4 5
-          else
-            # Multiple monitors detected, assign desktops appropriately
-            if echo "$monitors" | grep -qx "$internal_monitor"; then
-              bspc monitor "$internal_monitor" -d 1 2 3
-            fi
-            
-            externals=$(printf '%s\n' $monitors | grep -v "^$internal_monitor$")
-            set -- $externals
-            if [ $# -ge 1 ]; then
-              bspc monitor "$1" -d 4 5 6 7 8 9 10
-            fi
-          fi
+        # Check if only internal monitor is present
+        if [ $(echo "$monitors" | wc -l) -eq 1 ] && echo "$monitors" | grep -qx "$internal_monitor"; then
+          bspc monitor "$internal_monitor" -d 1 2 3 4 5
         else
-          # Fallback to original logic if mons is not available
-          monitors=$(bspc query -M --names)
-          internal_monitor="eDP-1"
-
+          # Multiple monitors detected, assign desktops appropriately
           if echo "$monitors" | grep -qx "$internal_monitor"; then
-            bspc monitor "$internal_monitor" -d 1 2 3 4 5
+            bspc monitor "$internal_monitor" -d 1 2 3
           fi
 
           externals=$(printf '%s\n' $monitors | grep -v "^$internal_monitor$")
           set -- $externals
           if [ $# -ge 1 ]; then
-            bspc monitor "$1" -d 6 7 8 9 10
+            bspc monitor "$1" -d 4 5 6 7 8 9 10
           fi
         fi
-      ''
-    else
-      ''
+      else
+        # Fallback to original logic if mons is not available
         monitors=$(bspc query -M --names)
-        if [ -z "$monitors" ]; then
-          exit 0
+        internal_monitor="eDP-1"
+
+        if echo "$monitors" | grep -qx "$internal_monitor"; then
+          bspc monitor "$internal_monitor" -d 1 2 3 4 5
         fi
 
-        for m in $monitors; do
-          bspc monitor "$m" -d 1 2 3 4 5 6 7 8 9 10
-        done
-      '';
+        externals=$(printf '%s\n' $monitors | grep -v "^$internal_monitor$")
+        set -- $externals
+        if [ $# -ge 1 ]; then
+          bspc monitor "$1" -d 6 7 8 9 10
+        fi
+      fi
+    ''
+    else ''
+      monitors=$(bspc query -M --names)
+      if [ -z "$monitors" ]; then
+        exit 0
+      fi
 
-  spotifyBindings =
-    let
-      value = workspaceMap.SPOTIFY;
-    in
-    if value != "" then
-      ''
-        super + s
-            bspc desktop -f ^${value}
+      for m in $monitors; do
+        bspc monitor "$m" -d 1 2 3 4 5 6 7 8 9 10
+      done
+    '';
 
-        super + shift + s
-            bspc node -d ^${value}
-      ''
-    else
-      ''
-        super + s
-            bspc desktop -f next.local
-      '';
-in
-{
+  spotifyBindings = let
+    value = workspaceMap.SPOTIFY;
+  in
+    if value != ""
+    then ''
+      super + s
+          bspc desktop -f ^${value}
+
+      super + shift + s
+          bspc node -d ^${value}
+    ''
+    else ''
+      super + s
+          bspc desktop -f next.local
+    '';
+in {
   home.packages = with pkgs; [
     bspwm
     sxhkd
@@ -340,7 +339,7 @@ in
   systemd.user.services.mons-hotplug = {
     Unit = {
       Description = "Automatic monitor hotplug detection with mons";
-      After = [ "graphical-session.target" ];
+      After = ["graphical-session.target"];
       PartOf = "graphical-session.target";
     };
 
@@ -356,7 +355,7 @@ in
     };
 
     Install = {
-      WantedBy = [ "graphical-session.target" ];
+      WantedBy = ["graphical-session.target"];
     };
   };
 }

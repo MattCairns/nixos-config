@@ -4,8 +4,7 @@
   home-manager,
   user,
   ...
-}:
-let
+}: let
   inherit (nixpkgs) lib;
 
   defaultSystem = "x86_64-linux";
@@ -16,33 +15,37 @@ let
       config.allowUnfree = true;
     };
 
-  mkHomeManagerModule = { machine, pkgs }:
-    {
-      home-manager.extraSpecialArgs = {
-        inherit user inputs machine;
-      };
-
-      home-manager.users.${user}.imports = [
-        (import ../config/home.nix)
-      ];
-
-      home-manager.backupFileExtension =
-        "backup-" + pkgs.lib.readFile "${pkgs.runCommand "timestamp" {} "echo -n `date '+%Y%m%d%H%M%S'` > $out"}";
-
-      home-manager.useGlobalPkgs = true;
-      home-manager.useUserPackages = true;
-      home-manager.sharedModules = [
-        inputs.nixvim.homeModules.nixvim
-        inputs.sops-nix.homeManagerModules.sops
-      ];
+  mkHomeManagerModule = {
+    machine,
+    pkgs,
+  }: {
+    home-manager.extraSpecialArgs = {
+      inherit user inputs machine;
     };
 
-  mkBaseModules = { machine, pkgs }:
-    [
-      inputs.sops-nix.nixosModules.sops
-      home-manager.nixosModules.home-manager
-      (mkHomeManagerModule { inherit machine pkgs; })
+    home-manager.users.${user}.imports = [
+      (import ../config/home.nix)
     ];
+
+    home-manager.backupFileExtension =
+      "backup-" + pkgs.lib.readFile "${pkgs.runCommand "timestamp" {} "echo -n `date '+%Y%m%d%H%M%S'` > $out"}";
+
+    home-manager.useGlobalPkgs = true;
+    home-manager.useUserPackages = true;
+    home-manager.sharedModules = [
+      inputs.nixvim.homeModules.nixvim
+      inputs.sops-nix.homeManagerModules.sops
+    ];
+  };
+
+  mkBaseModules = {
+    machine,
+    pkgs,
+  }: [
+    inputs.sops-nix.nixosModules.sops
+    home-manager.nixosModules.home-manager
+    (mkHomeManagerModule {inherit machine pkgs;})
+  ];
 
   persistenceModule = ../config/optin-persistence.nix;
 
@@ -55,35 +58,36 @@ let
     specialArgs = {};
   };
 
-  mkHost =
-    name: hostCfg:
-    let
-      cfg = lib.recursiveUpdate hostDefaults hostCfg;
-      system = cfg.system;
-      pkgs = mkPkgs system;
+  mkHost = name: hostCfg: let
+    cfg = lib.recursiveUpdate hostDefaults hostCfg;
+    system = cfg.system;
+    pkgs = mkPkgs system;
 
-      hmModules =
-        if cfg.useHomeManager then
-          mkBaseModules { machine = name; inherit pkgs; }
-        else
-          [];
+    hmModules =
+      if cfg.useHomeManager
+      then
+        mkBaseModules {
+          machine = name;
+          inherit pkgs;
+        }
+      else [];
 
-      persistenceModules =
-        lib.optionals cfg.enablePersistence [ persistenceModule ];
+    persistenceModules =
+      lib.optionals cfg.enablePersistence [persistenceModule];
 
-      modules =
-        cfg.modules
-        ++ persistenceModules
-        ++ hmModules
-        ++ cfg.extraModules;
+    modules =
+      cfg.modules
+      ++ persistenceModules
+      ++ hmModules
+      ++ cfg.extraModules;
 
-      specialArgs =
-        {inherit inputs user;}
-        // cfg.specialArgs;
-    in
-      lib.nixosSystem {
-        inherit system modules specialArgs;
-      };
+    specialArgs =
+      {inherit inputs user;}
+      // cfg.specialArgs;
+  in
+    lib.nixosSystem {
+      inherit system modules specialArgs;
+    };
 
   hosts = {
     framework.modules = [

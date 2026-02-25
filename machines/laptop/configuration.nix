@@ -1,5 +1,4 @@
-{ config, ... }:
-{
+{config, ...}: {
   imports = [
     ./hardware-configuration.nix
     ../../config/base.nix
@@ -7,7 +6,7 @@
   ];
 
   sops.defaultSopsFile = ../../secrets/secrets.yaml;
-  sops.age.sshKeyPaths = [ "/home/matthew/.ssh/id_ed25519" ];
+  sops.age.sshKeyPaths = ["/home/matthew/.ssh/id_ed25519"];
   sops.secrets.user-matthew-password.neededForUsers = true;
 
   #:Wusers.users.matthew.passwordFile = config.sops.secrets.user-matthew-password.path;
@@ -35,8 +34,8 @@
     "rtsx_pci_sdmmc"
     "thinkpad_acpi"
   ];
-  boot.initrd.kernelModules = [ "acpi_call" ];
-  boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
+  boot.initrd.kernelModules = ["acpi_call"];
+  boot.extraModulePackages = with config.boot.kernelPackages; [acpi_call];
 
   fileSystems."/mnt/backup" = {
     device = "192.168.1.10:/mnt/user/backup";

@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   imports = [
     ./hardware-configuration.nix
     ../../config/base.nix
@@ -7,7 +6,7 @@
   ];
 
   sops.defaultSopsFile = ../../secrets/secrets.yaml;
-  sops.age.sshKeyPaths = [ "/home/matthew/.ssh/id_ed25519" ];
+  sops.age.sshKeyPaths = ["/home/matthew/.ssh/id_ed25519"];
   sops.secrets.user-matthew-password.neededForUsers = true;
 
   users.users.matthew.openssh.authorizedKeys.keys = [
@@ -17,6 +16,12 @@
   #users.users.matthew.passwordFile = config.sops.secrets.user-matthew-password.path;
   users.users.matthew.hashedPasswordFile = "/persist/passwords/matthew";
   users.users.root.hashedPasswordFile = "/persist/passwords/root";
+
+  # Kernel parameters for better AMD graphics suspend/resume
+  boot.kernelParams = [
+    "amdgpu.dc=1" # Enable Display Core for better display handling
+    "amdgpu.gpu_recovery=1" # Enable GPU recovery on hang
+  ];
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -34,7 +39,7 @@
   # Firmware updates
   services.fwupd = {
     enable = true;
-    extraRemotes = [ "lvfs-testing" ];
+    extraRemotes = ["lvfs-testing"];
   };
 
   fileSystems."/mnt/appdata" = {
@@ -64,20 +69,23 @@
   };
 
   powerManagement.resumeCommands = ''
+    # Unblock WiFi
     ${pkgs.util-linux}/bin/rfkill unblock wlan
+
+    # Give displays time to initialize
+    ${pkgs.coreutils}/bin/sleep 2
+
+    # Reset monitors via hyprctl (if Hyprland is running)
+    if [ -n "$HYPRLAND_INSTANCE_SIGNATURE" ]; then
+      ${pkgs.hyprland}/bin/hyprctl dispatch dpms off
+      ${pkgs.coreutils}/bin/sleep 1
+      ${pkgs.hyprland}/bin/hyprctl dispatch dpms on
+    fi
   '';
 
-  systemd.services.lock-after-suspend = {
-    description = "Lock screen after suspending";
-    wantedBy = [ "post-resume.target" ];
-    after = [ "post-resume.target" ];
-    script = ''
-      ${pkgs.hyprlock}/bin/hyprlock
-    '';
-    serviceConfig.Type = "oneshot";
-  };
-
-  systemd.services.lock-after-suspend.enable = true;
+  # Lock screen service disabled for BSPWM
+  # (BSPWM uses xautolock/i3lock instead of hyprlock)
+  systemd.services.lock-after-suspend.enable = false;
 
   virtualisation.libvirtd.enable = true;
   virtualisation.waydroid.enable = true;

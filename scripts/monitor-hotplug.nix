@@ -1,5 +1,4 @@
-{ pkgs }:
-
+{pkgs}:
 pkgs.writeShellScriptBin "monitor-hotplug" ''
   # Enhanced monitor hotplug script using mons
   # This script runs mons to detect and configure monitors
@@ -53,4 +52,3 @@ pkgs.writeShellScriptBin "monitor-hotplug" ''
   # Release the lock
   exec 200>&-
 ''
-

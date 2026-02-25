@@ -4,8 +4,7 @@
   lib,
   inputs,
   ...
-}:
-let
+}: let
   rnnoise_config = {
     "context.modules" = [
       {
@@ -43,8 +42,7 @@ let
       }
     ];
   };
-in
-{
+in {
   imports = [
     inputs.talon-nix.nixosModules.talon
   ];
@@ -54,8 +52,7 @@ in
     allowUnfree = true;
 
     # Explicitly set which non-free packages can be installed
-    allowUnfreePredicate =
-      pkg:
+    allowUnfreePredicate = pkg:
       builtins.elem (lib.getName pkg) [
         "codeium"
         "discord"
@@ -109,7 +106,7 @@ in
 
   # udev rules
   services.udev = {
-    packages = [ pkgs.qmk-udev-rules ];
+    packages = [pkgs.qmk-udev-rules];
     extraRules = ''
       SUBSYSTEM=="tty", ATTRS{product}=="CubeOrange", SYMLINK="ttyPIXHAWK"
     '';
@@ -124,7 +121,7 @@ in
     grub.efiSupport = false;
     grub.device = "nodev";
   };
-  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+  boot.binfmt.emulatedSystems = ["aarch64-linux"];
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -137,7 +134,7 @@ in
       5000
       51820
     ];
-    allowedTCPPorts = [ 14557 ];
+    allowedTCPPorts = [14557];
   };
   services.openssh.enable = true;
   programs.ssh.startAgent = true;
@@ -191,12 +188,12 @@ in
   # Enable CUPS to print documents.
   services.printing = {
     enable = true;
-    drivers = [ pkgs.hplip ];
+    drivers = [pkgs.hplip];
   };
 
   programs.gnupg.agent.enable = true;
   security.polkit.enable = true;
-  security.pam.services.swaylock = { };
+  security.pam.services.swaylock = {};
 
   security.sudo = {
     enable = true;
@@ -205,15 +202,15 @@ in
         commands = [
           {
             command = "${pkgs.tailscale}/bin/tailscale";
-            options = [ "NOPASSWD" ];
+            options = ["NOPASSWD"];
           }
         ];
-        groups = [ "wheel" ];
+        groups = ["wheel"];
       }
     ];
   };
 
-  services.dbus.packages = [ pkgs.gcr ];
+  services.dbus.packages = [pkgs.gcr];
 
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;
@@ -227,7 +224,7 @@ in
     jack.enable = true;
     extraConfig.pipewire."99-input-denoising" = rnnoise_config;
   };
-  users.extraGroups.audio.members = [ "${user}" ];
+  users.extraGroups.audio.members = ["${user}"];
 
   # Enable syncthing
   services.syncthing = {
@@ -243,10 +240,9 @@ in
     XDG_CACHE_HOME = "\${HOME}/.local/cache";
     XDG_BIN_HOME = "\${HOME}/.local/bin";
     XDG_DATA_HOME = "\${HOME}/.local/share";
-    PATH = [ "\${XDG_BIN_HOME}" ];
+    PATH = ["\${XDG_BIN_HOME}"];
     EDITOR = "nvim";
     XCURSOR_SIZE = "32";
-    FLAKE = "\${HOME}/nixos-config";
     NH_FLAKE = "\${HOME}/nixos-config";
     CARGO_BUILD_BUILD_DIR = "\${HOME}/.cargo/build-dir";
   };
@@ -283,11 +279,11 @@ in
   ];
 
   # Audio firmware and hardware support
-  hardware.firmware = [ pkgs.linux-firmware ];
+  hardware.firmware = [pkgs.linux-firmware];
   hardware.enableRedistributableFirmware = true;
 
   virtualisation.docker.enable = true;
-  users.extraGroups.docker.members = [ "${user}" ];
+  users.extraGroups.docker.members = ["${user}"];
 
   # Set up shell
   users.defaultUserShell = pkgs.fish;

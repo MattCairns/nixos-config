@@ -1,5 +1,9 @@
-{ pkgs }:
-pkgs.writeShellScriptBin "open-git" /* bash */ ''
+{pkgs}:
+pkgs.writeShellScriptBin "open-git"
+/*
+bash
+*/
+''
 
   cd $(${pkgs.tmux}/bin/tmux run "echo #{pane_start_path}")
   url=$(${pkgs.git}/bin/git remote get-url origin)
