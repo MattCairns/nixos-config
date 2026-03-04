@@ -145,19 +145,33 @@ in {
 
   programs.talon.enable = true;
 
-  services = {
-    getty.autologinUser = "matthew";
-    xserver = {
-      enable = true;
-      displayManager.startx.enable = true;
-      # bspwm is configured via home-manager module
-    };
-    displayManager = {
-      gdm.enable = false;
+  services.xserver = {
+    enable = true;
+    windowManager.bspwm.enable = true;
+  };
+
+  programs.regreet = {
+    enable = true;
+    settings = {
+      background = {
+        path = "${../assets/wallpapers/pexels-eberhard-grossgasteiger-730981.jpg}";
+        fit = "Cover";
+      };
+      GTK = {
+        application_prefer_dark_theme = true;
+        theme_name = "Adwaita-dark";
+        font_name = "JetBrainsMono Nerd Font 12";
+      };
     };
   };
 
-  systemd.services.display-manager.enable = false;
+  xdg.portal = {
+    enable = true;
+    extraPortals = [pkgs.xdg-desktop-portal-gnome];
+    config.niri = {
+      default = ["gnome" "gtk"];
+    };
+  };
 
   fonts.packages = with pkgs; [
     font-awesome

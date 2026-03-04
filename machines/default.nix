@@ -35,6 +35,7 @@
     home-manager.sharedModules = [
       inputs.nixvim.homeModules.nixvim
       inputs.sops-nix.homeManagerModules.sops
+      inputs.niri-flake.homeModules.config
     ];
   };
 
@@ -44,6 +45,7 @@
   }: [
     inputs.sops-nix.nixosModules.sops
     home-manager.nixosModules.home-manager
+    inputs.niri-flake.nixosModules.niri
     (mkHomeManagerModule {inherit machine pkgs;})
   ];
 

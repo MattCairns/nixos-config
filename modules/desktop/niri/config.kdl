@@ -1,0 +1,129 @@
+input {
+    keyboard {
+        xkb {
+            layout "us"
+        }
+    }
+    touchpad {
+        tap
+        natural-scroll
+    }
+    focus-follows-mouse max-scroll-amount="0%"
+}
+
+output "eDP-1" {
+    scale 2.0
+}
+
+layout {
+    gaps 8
+    center-focused-column "never"
+    preset-column-widths {
+        proportion 0.33333
+        proportion 0.5
+        proportion 0.66667
+    }
+    default-column-width { proportion 0.5; }
+    focus-ring {
+        width 2
+        active-color "#33ccff"
+        inactive-color "#595959"
+    }
+    border {
+        off
+    }
+}
+
+spawn-at-startup "waybar" "-c" "/home/matthew/.config/waybar/niri-config.jsonc" "-s" "/home/matthew/.config/waybar/niri-style.css"
+spawn-at-startup "swaybg" "-i" "/home/matthew/.config/wallpapers/pexels-eberhard-grossgasteiger-730981.jpg" "-m" "fill"
+spawn-at-startup "mako"
+
+cursor {
+    theme "phinger-cursors-light"
+    size 32
+}
+
+environment {
+    MOZ_ENABLE_WAYLAND "1"
+    NIXOS_OZONE_WL "1"
+    QT_QPA_PLATFORM "wayland"
+}
+
+prefer-no-csd
+
+screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+
+binds {
+    Mod+Return { spawn "kitty" "-e" "bash" "-c" "exec ~/.config/bin/ta || $SHELL"; }
+    Mod+Ctrl+Return { spawn "kitty"; }
+    Mod+Q { close-window; }
+    Mod+Space { spawn "fuzzel"; }
+    Mod+R { spawn "fuzzel" "--dmenu"; }
+    Mod+Shift+W { spawn "firefox" "-p" "work"; }
+    Mod+Shift+H { spawn "firefox" "-P" "home"; }
+    Mod+E { spawn "dolphin"; }
+    Mod+B { spawn "oor-bw-pw"; }
+    Mod+Shift+L { spawn "swaylock" "-c" "000000"; }
+    Mod+Shift+B { spawn "bluetoothctl" "connect" "88:C9:E8:44:61:64"; }
+    Mod+Alt+W { spawn "bash" "-c" "~/.config/bin/chwall ~/.config/wallpapers"; }
+
+    Mod+M { quit; }
+    Mod+V { toggle-window-floating; }
+
+    Mod+H { focus-column-left; }
+    Mod+L { focus-column-right; }
+    Mod+K { focus-window-or-workspace-up; }
+    Mod+J { focus-window-or-workspace-down; }
+
+    Mod+Shift+J { move-window-down; }
+    Mod+Shift+K { move-window-up; }
+    Mod+Ctrl+H { move-column-left; }
+    Mod+Ctrl+L { move-column-right; }
+
+    Mod+Ctrl+Left { move-column-to-monitor-left; }
+    Mod+Ctrl+Right { move-column-to-monitor-right; }
+
+    Mod+1 { focus-workspace 1; }
+    Mod+2 { focus-workspace 2; }
+    Mod+3 { focus-workspace 3; }
+    Mod+4 { focus-workspace 4; }
+    Mod+5 { focus-workspace 5; }
+    Mod+6 { focus-workspace 6; }
+    Mod+7 { focus-workspace 7; }
+    Mod+8 { focus-workspace 8; }
+    Mod+9 { focus-workspace 9; }
+    Mod+0 { focus-workspace 10; }
+
+    Mod+Shift+1 { move-window-to-workspace 1; }
+    Mod+Shift+2 { move-window-to-workspace 2; }
+    Mod+Shift+3 { move-window-to-workspace 3; }
+    Mod+Shift+4 { move-window-to-workspace 4; }
+    Mod+Shift+5 { move-window-to-workspace 5; }
+    Mod+Shift+6 { move-window-to-workspace 6; }
+    Mod+Shift+7 { move-window-to-workspace 7; }
+    Mod+Shift+8 { move-window-to-workspace 8; }
+    Mod+Shift+9 { move-window-to-workspace 9; }
+    Mod+Shift+0 { move-window-to-workspace 10; }
+
+    Mod+WheelScrollUp { focus-workspace-up; }
+    Mod+WheelScrollDown { focus-workspace-down; }
+
+    Mod+S { focus-workspace 10; }
+    Mod+Shift+S { move-window-to-workspace 10; }
+
+    Mod+F { maximize-column; }
+    Mod+Comma { consume-window-into-column; }
+    Mod+Period { expel-window-from-column; }
+    Mod+Minus { set-column-width "-10%"; }
+    Mod+Equal { set-column-width "+10%"; }
+
+    Print { screenshot; }
+    Ctrl+Print { screenshot-screen; }
+
+    XF86MonBrightnessUp { spawn "brightnessctl" "set" "5%+"; }
+    XF86MonBrightnessDown { spawn "brightnessctl" "set" "5%-"; }
+    XF86AudioRaiseVolume { spawn "wpctl" "set-volume" "-l" "1.5" "@DEFAULT_AUDIO_SINK@" "5%+"; }
+    XF86AudioLowerVolume { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%-"; }
+    XF86AudioMute { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
+    XF86AudioMicMute { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"; }
+}
