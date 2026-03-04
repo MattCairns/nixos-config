@@ -94,23 +94,6 @@
       ./framework/configuration.nix
       inputs.nixos-hardware.nixosModules.framework-13-7040-amd
     ];
-
-    laptop.modules = [
-      ./laptop/configuration.nix
-      inputs.nixos-hardware.nixosModules.lenovo-thinkpad-l13-yoga
-    ];
-
-    nuc.modules = [
-      ./nuc/configuration.nix
-    ];
-
-    cache-runner = {
-      useHomeManager = false;
-      enablePersistence = false;
-      modules = [
-        ./cache-runner/configuration.nix
-      ];
-    };
   };
 in
   lib.mapAttrs mkHost hosts

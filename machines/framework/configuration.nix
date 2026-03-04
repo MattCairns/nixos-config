@@ -69,18 +69,7 @@
   };
 
   powerManagement.resumeCommands = ''
-    # Unblock WiFi
     ${pkgs.util-linux}/bin/rfkill unblock wlan
-
-    # Give displays time to initialize
-    ${pkgs.coreutils}/bin/sleep 2
-
-    # Reset monitors via hyprctl (if Hyprland is running)
-    if [ -n "$HYPRLAND_INSTANCE_SIGNATURE" ]; then
-      ${pkgs.hyprland}/bin/hyprctl dispatch dpms off
-      ${pkgs.coreutils}/bin/sleep 1
-      ${pkgs.hyprland}/bin/hyprctl dispatch dpms on
-    fi
   '';
 
   # Lock screen service disabled for BSPWM

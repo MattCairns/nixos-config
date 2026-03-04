@@ -174,7 +174,6 @@
         monitorHotplug = pkgs.callPackage ../scripts/monitor-hotplug.nix {inherit pkgs;};
       })
       (import ../scripts/polybar-monitor-hotplug.nix {inherit pkgs;})
-      (import ../scripts/reset-monitors.nix {inherit pkgs;})
     ];
 
     pointerCursor = {

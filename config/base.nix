@@ -93,12 +93,10 @@ in {
     settings = {
       substituters = [
         "https://cache.nixos.org"
-        # "https://hyprland.cachix.org"
         "https://mattcairns-cachix.cachix.org"
       ];
       trusted-public-keys = [
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-        "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
         "mattcairns-cachix.cachix.org-1:bl0XYmyFCxApUSk4Eo9xAqjI7HeWBym1arunM4hLvHQ="
       ];
     };
@@ -144,12 +142,6 @@ in {
   # Set your time zone and locale
   time.timeZone = "America/Vancouver";
   i18n.defaultLocale = "en_CA.UTF-8";
-
-  programs.hyprland = {
-    enable = false;
-    # package = inputs.hyprland.packages.${pkgs.system}.hyprland;
-    # portalPackage = inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
-  };
 
   programs.talon.enable = true;
 

@@ -13,15 +13,7 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # hyprland = {
-    #   type = "git";
-    #   url = "https://github.com/hyprwm/Hyprland";
-    #   submodules = true;
-    # };
-    hyprpaper.url = "github:hyprwm/hyprpaper";
-    hyprpaper.inputs.nixpkgs.follows = "nixpkgs";
     nixvim.url = "github:nix-community/nixvim";
-    # ghostty.url = "github:ghostty-org/ghostty";
     talon-nix = {
       url = "github:nix-community/talon-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -35,13 +27,11 @@
   outputs = inputs @ {
     nixpkgs,
     home-manager,
-    # hyprland,
-    hyprpaper,
     nixvim,
     ...
   }: let
     user = "matthew";
-  in {
+  in rec {
     nixosConfigurations = (
       import ./machines {
         inherit (nixpkgs) lib;
@@ -49,12 +39,34 @@
           inputs
           nixpkgs
           home-manager
-          # hyprland
           user
           ;
       }
     );
 
     formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
+
+    checks.x86_64-linux = let
+      pkgs = nixpkgs.legacyPackages.x86_64-linux;
+    in {
+      only-framework-exists = pkgs.runCommand "check-only-framework-exists" {} ''
+        ${pkgs.lib.concatStringsSep "\n" (
+          map (name: ''
+            echo "FAIL: unexpected configuration '${name}' found"
+            exit 1
+          '') (builtins.filter (n: n != "framework") (builtins.attrNames nixosConfigurations))
+        )}
+        echo "PASS" > $out
+      '';
+      framework-amd-params = pkgs.runCommand "check-framework-amd-params" {} ''
+        grep -q "amdgpu.dc=1" ${./machines/framework/configuration.nix} || { echo "FAIL"; exit 1; }
+        grep -q "amdgpu.gpu_recovery=1" ${./machines/framework/configuration.nix} || { echo "FAIL"; exit 1; }
+        echo "PASS" > $out
+      '';
+      framework-hostname = pkgs.runCommand "check-framework-hostname" {} ''
+        grep -q 'networking.hostName = "framework"' ${./machines/framework/configuration.nix} || { echo "FAIL"; exit 1; }
+        echo "PASS" > $out
+      '';
+    };
   };
 }
