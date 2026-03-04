@@ -21,4 +21,53 @@
       border-color = "#33ccff";
     };
   };
+
+  services.kanshi = {
+    enable = true;
+    settings = [
+      {
+        profile.name = "undocked";
+        profile.outputs = [
+          {
+            criteria = "eDP-1";
+            scale = 2.0;
+            status = "enable";
+          }
+        ];
+      }
+      {
+        profile.name = "docked";
+        profile.outputs = [
+          {
+            criteria = "eDP-1";
+            scale = 2.0;
+            status = "enable";
+          }
+          {
+            criteria = "DP-11";
+            status = "enable";
+          }
+          {
+            criteria = "DP-13";
+            transform = "270";
+            status = "enable";
+          }
+        ];
+      }
+      {
+        profile.name = "fallback";
+        profile.outputs = [
+          {
+            criteria = "eDP-1";
+            scale = 2.0;
+            status = "enable";
+          }
+          {
+            criteria = "*";
+            status = "enable";
+          }
+        ];
+      }
+    ];
+  };
 }

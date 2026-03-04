@@ -1,5 +1,6 @@
 {
   pkgs,
+  config,
   user,
   lib,
   inputs,
@@ -42,6 +43,23 @@
       }
     ];
   };
+  bspwmXsession = pkgs.writeShellScript "bspwm-x11-session" ''
+    exec ${pkgs.xinit}/bin/startx "$HOME/.xsession"
+  '';
+
+  bspwmSession = pkgs.writeTextFile {
+    name = "bspwm-xsession";
+    destination = "/share/xsessions/bspwm.desktop";
+    text = ''
+      [Desktop Entry]
+      Name=bspwm
+      Comment=Binary space partitioning window manager
+      Exec=${bspwmXsession}
+      TryExec=${pkgs.bspwm}/bin/bspwm
+      Type=XSession
+      DesktopNames=bspwm
+    '';
+  } // { providedSessions = ["bspwm"]; };
 in {
   imports = [
     inputs.talon-nix.nixosModules.talon
@@ -145,10 +163,9 @@ in {
 
   programs.talon.enable = true;
 
-  services.xserver = {
-    enable = true;
-    windowManager.bspwm.enable = true;
-  };
+  services.xserver.enable = true;
+
+  services.displayManager.sessionPackages = [bspwmSession];
 
   programs.niri.enable = true;
   # Prevent niri's gnome portal from overriding the ssh-agent
@@ -162,12 +179,18 @@ in {
         fit = "Cover";
       };
       GTK = {
-        application_prefer_dark_theme = true;
-        theme_name = "Adwaita-dark";
-        font_name = "JetBrainsMono Nerd Font 12";
+        application_prefer_dark_theme = lib.mkForce true;
+        theme_name = lib.mkForce "Adwaita-dark";
+        font_name = lib.mkForce "JetBrainsMono Nerd Font 12";
       };
     };
   };
+
+  # Explicitly set XDG_DATA_DIRS in greetd's systemd environment so regreet
+  # can discover session .desktop files. PAM DEFAULT= won't reliably propagate
+  # to the greeter child process without this.
+  systemd.services.greetd.environment.XDG_DATA_DIRS =
+    "${config.services.displayManager.sessionData.desktops}/share";
 
   xdg.portal = {
     enable = true;

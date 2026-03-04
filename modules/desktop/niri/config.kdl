@@ -11,8 +11,13 @@ input {
     focus-follows-mouse max-scroll-amount="0%"
 }
 
+
+output "DP-13" {
+    transform "270"
+}
+
 output "eDP-1" {
-    scale 2.0
+    scale 1.5
 }
 
 layout {
@@ -34,13 +39,14 @@ layout {
     }
 }
 
+spawn-at-startup "kanshi"
 spawn-at-startup "waybar" "-c" "/home/matthew/.config/waybar/niri-config.jsonc" "-s" "/home/matthew/.config/waybar/niri-style.css"
 spawn-at-startup "swaybg" "-i" "/home/matthew/.config/wallpapers/pexels-eberhard-grossgasteiger-730981.jpg" "-m" "fill"
 spawn-at-startup "mako"
 
 cursor {
-    theme "phinger-cursors-light"
-    size 32
+    xcursor-theme "phinger-cursors-light"
+    xcursor-size 32
 }
 
 environment {
@@ -53,17 +59,64 @@ prefer-no-csd
 
 screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 
+workspace "code" {
+    open-on-output "DP-11"
+}
+
+workspace "browse" {
+    open-on-output "DP-13"
+}
+
+workspace "chat" {
+    open-on-output "DP-13"
+}
+
+window-rule {
+    match title=r#"Slack"#
+    open-on-workspace "chat"
+    open-focused false
+    open-maximized true
+    block-out-from "screencast"
+}
+
+window-rule {
+    match at-startup=true app-id="kitty"
+    open-on-workspace "code"
+}
+
+workspace "huddle" {
+    open-on-output "DP-11"
+}
+
+window-rule {
+    match title=r#"Slack - Huddle Preview"#
+    open-on-workspace "huddle"
+    open-focused true
+    open-maximized true
+    block-out-from "screencast"
+}
+
+window-rule {
+    match title=r#"Huddle:.*"#
+    open-on-workspace "huddle"
+    open-focused true
+    open-maximized true
+    block-out-from "screencast"
+}
+
+
+
 binds {
     Mod+Return { spawn "kitty" "-e" "bash" "-c" "exec ~/.config/bin/ta || $SHELL"; }
     Mod+Ctrl+Return { spawn "kitty"; }
-    Mod+Q { close-window; }
+    Mod+W { close-window; }
     Mod+Space { spawn "fuzzel"; }
     Mod+R { spawn "fuzzel" "--dmenu"; }
-    Mod+Shift+W { spawn "firefox" "-p" "work"; }
-    Mod+Shift+H { spawn "firefox" "-P" "home"; }
+    Mod+Ctrl+W { spawn "firefox" "-p" "work"; }
+    Mod+Ctrl+H { spawn "firefox" "-P" "home"; }
     Mod+E { spawn "dolphin"; }
     Mod+B { spawn "oor-bw-pw"; }
-    Mod+Shift+L { spawn "swaylock" "-c" "000000"; }
+    Mod+Alt+L { spawn "swaylock" "-c" "000000"; }
     Mod+Shift+B { spawn "bluetoothctl" "connect" "88:C9:E8:44:61:64"; }
     Mod+Alt+W { spawn "bash" "-c" "~/.config/bin/chwall ~/.config/wallpapers"; }
 
@@ -75,31 +128,44 @@ binds {
     Mod+K { focus-window-or-workspace-up; }
     Mod+J { focus-window-or-workspace-down; }
 
-    Mod+Shift+J { move-window-down; }
-    Mod+Shift+K { move-window-up; }
+    // Move windows/columns
+    Mod+Ctrl+J { move-window-down; }
+    Mod+Ctrl+K { move-window-up; }
     Mod+Ctrl+H { move-column-left; }
     Mod+Ctrl+L { move-column-right; }
 
-    Mod+Ctrl+Left { move-column-to-monitor-left; }
-    Mod+Ctrl+Right { move-column-to-monitor-right; }
+    // Focus monitors
+    Mod+Shift+H { focus-monitor-left; }
+    Mod+Shift+J { focus-monitor-down; }
+    Mod+Shift+K { focus-monitor-up; }
+    Mod+Shift+L { focus-monitor-right; }
+
+    // Move windows to monitors
+    Mod+Shift+Ctrl+H { move-window-to-monitor-left; }
+    Mod+Shift+Ctrl+J { move-window-to-monitor-down; }
+    Mod+Shift+Ctrl+K { move-window-to-monitor-up; }
+    Mod+Shift+Ctrl+L { move-window-to-monitor-right; }
+
+    Mod+O { toggle-overview; }
+
 
     Mod+1 { focus-workspace 1; }
     Mod+2 { focus-workspace 2; }
     Mod+3 { focus-workspace 3; }
-    Mod+4 { focus-workspace 4; }
-    Mod+5 { focus-workspace 5; }
-    Mod+6 { focus-workspace 6; }
+    Mod+4 { focus-workspace "code"; }
+    Mod+5 { focus-workspace "browse"; }
+    Mod+6 { focus-workspace "chat"; }
     Mod+7 { focus-workspace 7; }
     Mod+8 { focus-workspace 8; }
     Mod+9 { focus-workspace 9; }
     Mod+0 { focus-workspace 10; }
 
-    Mod+Shift+1 { move-window-to-workspace 1; }
-    Mod+Shift+2 { move-window-to-workspace 2; }
-    Mod+Shift+3 { move-window-to-workspace 3; }
-    Mod+Shift+4 { move-window-to-workspace 4; }
-    Mod+Shift+5 { move-window-to-workspace 5; }
-    Mod+Shift+6 { move-window-to-workspace 6; }
+    Mod+Shift+1 { move-window-to-workspace 4; }
+    Mod+Shift+2 { move-window-to-workspace 5; }
+    Mod+Shift+3 { move-window-to-workspace 6; }
+    Mod+Shift+4 { move-window-to-workspace "code"; }
+    Mod+Shift+5 { move-window-to-workspace "browse"; }
+    Mod+Shift+6 { move-window-to-workspace "chat"; }
     Mod+Shift+7 { move-window-to-workspace 7; }
     Mod+Shift+8 { move-window-to-workspace 8; }
     Mod+Shift+9 { move-window-to-workspace 9; }
