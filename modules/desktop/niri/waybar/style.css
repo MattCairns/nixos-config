@@ -1,0 +1,80 @@
+* {
+    font-family: "JetBrainsMono Nerd Font", monospace;
+    font-size: 11px;
+    min-height: 0;
+}
+
+window#waybar {
+    background-color: #0d0d0d;
+    color: #ffffff;
+    transition-property: background-color;
+    transition-duration: 0.5s;
+}
+
+window#waybar.hidden {
+    opacity: 0.2;
+}
+
+#workspaces button {
+    padding: 0 4px;
+    background-color: transparent;
+    color: #595959;
+    border: none;
+    border-radius: 0;
+}
+
+#workspaces button:hover {
+    background: rgba(0, 0, 0, 0.2);
+    color: #ffffff;
+}
+
+#workspaces button.active {
+    color: #33ccff;
+    background-color: #1a1a1a;
+}
+
+#workspaces button.urgent {
+    background-color: #ff3333;
+    color: #ffffff;
+}
+
+#clock,
+#battery,
+#cpu,
+#memory,
+#temperature,
+#network,
+#pulseaudio,
+#wireplumber {
+    padding: 0 8px;
+    color: #ffffff;
+    background-color: #1a1a1a;
+    margin: 2px 2px;
+    border-radius: 4px;
+}
+
+#clock {
+    color: #33ccff;
+}
+
+#battery.warning:not(.charging) {
+    color: #ffaa00;
+}
+
+#battery.critical:not(.charging) {
+    color: #ff3333;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+#temperature.critical {
+    color: #ff3333;
+}
+
+#window {
+    padding: 0 8px;
+    color: #aaaaaa;
+}

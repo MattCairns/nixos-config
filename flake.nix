@@ -22,6 +22,10 @@
       url = "github:talonhub/community";
       flake = false;
     };
+    niri-flake = {
+      url = "github:niri-wm/niri";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {

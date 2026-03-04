@@ -13,5 +13,6 @@
     ++ [(import ../modules/desktop/waybar)]
     ++ [(import ../modules/desktop/bspwm)]
     ++ [(import ../modules/desktop/polybar)]
+    ++ [(import ../modules/desktop/niri)]
     ++ [(import ../modules/apps/firefox)];
 }
