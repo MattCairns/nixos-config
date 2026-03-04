@@ -1,6 +1,4 @@
 { pkgs, ... }: {
-  programs.niri.enable = true;
-
   home.packages = with pkgs; [
     fuzzel
     swaylock
@@ -16,9 +14,11 @@
 
   services.mako = {
     enable = true;
-    defaultTimeout = 5000;
-    backgroundColor = "#0d0d0d";
-    textColor = "#ffffff";
-    borderColor = "#33ccff";
+    settings = {
+      default-timeout = 5000;
+      background-color = "#0d0d0d";
+      text-color = "#ffffff";
+      border-color = "#33ccff";
+    };
   };
 }

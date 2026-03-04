@@ -150,6 +150,10 @@ in {
     windowManager.bspwm.enable = true;
   };
 
+  programs.niri.enable = true;
+  # Prevent niri's gnome portal from overriding the ssh-agent
+  services.gnome.gcr-ssh-agent.enable = false;
+
   programs.regreet = {
     enable = true;
     settings = {
