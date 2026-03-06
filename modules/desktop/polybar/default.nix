@@ -13,9 +13,9 @@
   };
 
   colors = {
-    background = "#0d0d0d";
-    foreground = "#ffffff";
-    theme = "#89adfa";
+    background = "#1f2335";
+    foreground = "#a9b1d6";
+    theme = "#7a88cf";
   };
 
   bluetoothScript = pkgs.callPackage ./scripts/bluetooth.nix {};

@@ -9,8 +9,8 @@
       window_padding_width  4
     '';
 
-    # theme = "Tokyo Night";
-    themeFile = "kanagawa_dragon";
+    theme = "Tokyo Night Moon";
+    # themeFile = "kanagawa_dragon";
     settings = {
       confirm_os_window_close = 0;
       copy_and_clear_or_interrupt = true;

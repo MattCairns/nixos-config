@@ -117,10 +117,10 @@ in {
       remove_disabled_monitors = true;
       remove_unplugged_monitors = true;
       click_to_focus = "any";
-      active_border_color = "#33ccff";
-      focused_border_color = "#33ccff";
-      normal_border_color = "#595959";
-      presel_feedback_color = "#33ccff";
+      active_border_color = "#7a88cf";
+      focused_border_color = "#7a88cf";
+      normal_border_color = "#4b517a";
+      presel_feedback_color = "#7a88cf";
       top_padding = 25; # Reserve space for polybar at the top
     };
 

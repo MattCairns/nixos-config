@@ -16,9 +16,9 @@
     enable = true;
     settings = {
       default-timeout = 5000;
-      background-color = "#0d0d0d";
-      text-color = "#ffffff";
-      border-color = "#33ccff";
+      background-color = "#1f2335";
+      text-color = "#a9b1d6";
+      border-color = "#7a88cf";
     };
   };
 
@@ -30,7 +30,7 @@
         profile.outputs = [
           {
             criteria = "eDP-1";
-            scale = 2.0;
+            scale = 1.25;
             status = "enable";
           }
         ];
@@ -40,7 +40,7 @@
         profile.outputs = [
           {
             criteria = "eDP-1";
-            scale = 2.0;
+            scale = 1.25;
             status = "enable";
           }
           {
@@ -59,7 +59,7 @@
         profile.outputs = [
           {
             criteria = "eDP-1";
-            scale = 2.0;
+            scale = 1.25;
             status = "enable";
           }
           {

@@ -17,7 +17,7 @@ output "DP-13" {
 }
 
 output "eDP-1" {
-    scale 1.5
+    scale 1.25
 }
 
 layout {
@@ -31,8 +31,8 @@ layout {
     default-column-width { proportion 0.5; }
     focus-ring {
         width 2
-        active-color "#33ccff"
-        inactive-color "#595959"
+        active-color "#7a88cf"
+        inactive-color "#4b517a"
     }
     border {
         off
@@ -124,7 +124,7 @@ binds {
     Mod+Space { spawn "fuzzel"; }
     Mod+R { spawn "fuzzel" "--dmenu"; }
     Mod+Ctrl+W { spawn "firefox" "-p" "work"; }
-    Mod+Ctrl+H { spawn "firefox" "-P" "home"; }
+    Mod+Ctrl+H { spawn "firefox" "-P" "home" "--name=firefox-home"; }
     Mod+E { spawn "dolphin"; }
     Mod+B { spawn "oor-bw-pw"; }
     Mod+Ctrl+L { spawn "swaylock" "-c" "000000"; }
@@ -206,12 +206,17 @@ binds {
 }
 
 layer-rule {
-    match namespace="^noctalia-(bar|background|dock).*"
+    match namespace="^noctalia-bar.*"
     block-out-from "screencast"
 }
 
 layer-rule {
     match namespace="^notifications$"
+    block-out-from "screencast"
+}
+
+window-rule {
+    match app-id="firefox-home"
     block-out-from "screencast"
 }
 

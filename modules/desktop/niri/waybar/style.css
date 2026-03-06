@@ -5,8 +5,8 @@
 }
 
 window#waybar {
-    background-color: #0d0d0d;
-    color: #ffffff;
+    background-color: #1f2335;
+    color: #a9b1d6;
     transition-property: background-color;
     transition-duration: 0.5s;
 }
@@ -18,24 +18,24 @@ window#waybar.hidden {
 #workspaces button {
     padding: 0 4px;
     background-color: transparent;
-    color: #595959;
+    color: #4b517a;
     border: none;
     border-radius: 0;
 }
 
 #workspaces button:hover {
     background: rgba(0, 0, 0, 0.2);
-    color: #ffffff;
+    color: #c0caf5;
 }
 
 #workspaces button.active {
-    color: #33ccff;
-    background-color: #1a1a1a;
+    color: #7a88cf;
+    background-color: #2c314a;
 }
 
 #workspaces button.urgent {
-    background-color: #ff3333;
-    color: #ffffff;
+    background-color: #f7768e;
+    color: #1f2335;
 }
 
 #clock,
@@ -47,22 +47,22 @@ window#waybar.hidden {
 #pulseaudio,
 #wireplumber {
     padding: 0 8px;
-    color: #ffffff;
-    background-color: #1a1a1a;
+    color: #a9b1d6;
+    background-color: #2c314a;
     margin: 2px 2px;
     border-radius: 4px;
 }
 
 #clock {
-    color: #33ccff;
+    color: #7a88cf;
 }
 
 #battery.warning:not(.charging) {
-    color: #ffaa00;
+    color: #e6c384;
 }
 
 #battery.critical:not(.charging) {
-    color: #ff3333;
+    color: #f7768e;
     animation-name: blink;
     animation-duration: 0.5s;
     animation-timing-function: linear;
@@ -71,10 +71,10 @@ window#waybar.hidden {
 }
 
 #temperature.critical {
-    color: #ff3333;
+    color: #f7768e;
 }
 
 #window {
     padding: 0 8px;
-    color: #aaaaaa;
+    color: #545c7e;
 }
