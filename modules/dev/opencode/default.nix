@@ -34,6 +34,16 @@
           type = "remote";
           url = "https://mcp.atlassian.com/v1/mcp";
         };
+        context7 = {
+          type = "local";
+          command = [
+            "sh"
+            "-c"
+            "CONTEXT7_API_KEY=$(cat ${
+              config.sops.secrets."context7-token".path
+            }) exec npx -y @upstash/context7-mcp@latest"
+          ];
+        };
       };
     };
   };

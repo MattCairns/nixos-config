@@ -43,6 +43,7 @@
   sops.secrets = {
     openai-api-key = {};
     toggl-api-key = {};
+    context7-token = {};
     bitwarden-session-key = {};
     jira-cli-api-key = {};
     gitlab-token = {};
