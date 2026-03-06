@@ -12,12 +12,21 @@ input {
 }
 
 
-output "DP-13" {
-    transform "270"
+output "eDP-1" {
+    mode "2256x1504"
+    scale 1.25
+    position x=0 y=1224
 }
 
-output "eDP-1" {
-    scale 1.25
+output "DP-11" {
+    mode "2560x1440"
+    position x=2256 y=560
+}
+
+output "DP-13" {
+    mode "2560x1440"
+    transform "270"
+    position x=4816 y=0
 }
 
 layout {
@@ -71,6 +80,15 @@ workspace "chat" {
     open-on-output "DP-13"
 }
 
+workspace "huddle" {
+    open-on-output "DP-11"
+}
+
+
+workspace "laptop" {
+    open-on-output "eDP-1"
+}
+
 window-rule {
     match title=r#"Slack"#
     open-on-workspace "chat"
@@ -83,12 +101,6 @@ window-rule {
     match at-startup=true app-id="kitty"
     open-on-workspace "code"
 }
-
-workspace "huddle" {
-    open-on-output "DP-11"
-}
-
-
 
 window-rule {
     match title=r#"Slack - Huddle Preview"#
@@ -113,8 +125,36 @@ window-rule {
     open-maximized true
 }
 
-workspace "laptop" {
-    open-on-output "eDP-1"
+layer-rule {
+    match namespace="^noctalia-bar.*"
+    block-out-from "screencast"
+}
+
+layer-rule {
+    match namespace="^notifications$"
+    block-out-from "screencast"
+}
+
+window-rule {
+    match app-id="firefox-home"
+    open-maximized true
+    open-on-workspace "browse"
+    block-out-from "screencast"
+}
+
+window-rule {
+    match app-id="firefox-home"
+    match at-startup=true
+    open-maximized true
+    open-on-workspace "laptop"
+    block-out-from "screencast"
+}
+
+window-rule {
+    match app-id="spotify"
+    open-floating true
+    open-focused true
+    open-maximized true
 }
 
 binds {
@@ -123,7 +163,7 @@ binds {
     Mod+W { close-window; }
     Mod+Space { spawn "fuzzel"; }
     Mod+R { spawn "fuzzel" "--dmenu"; }
-    Mod+Ctrl+W { spawn "firefox" "-p" "work"; }
+    Mod+Ctrl+W { spawn "firefox" "-p" "work" "--name=firefox-work"; }
     Mod+Ctrl+H { spawn "firefox" "-P" "home" "--name=firefox-home"; }
     Mod+E { spawn "dolphin"; }
     Mod+B { spawn "oor-bw-pw"; }
@@ -160,7 +200,7 @@ binds {
     Mod+O { toggle-overview; }
 
 
-    Mod+1 { focus-workspace 1; }
+    Mod+1 { focus-workspace "laptop"; }
     Mod+2 { focus-workspace 2; }
     Mod+3 { focus-workspace 3; }
     Mod+4 { focus-workspace "code"; }
@@ -203,20 +243,5 @@ binds {
     XF86AudioLowerVolume { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%-"; }
     XF86AudioMute { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
     XF86AudioMicMute { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"; }
-}
-
-layer-rule {
-    match namespace="^noctalia-bar.*"
-    block-out-from "screencast"
-}
-
-layer-rule {
-    match namespace="^notifications$"
-    block-out-from "screencast"
-}
-
-window-rule {
-    match app-id="firefox-home"
-    block-out-from "screencast"
 }
 

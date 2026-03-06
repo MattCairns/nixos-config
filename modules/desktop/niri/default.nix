@@ -40,16 +40,22 @@
         profile.outputs = [
           {
             criteria = "eDP-1";
+            mode = "2256x1504";
             scale = 1.25;
+            position = "0,1224";
             status = "enable";
           }
           {
             criteria = "DP-11";
+            mode = "2560x1440";
+            position = "2256,560";
             status = "enable";
           }
           {
             criteria = "DP-13";
-            transform = "270";
+            mode = "2560x1440";
+            transform = "90";
+            position = "4816,0";
             status = "enable";
           }
         ];

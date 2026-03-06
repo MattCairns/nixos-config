@@ -77,6 +77,8 @@
       ncdu
       eza
       xclip
+      xsel
+      wl-clipboard
       magic-wormhole
       dust
       jq

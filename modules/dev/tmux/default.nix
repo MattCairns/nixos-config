@@ -77,6 +77,15 @@
       bind -T prefix P switch-client -l
 
       bind c new-window -c "#{pane_current_path}"
+
+      # ==================
+      # Pane appearance
+      set -g pane-border-lines heavy
+      set -g pane-border-style "fg=colour238"
+      set -g pane-active-border-style "fg=colour220"
+      set -g pane-border-status top
+      set -g pane-border-format " #{pane_current_command} #{pane_current_path} "
+      # ==================
       #
       # # POPUP WINDOWS
       # # These two shortcuts provide popup windows in tmux. The lowercase version

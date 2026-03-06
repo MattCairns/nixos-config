@@ -6,6 +6,7 @@
       plugin = [
         "opencode-gemini-auth@latest"
         "opencode-worktree@latest"
+        "@mohak34/opencode-notifier@latest"
       ];
       provider.google.options.projectId = "llmllm-489100";
       autoupdate = false;
