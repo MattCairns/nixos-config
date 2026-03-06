@@ -9,8 +9,6 @@
   monitorHotplug = pkgs.callPackage ../../../scripts/monitor-hotplug.nix {};
   monitorHotplugDaemon = pkgs.callPackage ../../../scripts/monitor-hotplug-daemon.nix {inherit monitorHotplug;};
 
-  wallpaperPath = "/home/matthew/.config/wallpapers/pexels-eberhard-grossgasteiger-730981.jpg";
-
   defaultWorkspaceMap = {
     FIREFOX_WORK = "7";
     FIREFOX_HOME = "7";

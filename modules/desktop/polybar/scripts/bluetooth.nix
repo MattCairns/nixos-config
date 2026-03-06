@@ -1,6 +1,5 @@
 {pkgs, ...}: let
   bctl = "${pkgs.bluez}/bin/bluetoothctl";
-  sctl = "${pkgs.systemd}/bin/systemctl";
   grep = "${pkgs.gnugrep}/bin/grep";
   wc = "${pkgs.coreutils}/bin/wc";
   cut = "${pkgs.coreutils}/bin/cut";

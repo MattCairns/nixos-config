@@ -31,8 +31,6 @@
   outputs = inputs @ {
     nixpkgs,
     home-manager,
-    nixvim,
-    noctalia,
     ...
   }: let
     user = "matthew";

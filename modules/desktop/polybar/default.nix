@@ -3,7 +3,6 @@
   lib,
   ...
 }: let
-  polybarHotplugDaemon = pkgs.callPackage ../../../scripts/polybar-monitor-hotplug.nix {};
 
   mypolybar = pkgs.polybar.override {
     alsaSupport = true;
