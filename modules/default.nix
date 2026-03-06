@@ -10,7 +10,7 @@
     ++ [(import ../modules/dev/direnv)]
     ++ [(import ../modules/dev/claude-code)]
     ++ [(import ../modules/dev/opencode)]
-    ++ [(import ../modules/desktop/waybar)]
+    ++ [(import ../modules/desktop/noctalia)]
     ++ [(import ../modules/desktop/bspwm)]
     ++ [(import ../modules/desktop/polybar)]
     ++ [(import ../modules/desktop/niri)]

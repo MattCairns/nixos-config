@@ -22,12 +22,17 @@
       url = "github:talonhub/community";
       flake = false;
     };
+    noctalia = {
+      url = "github:noctalia-dev/noctalia-shell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {
     nixpkgs,
     home-manager,
     nixvim,
+    noctalia,
     ...
   }: let
     user = "matthew";

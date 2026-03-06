@@ -47,19 +47,21 @@
     exec ${pkgs.xinit}/bin/startx "$HOME/.xsession"
   '';
 
-  bspwmSession = pkgs.writeTextFile {
-    name = "bspwm-xsession";
-    destination = "/share/xsessions/bspwm.desktop";
-    text = ''
-      [Desktop Entry]
-      Name=bspwm
-      Comment=Binary space partitioning window manager
-      Exec=${bspwmXsession}
-      TryExec=${pkgs.bspwm}/bin/bspwm
-      Type=XSession
-      DesktopNames=bspwm
-    '';
-  } // { providedSessions = ["bspwm"]; };
+  bspwmSession =
+    pkgs.writeTextFile {
+      name = "bspwm-xsession";
+      destination = "/share/xsessions/bspwm.desktop";
+      text = ''
+        [Desktop Entry]
+        Name=bspwm
+        Comment=Binary space partitioning window manager
+        Exec=${bspwmXsession}
+        TryExec=${pkgs.bspwm}/bin/bspwm
+        Type=XSession
+        DesktopNames=bspwm
+      '';
+    }
+    // {providedSessions = ["bspwm"];};
 in {
   imports = [
     inputs.talon-nix.nixosModules.talon
@@ -189,8 +191,7 @@ in {
   # Explicitly set XDG_DATA_DIRS in greetd's systemd environment so regreet
   # can discover session .desktop files. PAM DEFAULT= won't reliably propagate
   # to the greeter child process without this.
-  systemd.services.greetd.environment.XDG_DATA_DIRS =
-    "${config.services.displayManager.sessionData.desktops}/share";
+  systemd.services.greetd.environment.XDG_DATA_DIRS = "${config.services.displayManager.sessionData.desktops}/share";
 
   xdg.portal = {
     enable = true;

@@ -1,7 +1,7 @@
 {pkgs, ...}: {
   programs.waybar = {
     enable = true;
-    package = pkgs.waybar.override { niriSupport = true; };
+    package = pkgs.waybar.override {niriSupport = true;};
   };
 
   xdg.configFile."waybar/config".source = ./config/config;

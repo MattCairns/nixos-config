@@ -35,6 +35,7 @@
     home-manager.sharedModules = [
       inputs.nixvim.homeModules.nixvim
       inputs.sops-nix.homeManagerModules.sops
+      inputs.noctalia.homeModules.default
     ];
   };
 

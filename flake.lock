@@ -186,6 +186,48 @@
         "type": "github"
       }
     },
+    "noctalia": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "noctalia-qs": "noctalia-qs"
+      },
+      "locked": {
+        "lastModified": 1772749935,
+        "narHash": "sha256-FSoteOYieebPgStRSSzlVmWMfGOpcumGrYHvU/PcOwM=",
+        "owner": "noctalia-dev",
+        "repo": "noctalia-shell",
+        "rev": "4ef03e6ace1e81a33593fc7a5581796a84ef6f59",
+        "type": "github"
+      },
+      "original": {
+        "owner": "noctalia-dev",
+        "repo": "noctalia-shell",
+        "type": "github"
+      }
+    },
+    "noctalia-qs": {
+      "inputs": {
+        "nixpkgs": [
+          "noctalia",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1772673824,
+        "narHash": "sha256-TLHXPoELZA6VeuzC1Zpx+MnSsYzrJs+DSieMgfjAOJc=",
+        "owner": "noctalia-dev",
+        "repo": "noctalia-qs",
+        "rev": "f8531192cd09b9ea2e78d18e9cfc9d3dba498690",
+        "type": "github"
+      },
+      "original": {
+        "owner": "noctalia-dev",
+        "repo": "noctalia-qs",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "home-manager": "home-manager",
@@ -193,6 +235,7 @@
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_2",
         "nixvim": "nixvim",
+        "noctalia": "noctalia",
         "sops-nix": "sops-nix",
         "talon-community": "talon-community",
         "talon-nix": "talon-nix"
