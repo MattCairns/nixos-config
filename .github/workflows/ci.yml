@@ -1,0 +1,61 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: Lint and flake checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+
+      - name: Check Nix formatting
+        run: nix run nixpkgs#alejandra -- --check .
+
+      - name: Run deadnix
+        run: nix run nixpkgs#deadnix -- .
+
+      - name: Run statix
+        run: nix run nixpkgs#statix -- check .
+
+      - name: Run flake checks
+        run: nix flake check --show-trace
+
+  build:
+    name: Build ${{ matrix.host }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    needs: checks
+    strategy:
+      fail-fast: false
+      matrix:
+        host:
+          - framework
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+
+      - name: Build NixOS configuration
+        run: nix build .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel --print-build-logs
