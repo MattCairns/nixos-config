@@ -247,6 +247,15 @@ in
       {
         commands = [
           {
+            command = "/run/current-system/sw/bin/nixos-rebuild";
+            options = [ "NOPASSWD" ];
+          }
+        ];
+        users = [ "${user}" ];
+      }
+      {
+        commands = [
+          {
             command = "${pkgs.tailscale}/bin/tailscale";
             options = [ "NOPASSWD" ];
           }
