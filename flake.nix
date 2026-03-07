@@ -26,6 +26,7 @@
       url = "github:noctalia-dev/noctalia-shell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    worktrunk.url = "github:max-sixty/worktrunk";
   };
 
   outputs = inputs @ {
