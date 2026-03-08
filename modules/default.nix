@@ -10,6 +10,7 @@
     ++ [(import ../modules/dev/direnv)]
     ++ [(import ../modules/dev/claude-code)]
     ++ [(import ../modules/dev/opencode)]
+    ++ [(import ../modules/dev/cargo-warp)]
     ++ [(import ../modules/desktop/noctalia)]
     ++ [(import ../modules/desktop/bspwm)]
     ++ [(import ../modules/desktop/polybar)]

@@ -27,6 +27,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     worktrunk.url = "github:max-sixty/worktrunk";
+    cargo-warp = {
+      url = "github:MattCairns/cargo-warp";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {

@@ -36,6 +36,7 @@
       inputs.nixvim.homeModules.nixvim
       inputs.sops-nix.homeManagerModules.sops
       inputs.noctalia.homeModules.default
+      inputs.cargo-warp.homeManagerModules.default
     ];
   };
 
