@@ -1,5 +1,4 @@
-{ config, ... }:
-{
+{config, ...}: {
   programs.opencode = {
     enable = true;
     settings = {
@@ -10,7 +9,7 @@
       ];
       provider.google.options.projectId = "llmllm-489100";
       autoupdate = false;
-      watcher.ignore = [ "/nix/store/**" ];
+      watcher.ignore = ["/nix/store/**"];
       mcp = {
         toggl = {
           type = "local";
@@ -42,6 +41,24 @@
             "CONTEXT7_API_KEY=$(cat ${
               config.sops.secrets."context7-token".path
             }) exec npx -y @upstash/context7-mcp@latest"
+          ];
+        };
+        gitlab = {
+          type = "local";
+          command = [
+            "sh"
+            "-c"
+            "GITLAB_PERSONAL_ACCESS_TOKEN=$(cat ${
+              config.sops.secrets."gitlab-token".path
+            }) exec npx -y @modelcontextprotocol/server-gitlab@latest"
+          ];
+        };
+        drawio = {
+          type = "local";
+          command = [
+            "npx"
+            "-y"
+            "@drawio/mcp@latest"
           ];
         };
       };

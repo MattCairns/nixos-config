@@ -1,4 +1,4 @@
-{...}: {
+{config, ...}: {
   programs.claude-code = {
     enable = true;
     settings = {
@@ -36,6 +36,17 @@
       atlassian = {
         type = "http";
         url = "https://mcp.atlassian.com/v1/mcp";
+      };
+      gitlab = {
+        command = "sh";
+        args = [
+          "-c"
+          "GITLAB_PERSONAL_ACCESS_TOKEN=$(cat ${config.sops.secrets."gitlab-token".path}) exec npx -y @modelcontextprotocol/server-gitlab@latest"
+        ];
+      };
+      drawio = {
+        command = "npx";
+        args = ["-y" "@drawio/mcp@latest"];
       };
     };
   };
