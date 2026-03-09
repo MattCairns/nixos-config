@@ -154,7 +154,6 @@ window-rule {
     match app-id="spotify"
     open-floating true
     open-focused true
-    open-maximized true
 }
 
 binds {
@@ -225,7 +224,7 @@ binds {
     Mod+WheelScrollUp { focus-workspace-up; }
     Mod+WheelScrollDown { focus-workspace-down; }
 
-    Mod+S { focus-workspace 10; }
+    Mod+S { spawn "spotify"; }
     Mod+Shift+S { move-window-to-workspace 10; }
 
     Mod+F { maximize-column; }
@@ -244,4 +243,3 @@ binds {
     XF86AudioMute { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
     XF86AudioMicMute { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"; }
 }
-
