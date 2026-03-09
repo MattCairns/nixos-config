@@ -54,7 +54,7 @@
           {
             criteria = "DP-13";
             mode = "2560x1440";
-            transform = "90";
+            transform = "270";
             position = "4816,0";
             status = "enable";
           }

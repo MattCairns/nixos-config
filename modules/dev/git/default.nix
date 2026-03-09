@@ -2,6 +2,10 @@
   programs.git = {
     enable = true;
     lfs.enable = true;
+    ignores = [
+      "AGENTS.md"
+      "CLAUDE.md"
+    ];
     settings = {
       user = {
         name = "Matthew Cairns";
