@@ -159,7 +159,7 @@ window-rule {
 binds {
     Mod+Return { spawn "kitty" "-e" "bash" "-c" "exec ~/.config/bin/ta || $SHELL"; }
     Mod+Ctrl+Return { spawn "kitty"; }
-    Mod+W { close-window; }
+    Mod+W { spawn "niri-close-window"; }
     Mod+Space { spawn "fuzzel"; }
     Mod+R { spawn "fuzzel" "--dmenu"; }
     Mod+Ctrl+W { spawn "firefox" "-p" "work" "--name=firefox-work"; }
@@ -224,7 +224,7 @@ binds {
     Mod+WheelScrollUp { focus-workspace-up; }
     Mod+WheelScrollDown { focus-workspace-down; }
 
-    Mod+S { spawn "spotify"; }
+    Mod+S { spawn "niri-summon-spotify"; }
     Mod+Shift+S { move-window-to-workspace 10; }
 
     Mod+F { maximize-column; }
