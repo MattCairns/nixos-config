@@ -347,6 +347,26 @@
         "type": "github"
       }
     },
+    "opencode": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1773177641,
+        "narHash": "sha256-NsH7uyayw4gRmj+5l7XpbVD3YU1VoIa5YqVDOL+NXh8=",
+        "owner": "anomalyco",
+        "repo": "opencode",
+        "rev": "5acfdd1c5d6ff631e708b2fc35d4ece3fe8ab7de",
+        "type": "github"
+      },
+      "original": {
+        "owner": "anomalyco",
+        "repo": "opencode",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "cargo-warp": "cargo-warp",
@@ -356,6 +376,7 @@
         "nixpkgs": "nixpkgs_3",
         "nixvim": "nixvim",
         "noctalia": "noctalia",
+        "opencode": "opencode",
         "sops-nix": "sops-nix",
         "talon-community": "talon-community",
         "talon-nix": "talon-nix",
