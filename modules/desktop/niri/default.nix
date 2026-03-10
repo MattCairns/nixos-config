@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   home.packages = with pkgs; [
     fuzzel
     swaylock
@@ -30,7 +31,9 @@
         profile.outputs = [
           {
             criteria = "eDP-1";
+            mode = "2256x1504";
             scale = 1.25;
+            position = "0,1224";
             status = "enable";
           }
         ];
