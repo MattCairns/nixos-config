@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   programs.nixvim = {
     enable = true;
     viAlias = true;
@@ -169,9 +170,9 @@
             completeopt = "menu,menuone,noinsert";
           };
           sources = [
-            {name = "nvim_lsp";}
-            {name = "path";}
-            {name = "buffer";}
+            { name = "nvim_lsp"; }
+            { name = "path"; }
+            { name = "buffer"; }
           ];
           mapping = {
             "<C-n>" = "cmp.mapping.select_next_item()";
@@ -247,6 +248,8 @@
       trouble.enable = true;
       vim-surround.enable = true;
       web-devicons.enable = true;
+      fugitive.enable = true;
+      diffview.enable = true;
       codecompanion = {
         enable = true;
         settings = {
@@ -286,7 +289,7 @@
                 check = {
                   command = "clippy";
                   workspace = false;
-                  extraArgs = ["--no-deps"];
+                  extraArgs = [ "--no-deps" ];
                 };
                 cargo = {
                   allFeatures = false;
@@ -298,7 +301,7 @@
                   enable = true;
                 };
                 diagnostics = {
-                  disabled = ["unresolved-proc-macro"];
+                  disabled = [ "unresolved-proc-macro" ];
                 };
                 cachePriming = {
                   enable = true;
