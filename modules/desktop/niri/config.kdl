@@ -50,6 +50,7 @@ layout {
 
 // spawn-at-startup "waybar" "-c" "/home/matthew/.config/waybar/niri-config.jsonc" "-s" "/home/matthew/.config/waybar/niri-style.css"
 spawn-at-startup "swaybg" "-i" "/home/matthew/.config/wallpapers/pexels-eberhard-grossgasteiger-730981.jpg" "-m" "fill"
+spawn-at-startup "signal-desktop" "--start-in-tray" "--no-sandbox"
 // spawn-at-startup "mako"
 
 cursor {
@@ -155,6 +156,14 @@ window-rule {
     open-focused true
 }
 
+window-rule {
+    match app-id="signal"
+    open-floating true
+    open-focused true
+    open-maximized false
+    block-out-from "screencast"
+}
+
 binds {
     Mod+Return { spawn "kitty" "-e" "bash" "-c" "exec ~/.config/bin/ta || $SHELL"; }
     Mod+Ctrl+Return { spawn "kitty"; }
@@ -223,6 +232,7 @@ binds {
     Mod+WheelScrollUp { focus-workspace-up; }
     Mod+WheelScrollDown { focus-workspace-down; }
 
+    Mod+I { spawn "niri-summon-signal"; }
     Mod+S { spawn "niri-summon-spotify"; }
     Mod+Shift+S { move-window-to-workspace 10; }
 

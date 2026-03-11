@@ -183,9 +183,10 @@
         inherit pkgs;
         monitorHotplug = pkgs.callPackage ../scripts/monitor-hotplug.nix { inherit pkgs; };
       })
-      (import ../scripts/polybar-monitor-hotplug.nix { inherit pkgs; })
-      (import ../scripts/niri-close-window.nix { inherit pkgs; })
-      (import ../scripts/niri-summon-spotify.nix { inherit pkgs; })
+      (import ../scripts/polybar-monitor-hotplug.nix {inherit pkgs;})
+      (import ../scripts/niri-close-window.nix {inherit pkgs;})
+      (import ../scripts/niri-summon-signal.nix {inherit pkgs;})
+      (import ../scripts/niri-summon-spotify.nix {inherit pkgs;})
     ];
 
     pointerCursor = {
