@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   home.packages = with pkgs; [
     fuzzel
     swaylock
@@ -49,13 +48,13 @@
             status = "enable";
           }
           {
-            criteria = "DP-11";
+            criteria = "ASUSTek COMPUTER INC PA278CV LCLMQS261918";
             mode = "2560x1440";
             position = "2256,560";
             status = "enable";
           }
           {
-            criteria = "DP-13";
+            criteria = "ASUSTek COMPUTER INC PA278QV LBLMQS297570";
             mode = "2560x1440";
             transform = "270";
             position = "4816,0";

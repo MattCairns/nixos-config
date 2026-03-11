@@ -18,12 +18,12 @@ output "eDP-1" {
     position x=0 y=1224
 }
 
-output "DP-11" {
+output "ASUSTek COMPUTER INC PA278CV LCLMQS261918" {
     mode "2560x1440"
     position x=2256 y=560
 }
 
-output "DP-13" {
+output "ASUSTek COMPUTER INC PA278QV LBLMQS297570" {
     mode "2560x1440"
     transform "270"
     position x=4816 y=0
@@ -48,7 +48,6 @@ layout {
     }
 }
 
-spawn-at-startup "kanshi"
 // spawn-at-startup "waybar" "-c" "/home/matthew/.config/waybar/niri-config.jsonc" "-s" "/home/matthew/.config/waybar/niri-style.css"
 spawn-at-startup "swaybg" "-i" "/home/matthew/.config/wallpapers/pexels-eberhard-grossgasteiger-730981.jpg" "-m" "fill"
 // spawn-at-startup "mako"
@@ -69,19 +68,19 @@ prefer-no-csd
 screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 
 workspace "code" {
-    open-on-output "DP-11"
+    open-on-output "ASUSTek COMPUTER INC PA278CV LCLMQS261918"
 }
 
 workspace "browse" {
-    open-on-output "DP-13"
+    open-on-output "ASUSTek COMPUTER INC PA278QV LBLMQS297570"
 }
 
 workspace "chat" {
-    open-on-output "DP-13"
+    open-on-output "ASUSTek COMPUTER INC PA278QV LBLMQS297570"
 }
 
 workspace "huddle" {
-    open-on-output "DP-11"
+    open-on-output "ASUSTek COMPUTER INC PA278CV LCLMQS261918"
 }
 
 
