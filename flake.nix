@@ -47,7 +47,16 @@
     ...
   }: let
     user = "matthew";
+    pkgs = nixpkgs.legacyPackages.x86_64-linux;
+    installDesktop = import ./scripts/install-desktop.nix {inherit pkgs;};
   in rec {
+    packages.x86_64-linux.install-desktop = installDesktop;
+    apps.x86_64-linux.install-desktop = {
+      type = "app";
+      program = "${installDesktop}/bin/install-desktop";
+    };
+    apps.x86_64-linux.default = apps.x86_64-linux.install-desktop;
+
     nixosConfigurations = (
       import ./machines {
         inherit (nixpkgs) lib;
