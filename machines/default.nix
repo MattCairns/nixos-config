@@ -44,6 +44,7 @@
     machine,
     pkgs,
   }: [
+    inputs.disko.nixosModules.disko
     inputs.sops-nix.nixosModules.sops
     home-manager.nixosModules.home-manager
     (mkHomeManagerModule {inherit machine pkgs;})
@@ -95,6 +96,9 @@
     framework.modules = [
       ./framework/configuration.nix
       inputs.nixos-hardware.nixosModules.framework-13-7040-amd
+    ];
+    desktop.modules = [
+      ./desktop/configuration.nix
     ];
   };
 in

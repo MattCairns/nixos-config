@@ -8,6 +8,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     impermanence.url = "github:nix-community/impermanence";
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     sops-nix = {
       url = "github:Mic92/sops-nix";
@@ -61,12 +65,12 @@
     checks.x86_64-linux = let
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
     in {
-      only-framework-exists = pkgs.runCommand "check-only-framework-exists" {} ''
+      only-known-hosts-exist = pkgs.runCommand "check-only-known-hosts-exist" {} ''
         ${pkgs.lib.concatStringsSep "\n" (
           map (name: ''
             echo "FAIL: unexpected configuration '${name}' found"
             exit 1
-          '') (builtins.filter (n: n != "framework") (builtins.attrNames nixosConfigurations))
+          '') (builtins.filter (n: !builtins.elem n ["framework" "desktop"]) (builtins.attrNames nixosConfigurations))
         )}
         echo "PASS" > $out
       '';

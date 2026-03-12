@@ -80,11 +80,6 @@ In this repo, tests are primarily flake checks and targeted check derivations.
   `nixos-rebuild switch --flake .#framework`
 - Use `test` before `switch` for boot/kernel/display/network/auth changes.
 
-## Worktree Workflow
-- Use Worktrunk (`wt`) to manage git worktrees in this repo.
-- For every new user request in this repo, create a new worktree before making code changes.
-- Prefer `wt` commands over manual `git worktree` commands.
-
 ## Coding Style: Nix
 - Use `alejandra` formatting as source of truth.
 - Keep files declarative and expression-oriented.

@@ -1,4 +1,4 @@
-{pkgs}:
+{ pkgs }:
 pkgs.writeShellScriptBin "tmux-switch-ssh-session" ''
   # Define the location of the SSH config file
   ssh_config_file=~/.ssh/config
@@ -26,14 +26,14 @@ pkgs.writeShellScriptBin "tmux-switch-ssh-session" ''
   tmux_running=$(pgrep tmux)
   if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
       # Start a new tmux session and open an SSH session
-      ${pkgs.tmux}/bin/tmux new-session -s $selected_name -c $selected_name "mosh-ssh $selected"
+      ${pkgs.tmux}/bin/tmux new-session -s $selected_name -c $selected_name "ssh $selected"
       exit 0
   fi
 
   # Check if the tmux session with the selected name exists
   if ! ${pkgs.tmux}/bin/tmux has-session -t=$selected_name 2> /dev/null; then
       # Start a new detached tmux session and open an SSH session
-      ${pkgs.tmux}/bin/tmux new-session -ds $selected_name -c $selected_name "mosh-ssh $selected"
+      ${pkgs.tmux}/bin/tmux new-session -ds $selected_name -c $selected_name "ssh $selected"
   fi
 
   # Switch to the tmux session with the selected name
