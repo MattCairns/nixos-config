@@ -2,6 +2,7 @@
   pkgs,
   externalMonitorOne,
   externalMonitorTwo,
+  systemd ? pkgs.systemd,
 }:
 pkgs.writeShellScriptBin "hypr-workspace-router" ''
   set -uo pipefail
@@ -54,6 +55,11 @@ pkgs.writeShellScriptBin "hypr-workspace-router" ''
     migrate_windows "slack" "5"
     migrate_windows "Spotify" "6"
     migrate_windows "spotify" "6"
+
+    # Restart noctalia so it re-initialises wallpaper and the bar on the
+    # current monitor set. Brief pause lets Hyprland settle first.
+    sleep 1
+    ${systemd}/bin/systemctl --user restart noctalia-shell.service
   }
 
   apply_docked() {
@@ -87,6 +93,11 @@ pkgs.writeShellScriptBin "hypr-workspace-router" ''
     migrate_windows "slack" "9"
     migrate_windows "Spotify" "10"
     migrate_windows "spotify" "10"
+
+    # Restart noctalia so it re-initialises wallpaper and the bar on the
+    # current monitor set. Brief pause lets Hyprland settle first.
+    sleep 1
+    ${systemd}/bin/systemctl --user restart noctalia-shell.service
   }
 
   case "$PROFILE" in
