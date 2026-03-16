@@ -3,8 +3,7 @@
   machine,
   lib,
   ...
-}:
-let
+}: let
   defaultWorkspaceMap = {
     firefoxWork = "7";
     firefoxHome = "7";
@@ -15,12 +14,14 @@ let
   };
 
   perMachineWorkspace = {
-    framework = defaultWorkspaceMap // {
-      obsidian = "5";
-    };
+    framework =
+      defaultWorkspaceMap
+      // {
+        obsidian = "5";
+      };
   };
 
-  workspaceMap = defaultWorkspaceMap // lib.attrByPath [ machine ] { } perMachineWorkspace;
+  workspaceMap = defaultWorkspaceMap // lib.attrByPath [machine] {} perMachineWorkspace;
 
   workFirefoxCmd = "firefox -p work --name=firefox-work";
   homeFirefoxCmd = "firefox -P home --name=firefox-home";
@@ -50,28 +51,45 @@ let
   externalMonitorOne = "desc:ASUSTek COMPUTER INC PA278CV LCLMQS261918";
   externalMonitorTwo = "desc:ASUSTek COMPUTER INC PA278QV LBLMQS297570";
 
+  workspaceRouter = pkgs.callPackage ../../../scripts/hypr-workspace-router.nix {
+    inherit externalMonitorOne externalMonitorTwo;
+  };
+
+  rerouteScript = pkgs.writeShellScriptBin "hypr-reroute" ''
+    count=$(${pkgs.hyprland}/bin/hyprctl monitors -j | ${pkgs.jq}/bin/jq 'length')
+    if [ "$count" -eq 1 ]; then
+      exec "${workspaceRouter}/bin/hypr-workspace-router" undocked
+    else
+      exec "${workspaceRouter}/bin/hypr-workspace-router" docked
+    fi
+  '';
+
   workspaceKeyBinds = builtins.concatLists (
     builtins.genList (
-      i:
-      let
-        ws = if i == 9 then "10" else toString (i + 1);
-        key = if i == 9 then "0" else toString (i + 1);
-      in
-      [
+      i: let
+        ws =
+          if i == 9
+          then "10"
+          else toString (i + 1);
+        key =
+          if i == 9
+          then "0"
+          else toString (i + 1);
+      in [
         "$mod, ${key}, workspace, ${ws}"
         "$mod SHIFT, ${key}, movetoworkspace, ${ws}"
       ]
-    ) 10
+    )
+    10
   );
 
   spotifyBindings =
-    if workspaceMap.spotify != "" then
-      [
-        "$mod, S, workspace, ${workspaceMap.spotify}"
-        "$mod SHIFT, S, movetoworkspace, ${workspaceMap.spotify}"
-      ]
-    else
-      [ "$mod, S, workspace, +1" ];
+    if workspaceMap.spotify != ""
+    then [
+      "$mod, S, workspace, ${workspaceMap.spotify}"
+      "$mod SHIFT, S, movetoworkspace, ${workspaceMap.spotify}"
+    ]
+    else ["$mod, S, workspace, +1"];
 
   workspaceRules = [
     "1, monitor:eDP-1, default:true"
@@ -86,35 +104,37 @@ let
     "10, monitor:${externalMonitorTwo}"
   ];
 
-  windowRules = [
-    "float on, match:class ^(spotify|Spotify)$"
-    "center on, match:class ^(spotify|Spotify)$"
-    "float on, match:class ^(signal|signal-desktop|Signal)$"
-    "center on, match:class ^(signal|signal-desktop|Signal)$"
-    "size 70% 70%, match:class ^(signal|signal-desktop|Signal)$"
-  ]
-  ++ lib.optionals (workspaceMap.firefoxWork != "") [
-    "workspace ${workspaceMap.firefoxWork} silent, match:class ^(firefox-work)$"
-  ]
-  ++ lib.optionals (workspaceMap.firefoxHome != "") [
-    "workspace ${workspaceMap.firefoxHome} silent, match:class ^(firefox-home)$"
-  ]
-  ++ lib.optionals (workspaceMap.slack != "") [
-    "workspace ${workspaceMap.slack} silent, match:class ^(Slack|slack)$"
-  ]
-  ++ lib.optionals (workspaceMap.kitty != "") [
-    "workspace ${workspaceMap.kitty} silent, match:class ^(kitty)$"
-  ]
-  ++ lib.optionals (workspaceMap.obsidian != "") [
-    "workspace ${workspaceMap.obsidian} silent, match:class ^(obsidian|Obsidian)$"
-  ]
-  ++ lib.optionals (workspaceMap.spotify != "") [
-    "workspace ${workspaceMap.spotify} silent, match:class ^(spotify|Spotify)$"
-  ];
-in
-{
+  windowRules =
+    [
+      "float on, match:class ^(spotify|Spotify)$"
+      "center on, match:class ^(spotify|Spotify)$"
+      "float on, match:class ^(signal|signal-desktop|Signal)$"
+      "center on, match:class ^(signal|signal-desktop|Signal)$"
+      "size 70% 70%, match:class ^(signal|signal-desktop|Signal)$"
+    ]
+    ++ lib.optionals (workspaceMap.firefoxWork != "") [
+      "workspace ${workspaceMap.firefoxWork} silent, match:class ^(firefox-work)$"
+    ]
+    ++ lib.optionals (workspaceMap.firefoxHome != "") [
+      "workspace ${workspaceMap.firefoxHome} silent, match:class ^(firefox-home)$"
+    ]
+    ++ lib.optionals (workspaceMap.slack != "") [
+      "workspace ${workspaceMap.slack} silent, match:class ^(Slack|slack)$"
+    ]
+    ++ lib.optionals (workspaceMap.kitty != "") [
+      "workspace ${workspaceMap.kitty} silent, match:class ^(kitty)$"
+    ]
+    ++ lib.optionals (workspaceMap.obsidian != "") [
+      "workspace ${workspaceMap.obsidian} silent, match:class ^(obsidian|Obsidian)$"
+    ]
+    ++ lib.optionals (workspaceMap.spotify != "") [
+      "workspace ${workspaceMap.spotify} silent, match:class ^(spotify|Spotify)$"
+    ];
+in {
   home.packages = with pkgs; [
     fuzzel
+    workspaceRouter
+    rerouteScript
   ];
 
   wayland.windowManager.hyprland = {
@@ -128,7 +148,7 @@ in
     settings = {
       "$mod" = "SUPER";
 
-      monitor = [ ", preferred, auto, 1" ];
+      monitor = [", preferred, auto, 1"];
 
       exec-once = [
         "${startApps}"
@@ -184,46 +204,48 @@ in
         focus_on_activate = true;
       };
 
-      bind = [
-        "$mod, Return, exec, kitty -e bash -c 'exec ~/.config/bin/ta || $SHELL'"
-        "$mod CTRL, Return, exec, kitty"
-        "$mod CTRL, W, exec, ${workFirefoxCmd}"
-        "$mod CTRL, H, exec, ${homeFirefoxCmd}"
-        "$mod ALT, W, exec, ~/.config/bin/chwall ~/.config/wallpapers"
-        "$mod CTRL, L, exec, hyprlock"
-        "$mod, Space, exec, fuzzel"
-        "$mod, W, killactive"
-        "$mod, M, exit"
-        "$mod, E, exec, dolphin"
-        "$mod, V, togglefloating"
-        "$mod, R, exec, fuzzel --dmenu"
-        "$mod, B, exec, oor-bw-pw"
-        "$mod, P, pseudo"
-        "$mod CTRL, left, focusmonitor, l"
-        "$mod CTRL, right, focusmonitor, r"
-        "$mod, H, movefocus, l"
-        "$mod, J, movefocus, d"
-        "$mod, K, movefocus, u"
-        "$mod, L, movefocus, r"
-        "$mod SHIFT, H, movewindow, l"
-        "$mod SHIFT, J, movewindow, d"
-        "$mod SHIFT, K, movewindow, u"
-        "$mod SHIFT, L, movewindow, r"
-        "$mod SHIFT, B, exec, bluetoothctl connect 88:C9:E8:44:61:64"
-        "$mod SHIFT, D, exec, ${pkgs.systemd}/bin/systemctl --user restart kanshi.service"
-        ", XF86MonBrightnessDown, exec, brightnessctl set 5%-"
-        ", XF86MonBrightnessUp, exec, brightnessctl set 5%+"
-        ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-        ", XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
-        ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+"
-        ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-        ", XF86Display, exec, ${hyprctl} dispatch dpms off"
-        ", XF86WLAN, exec, nmcli radio wifi | grep -q enabled && nmcli radio wifi off || nmcli radio wifi on"
-        "$mod, mouse_down, workspace, e+1"
-        "$mod, mouse_up, workspace, e-1"
-      ]
-      ++ workspaceKeyBinds
-      ++ spotifyBindings;
+      bind =
+        [
+          "$mod, Return, exec, kitty -e bash -c 'exec ~/.config/bin/ta || $SHELL'"
+          "$mod CTRL, Return, exec, kitty"
+          "$mod CTRL, W, exec, ${workFirefoxCmd}"
+          "$mod CTRL, H, exec, ${homeFirefoxCmd}"
+          "$mod ALT, W, exec, ~/.config/bin/chwall ~/.config/wallpapers"
+          "$mod CTRL, L, exec, hyprlock"
+          "$mod, Space, exec, fuzzel"
+          "$mod, W, killactive"
+          "$mod, M, exit"
+          "$mod, E, exec, dolphin"
+          "$mod, V, togglefloating"
+          "$mod, R, exec, fuzzel --dmenu"
+          "$mod, B, exec, oor-bw-pw"
+          "$mod, P, pseudo"
+          "$mod CTRL, left, focusmonitor, l"
+          "$mod CTRL, right, focusmonitor, r"
+          "$mod, H, movefocus, l"
+          "$mod, J, movefocus, d"
+          "$mod, K, movefocus, u"
+          "$mod, L, movefocus, r"
+          "$mod SHIFT, H, movewindow, l"
+          "$mod SHIFT, J, movewindow, d"
+          "$mod SHIFT, K, movewindow, u"
+          "$mod SHIFT, L, movewindow, r"
+          "$mod SHIFT, B, exec, bluetoothctl connect 88:C9:E8:44:61:64"
+          "$mod SHIFT, D, exec, ${pkgs.systemd}/bin/systemctl --user restart kanshi.service"
+          "$mod SHIFT, R, exec, ${rerouteScript}/bin/hypr-reroute"
+          ", XF86MonBrightnessDown, exec, brightnessctl set 5%-"
+          ", XF86MonBrightnessUp, exec, brightnessctl set 5%+"
+          ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+          ", XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
+          ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+"
+          ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+          ", XF86Display, exec, ${hyprctl} dispatch dpms off"
+          ", XF86WLAN, exec, nmcli radio wifi | grep -q enabled && nmcli radio wifi off || nmcli radio wifi on"
+          "$mod, mouse_down, workspace, e+1"
+          "$mod, mouse_up, workspace, e-1"
+        ]
+        ++ workspaceKeyBinds
+        ++ spotifyBindings;
 
       bindm = [
         "$mod, mouse:272, movewindow"
