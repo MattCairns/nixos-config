@@ -12,8 +12,7 @@
     ++ [(import ../modules/dev/opencode)]
     ++ [(import ../modules/dev/cargo-warp)]
     ++ [(import ../modules/desktop/noctalia)]
-    ++ [(import ../modules/desktop/bspwm)]
-    ++ [(import ../modules/desktop/polybar)]
-    ++ [(import ../modules/desktop/niri)]
+    ++ [(import ../modules/desktop/hyprland)]
+    ++ [(import ../modules/desktop/kanshi)]
     ++ [(import ../modules/apps/firefox)];
 }

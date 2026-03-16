@@ -3,8 +3,7 @@
   user,
   inputs,
   ...
-}:
-{
+}: {
   imports = [
     (import ../modules)
     inputs.worktrunk.homeModules.default
@@ -39,15 +38,15 @@
   xdg.configFile."wallpapers".source = ../assets/wallpapers;
   xdg.configFile."bin".source = ../scripts/bin;
 
-  sops.age.sshKeyPaths = [ "/home/${user}/.ssh/id_ed25519" ];
+  sops.age.sshKeyPaths = ["/home/${user}/.ssh/id_ed25519"];
   sops.defaultSopsFile = ../secrets/secrets.yaml;
   sops.secrets = {
-    openai-api-key = { };
-    toggl-api-key = { };
-    context7-token = { };
-    bitwarden-session-key = { };
-    jira-cli-api-key = { };
-    gitlab-token = { };
+    openai-api-key = {};
+    toggl-api-key = {};
+    context7-token = {};
+    bitwarden-session-key = {};
+    jira-cli-api-key = {};
+    gitlab-token = {};
   };
 
   programs.nix-index = {
@@ -68,7 +67,7 @@
   home = {
     username = "${user}";
     homeDirectory = "/home/${user}";
-    sessionPath = [ "/home/${user}/.config/bin" ];
+    sessionPath = ["/home/${user}/.config/bin"];
 
     packages = with pkgs; [
       home-manager
@@ -168,25 +167,16 @@
       bubblewrap
 
       # Custom scripts
-      (import ../scripts/tmux-sessionizer.nix { inherit pkgs; })
-      (import ../scripts/tmux-windowizer.nix { inherit pkgs; })
-      (import ../scripts/tmux-switch-session.nix { inherit pkgs; })
-      (import ../scripts/tmux-switch-ssh-session.nix { inherit pkgs; })
-      (import ../scripts/chwall.nix { inherit pkgs; })
-      (import ../scripts/mosh-ssh.nix { inherit pkgs; })
-      (import ../scripts/warp.nix { inherit pkgs; })
-      (import ../scripts/fs-diff.nix { inherit pkgs; })
-      (import ../scripts/oor-bw-pw.nix { inherit pkgs; })
-      (import ../scripts/open-git.nix { inherit pkgs; })
-      (import ../scripts/monitor-hotplug.nix { inherit pkgs; })
-      (pkgs.callPackage ../scripts/monitor-hotplug-daemon.nix {
-        inherit pkgs;
-        monitorHotplug = pkgs.callPackage ../scripts/monitor-hotplug.nix { inherit pkgs; };
-      })
-      (import ../scripts/polybar-monitor-hotplug.nix {inherit pkgs;})
-      (import ../scripts/niri-close-window.nix {inherit pkgs;})
-      (import ../scripts/niri-summon-signal.nix {inherit pkgs;})
-      (import ../scripts/niri-summon-spotify.nix {inherit pkgs;})
+      (import ../scripts/tmux-sessionizer.nix {inherit pkgs;})
+      (import ../scripts/tmux-windowizer.nix {inherit pkgs;})
+      (import ../scripts/tmux-switch-session.nix {inherit pkgs;})
+      (import ../scripts/tmux-switch-ssh-session.nix {inherit pkgs;})
+      (import ../scripts/chwall.nix {inherit pkgs;})
+      (import ../scripts/mosh-ssh.nix {inherit pkgs;})
+      (import ../scripts/warp.nix {inherit pkgs;})
+      (import ../scripts/fs-diff.nix {inherit pkgs;})
+      (import ../scripts/oor-bw-pw.nix {inherit pkgs;})
+      (import ../scripts/open-git.nix {inherit pkgs;})
     ];
 
     pointerCursor = {

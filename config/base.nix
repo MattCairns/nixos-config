@@ -5,8 +5,7 @@
   lib,
   inputs,
   ...
-}:
-let
+}: let
   rnnoise_config = {
     "context.modules" = [
       {
@@ -44,29 +43,7 @@ let
       }
     ];
   };
-  bspwmXsession = pkgs.writeShellScript "bspwm-x11-session" ''
-    exec ${pkgs.xinit}/bin/startx "$HOME/.xsession"
-  '';
-
-  bspwmSession =
-    pkgs.writeTextFile {
-      name = "bspwm-xsession";
-      destination = "/share/xsessions/bspwm.desktop";
-      text = ''
-        [Desktop Entry]
-        Name=bspwm
-        Comment=Binary space partitioning window manager
-        Exec=${bspwmXsession}
-        TryExec=${pkgs.bspwm}/bin/bspwm
-        Type=XSession
-        DesktopNames=bspwm
-      '';
-    }
-    // {
-      providedSessions = [ "bspwm" ];
-    };
-in
-{
+in {
   imports = [
     inputs.talon-nix.nixosModules.talon
   ];
@@ -76,8 +53,7 @@ in
     allowUnfree = true;
 
     # Explicitly set which non-free packages can be installed
-    allowUnfreePredicate =
-      pkg:
+    allowUnfreePredicate = pkg:
       builtins.elem (lib.getName pkg) [
         "codeium"
         "discord"
@@ -129,7 +105,7 @@ in
 
   # udev rules
   services.udev = {
-    packages = [ pkgs.qmk-udev-rules ];
+    packages = [pkgs.qmk-udev-rules];
     extraRules = ''
       SUBSYSTEM=="tty", ATTRS{product}=="CubeOrange", SYMLINK="ttyPIXHAWK"
     '';
@@ -144,7 +120,7 @@ in
     grub.efiSupport = false;
     grub.device = "nodev";
   };
-  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+  boot.binfmt.emulatedSystems = ["aarch64-linux"];
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -175,11 +151,12 @@ in
 
   services.xserver.enable = true;
 
-  services.displayManager.sessionPackages = [ bspwmSession ];
+  programs.hyprland = {
+    enable = true;
+    xwayland.enable = true;
+  };
 
-  programs.niri.enable = true;
-  # Prevent niri's gnome portal from overriding the ssh-agent
-  services.gnome.gcr-ssh-agent.enable = false;
+  programs.hyprlock.enable = true;
 
   programs.regreet = {
     enable = true;
@@ -199,17 +176,18 @@ in
   # Explicitly set XDG_DATA_DIRS in greetd's systemd environment so regreet
   # can discover session .desktop files. PAM DEFAULT= won't reliably propagate
   # to the greeter child process without this.
-  systemd.services.greetd.environment.XDG_DATA_DIRS =
-    "${config.services.displayManager.sessionData.desktops}/share";
+  systemd.services.greetd.environment.XDG_DATA_DIRS = "${config.services.displayManager.sessionData.desktops}/share";
 
   xdg.portal = {
     enable = true;
     extraPortals = [
       pkgs.xdg-desktop-portal-gtk
       pkgs.xdg-desktop-portal-gnome
+      pkgs.xdg-desktop-portal-hyprland
     ];
-    config.niri = {
+    config.hyprland = {
       default = [
+        "hyprland"
         "gnome"
         "gtk"
       ];
@@ -237,12 +215,12 @@ in
   # Enable CUPS to print documents.
   services.printing = {
     enable = true;
-    drivers = [ pkgs.hplip ];
+    drivers = [pkgs.hplip];
   };
 
   programs.gnupg.agent.enable = true;
   security.polkit.enable = true;
-  security.pam.services.swaylock = { };
+  security.pam.services.swaylock = {};
 
   security.sudo = {
     enable = true;
@@ -251,24 +229,24 @@ in
         commands = [
           {
             command = "/run/current-system/sw/bin/nixos-rebuild";
-            options = [ "NOPASSWD" ];
+            options = ["NOPASSWD"];
           }
         ];
-        users = [ "${user}" ];
+        users = ["${user}"];
       }
       {
         commands = [
           {
             command = "${pkgs.tailscale}/bin/tailscale";
-            options = [ "NOPASSWD" ];
+            options = ["NOPASSWD"];
           }
         ];
-        groups = [ "wheel" ];
+        groups = ["wheel"];
       }
     ];
   };
 
-  services.dbus.packages = [ pkgs.gcr ];
+  services.dbus.packages = [pkgs.gcr];
 
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;
@@ -282,7 +260,7 @@ in
     jack.enable = true;
     extraConfig.pipewire."99-input-denoising" = rnnoise_config;
   };
-  users.extraGroups.audio.members = [ "${user}" ];
+  users.extraGroups.audio.members = ["${user}"];
 
   # Enable syncthing
   services.syncthing = {
@@ -298,7 +276,7 @@ in
     XDG_CACHE_HOME = "\${HOME}/.local/cache";
     XDG_BIN_HOME = "\${HOME}/.local/bin";
     XDG_DATA_HOME = "\${HOME}/.local/share";
-    PATH = [ "\${XDG_BIN_HOME}" ];
+    PATH = ["\${XDG_BIN_HOME}"];
     EDITOR = "nvim";
     XCURSOR_SIZE = "32";
     NH_FLAKE = "\${HOME}/nixos-config";
@@ -336,11 +314,11 @@ in
   ];
 
   # Audio firmware and hardware support
-  hardware.firmware = [ pkgs.linux-firmware ];
+  hardware.firmware = [pkgs.linux-firmware];
   hardware.enableRedistributableFirmware = true;
 
   virtualisation.docker.enable = true;
-  users.extraGroups.docker.members = [ "${user}" ];
+  users.extraGroups.docker.members = ["${user}"];
 
   # Set up shell
   users.defaultUserShell = pkgs.fish;

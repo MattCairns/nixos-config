@@ -67,6 +67,10 @@
             "@drawio/mcp@latest"
           ];
         };
+        "home-assistant" = {
+          type = "remote";
+          url = "http://192.168.1.20:9583/private_Waou1zHSl97jXPI85YhHJw";
+        };
       };
     };
   };

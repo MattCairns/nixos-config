@@ -72,9 +72,7 @@
     ${pkgs.util-linux}/bin/rfkill unblock wlan
   '';
 
-  # Lock screen service disabled for BSPWM
-  # (BSPWM uses xautolock/i3lock instead of hyprlock)
-  systemd.services.lock-after-suspend.enable = false;
+  systemd.services.lock-after-suspend.enable = true;
 
   virtualisation.libvirtd.enable = true;
   virtualisation.waydroid.enable = true;
