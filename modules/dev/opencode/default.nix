@@ -3,7 +3,8 @@
   pkgs,
   inputs,
   ...
-}: {
+}:
+{
   programs.opencode = {
     enable = true;
     package = inputs.opencode.packages.${pkgs.stdenv.hostPlatform.system}.default;
@@ -12,10 +13,11 @@
         "opencode-gemini-auth@latest"
         "opencode-worktree@latest"
         "@mohak34/opencode-notifier@latest"
+        "goopspec"
       ];
       provider.google.options.projectId = "llmllm-489100";
       autoupdate = false;
-      watcher.ignore = ["/nix/store/**"];
+      watcher.ignore = [ "/nix/store/**" ];
       mcp = {
         toggl = {
           type = "local";
