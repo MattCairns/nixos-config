@@ -2,7 +2,8 @@
   pkgs,
   config,
   ...
-}: {
+}:
+{
   programs.bash.initExtra = ''
     export OPENAI_API_KEY $(cat ${config.sops.secrets.openai-api-key.path})
   '';
@@ -22,6 +23,7 @@
         set GITLAB_TOKEN $(cat ${config.sops.secrets.gitlab-token.path})
         set BW_SESSION $(cat ${config.sops.secrets.bitwarden-session-key.path})
         export BW_SESSION=$(cat ${config.sops.secrets.bitwarden-session-key.path})
+        export VAULT_PASS=$(cat ${config.sops.secrets.vessel-configs-vault-pass.path})
         atuin init fish | sed "s/-k up/up/g" | source
       '';
     plugins = [
