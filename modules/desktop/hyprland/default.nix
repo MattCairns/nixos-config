@@ -37,7 +37,7 @@
 
     if [ "$current_day" -ge 1 ] && [ "$current_day" -le 5 ] && [ "$current_hour" -ge "$start_hour" ] && [ "$current_hour" -lt "$end_hour" ]; then
       ${workFirefoxCmd} &
-      slack --disable-gpu &
+      slack &
       obsidian &
     fi
 
@@ -208,8 +208,8 @@ in {
         [
           "$mod, Return, exec, kitty -e bash -c 'exec ~/.config/bin/ta || $SHELL'"
           "$mod CTRL, Return, exec, kitty"
-          "$mod CTRL, W, exec, ${workFirefoxCmd}"
-          "$mod CTRL, H, exec, ${homeFirefoxCmd}"
+          "$mod SHIFT, W, exec, ${workFirefoxCmd}"
+          "$mod SHIFT, H, exec, ${homeFirefoxCmd}"
           "$mod ALT, W, exec, ~/.config/bin/chwall ~/.config/wallpapers"
           "$mod CTRL, L, exec, hyprlock"
           "$mod, Space, exec, fuzzel"

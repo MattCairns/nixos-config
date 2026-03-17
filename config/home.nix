@@ -3,7 +3,14 @@
   user,
   inputs,
   ...
-}: {
+}: let
+  slackBrowser = pkgs.writeShellScriptBin "xdg-open" ''
+    exec ${pkgs.firefox}/bin/firefox -p work --name=firefox-work "$@"
+  '';
+  slackWithWorkBrowser = pkgs.writeShellScriptBin "slack" ''
+    exec env PATH="${slackBrowser}/bin:$PATH" ${pkgs.slack}/bin/slack "$@"
+  '';
+in {
   imports = [
     (import ../modules)
     inputs.worktrunk.homeModules.default
@@ -47,6 +54,7 @@
     bitwarden-session-key = {};
     jira-cli-api-key = {};
     gitlab-token = {};
+    vessel-configs-vault-pass = {};
   };
 
   programs.nix-index = {
@@ -92,7 +100,7 @@
 
       # Communication
       zoom-us
-      slack
+      slackWithWorkBrowser
       discord
       signal-desktop
 
@@ -187,5 +195,20 @@
     };
 
     stateVersion = "22.11";
+  };
+
+  xdg.desktopEntries.slack = {
+    name = "Slack";
+    comment = "Slack Desktop";
+    genericName = "Slack Client for Linux";
+    exec = "${slackWithWorkBrowser}/bin/slack %U";
+    icon = "slack";
+    type = "Application";
+    startupNotify = true;
+    categories = [
+      "Network"
+      "InstantMessaging"
+    ];
+    mimeType = ["x-scheme-handler/slack"];
   };
 }
