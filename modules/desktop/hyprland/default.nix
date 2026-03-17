@@ -29,21 +29,43 @@
   startApps = pkgs.writeShellScript "hyprland-start-apps" ''
     #!/usr/bin/env bash
 
+    export PATH="${pkgs.hyprland}/bin:${pkgs.jq}/bin:$PATH"
+
+    # Wait for kanshi to apply the monitor layout before detecting monitors.
+    sleep 2
+
+    count=$(hyprctl monitors -j | jq 'length')
+
+    if [ "$count" -gt 1 ]; then
+      ws_kitty=4
+      ws_obsidian=5
+      ws_ff_home=7
+      ws_ff_work=7
+      ws_slack=9
+      ws_spotify=10
+    else
+      ws_kitty=1
+      ws_obsidian=2
+      ws_ff_home=3
+      ws_ff_work=4
+      ws_slack=5
+      ws_spotify=6
+    fi
+
     start_hour=8
     end_hour=17
-
     current_hour=$(date +%H)
     current_day=$(date +%u)
 
     if [ "$current_day" -ge 1 ] && [ "$current_day" -le 5 ] && [ "$current_hour" -ge "$start_hour" ] && [ "$current_hour" -lt "$end_hour" ]; then
-      ${workFirefoxCmd} &
-      slack &
-      obsidian &
+      hyprctl dispatch exec "[workspace $ws_ff_work silent] ${workFirefoxCmd}"
+      hyprctl dispatch exec "[workspace $ws_slack silent] slack"
+      hyprctl dispatch exec "[workspace $ws_obsidian silent] obsidian"
     fi
 
-    ${homeFirefoxCmd} &
-    kitty -e /home/matthew/.config/bin/ta &
-    spotify &
+    hyprctl dispatch exec "[workspace $ws_ff_home silent] ${homeFirefoxCmd}"
+    hyprctl dispatch exec "[workspace $ws_kitty silent] kitty -e /home/matthew/.config/bin/ta"
+    hyprctl dispatch exec "[workspace $ws_spotify silent] spotify"
   '';
 
   lockCmd = "${pkgs.procps}/bin/pidof hyprlock || hyprlock";
@@ -104,32 +126,13 @@
     "10, monitor:${externalMonitorTwo}"
   ];
 
-  windowRules =
-    [
-      "float on, match:class ^(spotify|Spotify)$"
-      "center on, match:class ^(spotify|Spotify)$"
-      "float on, match:class ^(signal|signal-desktop|Signal)$"
-      "center on, match:class ^(signal|signal-desktop|Signal)$"
-      "size 70% 70%, match:class ^(signal|signal-desktop|Signal)$"
-    ]
-    ++ lib.optionals (workspaceMap.firefoxWork != "") [
-      "workspace ${workspaceMap.firefoxWork} silent, match:class ^(firefox-work)$"
-    ]
-    ++ lib.optionals (workspaceMap.firefoxHome != "") [
-      "workspace ${workspaceMap.firefoxHome} silent, match:class ^(firefox-home)$"
-    ]
-    ++ lib.optionals (workspaceMap.slack != "") [
-      "workspace ${workspaceMap.slack} silent, match:class ^(Slack|slack)$"
-    ]
-    ++ lib.optionals (workspaceMap.kitty != "") [
-      "workspace ${workspaceMap.kitty} silent, match:class ^(kitty)$"
-    ]
-    ++ lib.optionals (workspaceMap.obsidian != "") [
-      "workspace ${workspaceMap.obsidian} silent, match:class ^(obsidian|Obsidian)$"
-    ]
-    ++ lib.optionals (workspaceMap.spotify != "") [
-      "workspace ${workspaceMap.spotify} silent, match:class ^(spotify|Spotify)$"
-    ];
+  windowRules = [
+    "float on, match:class ^(spotify|Spotify)$"
+    "center on, match:class ^(spotify|Spotify)$"
+    "float on, match:class ^(signal|signal-desktop|Signal)$"
+    "center on, match:class ^(signal|signal-desktop|Signal)$"
+    "size 70% 70%, match:class ^(signal|signal-desktop|Signal)$"
+  ];
 in {
   home.packages = with pkgs; [
     fuzzel

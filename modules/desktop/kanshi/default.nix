@@ -18,7 +18,7 @@ in {
             {
               criteria = "eDP-1";
               mode = "2256x1504";
-              scale = 1.25;
+              scale = 1.175;
               position = "0,1224";
               status = "enable";
             }
@@ -33,7 +33,7 @@ in {
             {
               criteria = "eDP-1";
               mode = "2256x1504";
-              scale = 1.25;
+              scale = 1.175;
               position = "0,1224";
               status = "enable";
             }
@@ -60,7 +60,7 @@ in {
           outputs = [
             {
               criteria = "eDP-1";
-              scale = 1.25;
+              scale = 1.175;
               status = "enable";
             }
             {

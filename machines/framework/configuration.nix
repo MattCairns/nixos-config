@@ -62,6 +62,9 @@
   };
 
   ## Power Management ##
+  services.upower.enable = true;
+  services.power-profiles-daemon.enable = true;
+
   services.logind.settings.Login = {
     HandlePowerKey = "ignore";
     HandleLidSwitch = "suspend-then-hibernate";
