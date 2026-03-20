@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   programs.nixvim = {
     enable = true;
     viAlias = true;
@@ -78,8 +77,8 @@
         src = pkgs.fetchFromGitHub {
           owner = "MattCairns";
           repo = "telescope-cargo-workspace.nvim";
-          rev = "8843b72822151bb7792f3fdad4b63df0bc1dd4a6";
-          hash = "sha256-QlOQetD34EkUIByMOeN7pfnud/ZxIu8HlvO/Dzoa3eQ=";
+          rev = "ae7a48c0a13e37b22da47dadc605395594da6e07";
+          hash = "sha256-knLXLOPGLWMbzR5pNLP1eEzxQzOUpZzo2NMxc3ORjxo=";
         };
       })
 
@@ -89,8 +88,8 @@
         src = pkgs.fetchFromGitHub {
           owner = "ThePrimeagen";
           repo = "99";
-          rev = "6a64e0b2f4c7f1e3911db1f8318e5d7c68cb8dff";
-          hash = "sha256-OOj2bnhxn3Ou7VQOmi3RVPcVs+CqolnJzEgfkXk2p5Q=";
+          rev = "ec9872f7df7f4eb8b319719c1c253eb3ea8877ed";
+          hash = "sha256-z8hafm8EWS7dXoDXnZ/1ddvtpWKVUtJfvQmWT4zXIdg=";
         };
       })
     ];
@@ -100,7 +99,7 @@
       local _99 = require("99")
       _99.setup({
         provider = _99.Providers.ClaudeCodeProvider,  -- Use _99.Providers.OpenCodeProvider for OpenAI
-        tmp_dir = "./tmp",  -- Project-accessible temp directory
+        tmp_dir = "/tmp/" .. vim.fs.basename(vim.uv.cwd()) .. ".99",
         -- logger = {
         --   path = vim.fn.stdpath("data") .. "/99.log",
         --   level = "info"
@@ -109,6 +108,11 @@
 
       -- Keybindings for 99 plugin
       vim.keymap.set("v", "<leader>nv", function() _99.visual() end, { desc = "99: Visual selection" })
+      vim.keymap.set("v", "<leader>nt", function()
+        _99.visual({
+          additional_prompt = "Add tracing/logging to this selected code. Keep changes minimal and preserve behavior. If this is Rust, use tracing. Otherwise, use the project's existing logging conventions if present; if not, add a minimal idiomatic logging approach for the language.",
+        })
+      end, { desc = "99: Add tracing logs" })
       vim.keymap.set("n", "<leader>ns", function() _99.search() end, { desc = "99: Search project" })
       vim.keymap.set("n", "<leader>nx", function() _99.stop_all_requests() end, { desc = "99: Stop all requests" })
       vim.keymap.set("n", "<leader>nl", function() _99.view_logs() end, { desc = "99: View logs" })
@@ -170,9 +174,9 @@
             completeopt = "menu,menuone,noinsert";
           };
           sources = [
-            { name = "nvim_lsp"; }
-            { name = "path"; }
-            { name = "buffer"; }
+            {name = "nvim_lsp";}
+            {name = "path";}
+            {name = "buffer";}
           ];
           mapping = {
             "<C-n>" = "cmp.mapping.select_next_item()";
@@ -289,7 +293,7 @@
                 check = {
                   command = "clippy";
                   workspace = false;
-                  extraArgs = [ "--no-deps" ];
+                  extraArgs = ["--no-deps"];
                 };
                 cargo = {
                   allFeatures = false;
@@ -301,7 +305,7 @@
                   enable = true;
                 };
                 diagnostics = {
-                  disabled = [ "unresolved-proc-macro" ];
+                  disabled = ["unresolved-proc-macro"];
                 };
                 cachePriming = {
                   enable = true;

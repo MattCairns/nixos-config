@@ -43,7 +43,6 @@ pkgs.writeShellScriptBin "hypr-workspace-router" ''
     hyprctl keyword windowrule "workspace 3 silent, match:class ^(firefox-home)$" 2>/dev/null || true
     hyprctl keyword windowrule "workspace 4 silent, match:class ^(firefox-work)$" 2>/dev/null || true
     hyprctl keyword windowrule "workspace 5 silent, match:class ^(Slack|slack)$" 2>/dev/null || true
-    hyprctl keyword windowrule "workspace 6 silent, match:class ^(spotify|Spotify)$" 2>/dev/null || true
 
     # Migrate any already-open windows to the undocked workspace layout.
     migrate_windows "kitty" "1"
@@ -53,9 +52,6 @@ pkgs.writeShellScriptBin "hypr-workspace-router" ''
     migrate_windows "firefox-work" "4"
     migrate_windows "Slack" "5"
     migrate_windows "slack" "5"
-    migrate_windows "Spotify" "6"
-    migrate_windows "spotify" "6"
-
     # Restart noctalia so it re-initialises wallpaper and the bar on the
     # current monitor set. Brief pause lets Hyprland settle first.
     sleep 1
@@ -81,7 +77,6 @@ pkgs.writeShellScriptBin "hypr-workspace-router" ''
     hyprctl keyword windowrule "workspace 7 silent, match:class ^(firefox-home)$" 2>/dev/null || true
     hyprctl keyword windowrule "workspace 7 silent, match:class ^(firefox-work)$" 2>/dev/null || true
     hyprctl keyword windowrule "workspace 9 silent, match:class ^(Slack|slack)$" 2>/dev/null || true
-    hyprctl keyword windowrule "workspace 10 silent, match:class ^(spotify|Spotify)$" 2>/dev/null || true
 
     # Migrate any already-open windows back to their docked workspaces.
     migrate_windows "kitty" "4"
@@ -91,9 +86,6 @@ pkgs.writeShellScriptBin "hypr-workspace-router" ''
     migrate_windows "firefox-work" "7"
     migrate_windows "Slack" "9"
     migrate_windows "slack" "9"
-    migrate_windows "Spotify" "10"
-    migrate_windows "spotify" "10"
-
     # Restart noctalia so it re-initialises wallpaper and the bar on the
     # current monitor set. Brief pause lets Hyprland settle first.
     sleep 1

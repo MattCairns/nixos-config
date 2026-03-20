@@ -30,8 +30,18 @@
   };
 
   networking.hostName = "framework";
+  hardware.graphics.enable = true;
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
+
+  services.ollama = {
+    enable = true;
+    package = pkgs.ollama;
+    environmentVariables = {
+      OLLAMA_CONTEXT_LENGTH = "65536";
+    };
+    loadModels = ["qwen3:8b"];
+  };
 
   hardware.xpadneo.enable = true;
 

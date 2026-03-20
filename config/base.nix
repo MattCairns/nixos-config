@@ -246,7 +246,23 @@ in {
     ];
   };
 
-  services.dbus.packages = [pkgs.gcr];
+  # Prevent UPower from tracking Cantor keyboard battery via BlueZ
+  services.dbus.packages = [
+    pkgs.gcr
+    (pkgs.writeTextDir "share/dbus-1/system.d/block-cantor-battery.conf" ''
+      <!DOCTYPE busconfig PUBLIC
+       "-//freedesktop//DTD D-BUS Bus Configuration 1.0//EN"
+       "http://www.freedesktop.org/standards/dbus/1.0/busconfig.dtd">
+      <busconfig>
+        <policy user="root">
+          <deny send_destination="org.bluez"
+                send_path="/org/bluez/hci0/dev_C8_7B_89_9F_45_98"
+                send_interface="org.freedesktop.DBus.Properties"
+                send_member="GetAll"/>
+        </policy>
+      </busconfig>
+    '')
+  ];
 
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;

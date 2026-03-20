@@ -41,9 +41,15 @@
   services.ollama = {
     enable = true;
     package = pkgs.ollama-cuda;
+    environmentVariables = {
+      OLLAMA_CONTEXT_LENGTH = "65536";
+    };
     host = "0.0.0.0";
     openFirewall = true;
-    loadModels = ["qwen3.5:9b"];
+    loadModels = [
+      "qwen3.5:9b"
+      "qwen3:8b"
+    ];
   };
 
   system.stateVersion = "25.05";

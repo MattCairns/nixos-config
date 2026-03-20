@@ -8,6 +8,9 @@
       wallpaper = {
         directory = "/home/matthew/.config/wallpapers";
       };
+      notifications = {
+        enableBatteryToast = false;
+      };
     };
 
     # Tokyo Night Moon colorscheme

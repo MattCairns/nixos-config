@@ -4,8 +4,14 @@
   inputs,
   ...
 }: let
+  workFirefoxBrowser = pkgs.writeShellScriptBin "firefox-work" ''
+    exec ${pkgs.firefox}/bin/firefox -P work --name=firefox-work "$@"
+  '';
+  wrappedGlab = pkgs.writeShellScriptBin "glab" ''
+    exec env BROWSER="${workFirefoxBrowser}/bin/firefox-work" ${pkgs.glab}/bin/glab "$@"
+  '';
   slackBrowser = pkgs.writeShellScriptBin "xdg-open" ''
-    exec ${pkgs.firefox}/bin/firefox -p work --name=firefox-work "$@"
+    exec ${workFirefoxBrowser}/bin/firefox-work "$@"
   '';
   slackWithWorkBrowser = pkgs.writeShellScriptBin "slack" ''
     exec env PATH="${slackBrowser}/bin:$PATH" ${pkgs.slack}/bin/slack "$@"
@@ -122,11 +128,13 @@ in {
       veracrypt
       obsidian # electron insecure
       libnotify
-      flameshot
+      hyprshot
       texstudio
       qgroundcontrol
       bitwarden-cli
       gnome-solanum
+      workFirefoxBrowser
+      gum
 
       # Dev tools
       pre-commit
@@ -134,7 +142,7 @@ in {
       kubectl
       cppcheck
       jira-cli-go
-      glab
+      wrappedGlab
       perl
       codex
       qwen-code

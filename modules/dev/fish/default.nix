@@ -2,8 +2,7 @@
   pkgs,
   config,
   ...
-}:
-{
+}: {
   programs.bash.initExtra = ''
     export OPENAI_API_KEY $(cat ${config.sops.secrets.openai-api-key.path})
   '';

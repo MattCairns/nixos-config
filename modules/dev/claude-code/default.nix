@@ -1,15 +1,11 @@
-{config, ...}: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   programs.claude-code = {
     enable = true;
-    settings = {
-      model = "sonnet";
-      permissions = {
-        default_mode = "default";
-      };
-      env = {
-        CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS = "1";
-      };
-    };
     skills.pdf = ''
       ---
       name: pdf
@@ -50,4 +46,54 @@
       };
     };
   };
+
+  home.activation.claudeCodeSettings = lib.hm.dag.entryAfter ["linkGeneration"] ''
+    export PATH="${lib.makeBinPath [pkgs.coreutils pkgs.jq]}:$PATH"
+
+    claude_dir="$HOME/.claude"
+    settings_path="$claude_dir/settings.json"
+    tmp_base=$(mktemp)
+    tmp_out=$(mktemp)
+
+    mkdir -p "$claude_dir"
+
+    cat >"$tmp_base" <<'EOF'
+    {
+      "$schema": "https://json.schemastore.org/claude-code-settings.json",
+      "env": {
+        "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+      },
+      "model": "sonnet",
+      "permissions": {
+        "defaultMode": "default",
+        "additionalDirectories": [
+          "/tmp"
+        ]
+      }
+    }
+    EOF
+
+    if [ -f "$settings_path" ] && jq -e . "$settings_path" >/dev/null 2>&1; then
+      jq -s '.[0] * .[1]' "$settings_path" "$tmp_base" >"$tmp_out"
+    else
+      cp "$tmp_base" "$tmp_out"
+    fi
+
+    install -m 600 "$tmp_out" "$settings_path"
+    rm -f "$tmp_base" "$tmp_out"
+  '';
+
+  home.activation.claudeCodeWorktrunkPlugin = lib.hm.dag.entryAfter ["claudeCodeSettings"] ''
+    export PATH="${lib.makeBinPath [pkgs.git pkgs.openssh]}:$PATH"
+
+    mkdir -p "$HOME/.claude/plugins"
+
+    if ! grep -q '"worktrunk"[[:space:]]*:' "$HOME/.claude/plugins/known_marketplaces.json" 2>/dev/null; then
+      ${lib.getExe config.programs.claude-code.package} plugin marketplace add --scope user max-sixty/worktrunk
+    fi
+
+    if ! grep -q '"worktrunk@worktrunk"[[:space:]]*:' "$HOME/.claude/plugins/installed_plugins.json" 2>/dev/null; then
+      ${lib.getExe config.programs.claude-code.package} plugin install --scope user worktrunk@worktrunk
+    fi
+  '';
 }

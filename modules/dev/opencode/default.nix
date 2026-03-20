@@ -3,8 +3,7 @@
   pkgs,
   inputs,
   ...
-}:
-{
+}: {
   xdg.configFile."opencode/skills/pdf/SKILL.md".text = ''
     ---
     name: pdf
@@ -178,8 +177,32 @@
         "@mohak34/opencode-notifier@latest"
       ];
       provider.google.options.projectId = "llmllm-489100";
+      provider.ollama = {
+        npm = "@ai-sdk/openai-compatible";
+        name = "Ollama (local)";
+        options.baseURL = "http://127.0.0.1:11434/v1";
+        models = {
+          "qwen3:8b" = {
+            name = "Qwen 3 8B (local)";
+            tools = true;
+            limit = {
+              context = 65536;
+              output = 8192;
+            };
+          };
+        };
+      };
       autoupdate = false;
-      watcher.ignore = [ "/nix/store/**" ];
+      permission = {
+        "*" = "allow";
+        bash = {
+          "*" = "allow";
+          "git add *" = "deny";
+          "git commit *" = "deny";
+          "git push *" = "deny";
+        };
+      };
+      watcher.ignore = ["/nix/store/**"];
       mcp = {
         toggl = {
           type = "local";
