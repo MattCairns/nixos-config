@@ -167,26 +167,47 @@
       Return a summary: list of created ticket keys and titles.
   '';
 
+  programs.opencode.agents.ollama-lite = ''
+    description: "Lightweight Ollama agent with reduced tool surface for faster, more reliable local runs."
+    mode: primary
+    model: ollama/qwen3:8b
+    temperature: 0.2
+    permission:
+      "*": deny
+      read: allow
+      glob: allow
+      grep: allow
+      bash:
+        "pwd": allow
+        "ls*": allow
+        "git status": allow
+    prompt: |
+      You are a concise local coding assistant optimized for short-turn interactions.
+
+      Prefer direct answers and minimal tool usage. Keep responses brief and practical.
+      Only use read/glob/grep unless a basic shell check is truly needed.
+  '';
+
   programs.opencode = {
     enable = true;
     package = inputs.opencode.packages.${pkgs.stdenv.hostPlatform.system}.default;
     settings = {
       plugin = [
         "opencode-gemini-auth@latest"
-        "opencode-worktree@latest"
+        "opencode-anthropic-oauth@latest"
         "@mohak34/opencode-notifier@latest"
       ];
       provider.google.options.projectId = "llmllm-489100";
       provider.ollama = {
         npm = "@ai-sdk/openai-compatible";
-        name = "Ollama (local)";
-        options.baseURL = "http://127.0.0.1:11434/v1";
+        name = "Ollama (desktop)";
+        options.baseURL = "http://192.168.1.232:11434/v1";
         models = {
           "qwen3:8b" = {
-            name = "Qwen 3 8B (local)";
+            name = "Qwen 3 8B (desktop)";
             tools = true;
             limit = {
-              context = 65536;
+              context = 32768;
               output = 8192;
             };
           };
