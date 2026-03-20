@@ -3,8 +3,7 @@
   pkgs,
   inputs,
   ...
-}:
-{
+}: {
   xdg.configFile."opencode/skills/pdf/SKILL.md".text = ''
     ---
     name: pdf
@@ -171,7 +170,7 @@
   programs.opencode.agents.ollama-lite = ''
     description: "Lightweight Ollama agent with reduced tool surface for faster, more reliable local runs."
     mode: primary
-    model: ollama/qwen3:8b
+    model: ollama/qwen2.5-coder:7b-instruct
     temperature: 0.2
     permission:
       "*": deny
@@ -204,11 +203,19 @@
         name = "Ollama (desktop)";
         options.baseURL = "http://192.168.1.232:11434/v1";
         models = {
+          "qwen2.5-coder:7b-instruct" = {
+            name = "Qwen 2.5 Coder 7B Instruct (desktop)";
+            tools = true;
+            limit = {
+              context = 8192;
+              output = 8192;
+            };
+          };
           "qwen3:8b" = {
             name = "Qwen 3 8B (desktop)";
             tools = true;
             limit = {
-              context = 32768;
+              context = 8192;
               output = 8192;
             };
           };
@@ -224,7 +231,7 @@
           "git push *" = "deny";
         };
       };
-      watcher.ignore = [ "/nix/store/**" ];
+      watcher.ignore = ["/nix/store/**"];
       mcp = {
         nixos = {
           type = "local";

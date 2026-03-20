@@ -42,11 +42,12 @@
     enable = true;
     package = pkgs.ollama-cuda;
     environmentVariables = {
-      OLLAMA_CONTEXT_LENGTH = "32768";
+      OLLAMA_CONTEXT_LENGTH = "8192";
     };
     host = "0.0.0.0";
     openFirewall = true;
     loadModels = [
+      "qwen2.5-coder:7b-instruct"
       "qwen3.5:9b"
       "qwen3:8b"
     ];

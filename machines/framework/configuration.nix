@@ -1,4 +1,19 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  inputs,
+  ...
+}: let
+  nanocoderPatched =
+    inputs.nanocoder.packages.${pkgs.stdenv.hostPlatform.system}.default.overrideAttrs
+    (old: {
+      postInstall =
+        (old.postInstall or "")
+        + ''
+          mkdir -p "$out/lib/nanocoder/source/config"
+          cp ${inputs.nanocoder}/source/config/themes.json "$out/lib/nanocoder/source/config/themes.json"
+        '';
+    });
+in {
   imports = [
     ./hardware-configuration.nix
     ../../config/base.nix
@@ -42,6 +57,30 @@
     };
     loadModels = ["qwen3:8b"];
   };
+
+  environment.systemPackages = [
+    nanocoderPatched
+  ];
+
+  home-manager.users.matthew.xdg.configFile."nanocoder/agents.config.json".text = ''
+    {
+      "nanocoder": {
+        "providers": [
+          {
+            "name": "ollama",
+            "baseUrl": "http://192.168.1.232:11434/v1",
+            "models": [
+              "qwen2.5-coder:7b-instruct",
+              "qwen3.5:9b",
+              "qwen3:8b"
+            ],
+            "requestTimeout": -1,
+            "socketTimeout": -1
+          }
+        ]
+      }
+    }
+  '';
 
   hardware.xpadneo.enable = true;
 

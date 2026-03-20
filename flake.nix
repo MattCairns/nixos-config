@@ -38,6 +38,10 @@
       url = "github:anomalyco/opencode?ref=v1.2.27";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nanocoder = {
+      url = "github:Nano-Collective/nanocoder";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {
