@@ -3,7 +3,8 @@
   pkgs,
   inputs,
   ...
-}: {
+}:
+{
   xdg.configFile."opencode/skills/pdf/SKILL.md".text = ''
     ---
     name: pdf
@@ -223,18 +224,8 @@
           "git push *" = "deny";
         };
       };
-      watcher.ignore = ["/nix/store/**"];
+      watcher.ignore = [ "/nix/store/**" ];
       mcp = {
-        toggl = {
-          type = "local";
-          command = [
-            "sh"
-            "-c"
-            "TOGGL_API_KEY=$(cat ${
-              config.sops.secrets."toggl-api-key".path
-            }) exec npx -y @verygoodplugins/mcp-toggl@latest"
-          ];
-        };
         nixos = {
           type = "local";
           command = [
@@ -256,28 +247,6 @@
               config.sops.secrets."context7-token".path
             }) exec npx -y @upstash/context7-mcp@latest"
           ];
-        };
-        gitlab = {
-          type = "local";
-          command = [
-            "sh"
-            "-c"
-            "GITLAB_PERSONAL_ACCESS_TOKEN=$(cat ${
-              config.sops.secrets."gitlab-token".path
-            }) exec npx -y @modelcontextprotocol/server-gitlab@latest"
-          ];
-        };
-        drawio = {
-          type = "local";
-          command = [
-            "npx"
-            "-y"
-            "@drawio/mcp@latest"
-          ];
-        };
-        "home-assistant" = {
-          type = "remote";
-          url = "http://192.168.1.20:9583/private_Waou1zHSl97jXPI85YhHJw";
         };
       };
     };

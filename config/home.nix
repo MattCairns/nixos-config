@@ -19,7 +19,6 @@
 in {
   imports = [
     (import ../modules)
-    inputs.worktrunk.homeModules.default
   ];
   home.file.".talon/user/community" = {
     source = inputs.talon-community;
@@ -69,11 +68,6 @@ in {
   };
 
   programs.zoxide = {
-    enable = true;
-    enableFishIntegration = true;
-  };
-
-  programs.worktrunk = {
     enable = true;
     enableFishIntegration = true;
   };

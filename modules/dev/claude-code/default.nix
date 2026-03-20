@@ -82,18 +82,4 @@
     install -m 600 "$tmp_out" "$settings_path"
     rm -f "$tmp_base" "$tmp_out"
   '';
-
-  home.activation.claudeCodeWorktrunkPlugin = lib.hm.dag.entryAfter ["claudeCodeSettings"] ''
-    export PATH="${lib.makeBinPath [pkgs.git pkgs.openssh]}:$PATH"
-
-    mkdir -p "$HOME/.claude/plugins"
-
-    if ! grep -q '"worktrunk"[[:space:]]*:' "$HOME/.claude/plugins/known_marketplaces.json" 2>/dev/null; then
-      ${lib.getExe config.programs.claude-code.package} plugin marketplace add --scope user max-sixty/worktrunk
-    fi
-
-    if ! grep -q '"worktrunk@worktrunk"[[:space:]]*:' "$HOME/.claude/plugins/installed_plugins.json" 2>/dev/null; then
-      ${lib.getExe config.programs.claude-code.package} plugin install --scope user worktrunk@worktrunk
-    fi
-  '';
 }
