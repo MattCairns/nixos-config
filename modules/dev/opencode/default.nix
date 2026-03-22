@@ -207,7 +207,15 @@
             name = "Qwen 2.5 Coder 7B Instruct (desktop)";
             tools = true;
             limit = {
-              context = 8192;
+              context = 16384;
+              output = 8192;
+            };
+          };
+          "qwen2.5:7b-instruct-q4_K_M" = {
+            name = "Qwen 2.5 7B Instruct Q4_K_M (desktop)";
+            tools = true;
+            limit = {
+              context = 16384;
               output = 8192;
             };
           };
@@ -215,7 +223,7 @@
             name = "Qwen 3 8B (desktop)";
             tools = true;
             limit = {
-              context = 8192;
+              context = 16384;
               output = 8192;
             };
           };
