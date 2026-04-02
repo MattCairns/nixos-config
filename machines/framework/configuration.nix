@@ -113,6 +113,7 @@ in {
   ## Power Management ##
   services.upower.enable = true;
   services.power-profiles-daemon.enable = true;
+  networking.networkmanager.wifi.powersave = false;
 
   services.logind.settings.Login = {
     HandlePowerKey = "ignore";

@@ -84,7 +84,6 @@ in {
       mosh
       btop
       ripgrep
-      fzf
       fd
       wget
       curlWithGnuTls
@@ -141,6 +140,7 @@ in {
       codex
       qwen-code
       lmstudio
+      envfs
 
       # Formatters
       alejandra

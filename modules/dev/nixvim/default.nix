@@ -77,8 +77,8 @@
         src = pkgs.fetchFromGitHub {
           owner = "MattCairns";
           repo = "telescope-cargo-workspace.nvim";
-          rev = "ae7a48c0a13e37b22da47dadc605395594da6e07";
-          hash = "sha256-knLXLOPGLWMbzR5pNLP1eEzxQzOUpZzo2NMxc3ORjxo=";
+          rev = "919662e90521ef477f4c1e46297a760e884a5127";
+          hash = "sha256-XdGJrPgEw9Sbfjf4spRVWaLbb6i3omJX//QrRkti9yg=";
         };
       })
 
