@@ -62,14 +62,23 @@ in {
     vessel-configs-vault-pass = {};
   };
 
-  programs.nix-index = {
-    enable = true;
-    enableFishIntegration = true;
-  };
+  programs = {
+    nix-index = {
+      enable = true;
+      enableFishIntegration = true;
+    };
 
-  programs.zoxide = {
-    enable = true;
-    enableFishIntegration = true;
+    zoxide = {
+      enable = true;
+      enableFishIntegration = true;
+    };
+
+    sesh = {
+      enable = true;
+      enableTmuxIntegration = true;
+      icons = true;
+      tmuxKey = "C-f";
+    };
   };
 
   home = {
@@ -177,9 +186,7 @@ in {
       bubblewrap
 
       # Custom scripts
-      (import ../scripts/tmux-sessionizer.nix {inherit pkgs;})
       (import ../scripts/tmux-windowizer.nix {inherit pkgs;})
-      (import ../scripts/tmux-switch-session.nix {inherit pkgs;})
       (import ../scripts/tmux-switch-ssh-session.nix {inherit pkgs;})
       (import ../scripts/chwall.nix {inherit pkgs;})
       (import ../scripts/mosh-ssh.nix {inherit pkgs;})

@@ -11,6 +11,7 @@
     fzf = {
       enable = true;
       enableFishIntegration = true;
+      tmux.enableShellIntegration = true;
       defaultCommand = "${pkgs.fd}/bin/fd --type f --hidden --follow --exclude .git";
       fileWidgetCommand = "${pkgs.fd}/bin/fd --type f --hidden --follow --exclude .git";
       changeDirWidgetCommand = "${pkgs.fd}/bin/fd --type d --hidden --follow --exclude .git";
