@@ -2,18 +2,18 @@
   pkgs,
   inputs,
   ...
-}: let
+}:
+let
   nanocoderPatched =
     inputs.nanocoder.packages.${pkgs.stdenv.hostPlatform.system}.default.overrideAttrs
-    (old: {
-      postInstall =
-        (old.postInstall or "")
-        + ''
+      (old: {
+        postInstall = (old.postInstall or "") + ''
           mkdir -p "$out/lib/nanocoder/source/config"
           cp ${inputs.nanocoder}/source/config/themes.json "$out/lib/nanocoder/source/config/themes.json"
         '';
-    });
-in {
+      });
+in
+{
   imports = [
     ./hardware-configuration.nix
     ../../config/base.nix
@@ -21,7 +21,7 @@ in {
   ];
 
   sops.defaultSopsFile = ../../secrets/secrets.yaml;
-  sops.age.sshKeyPaths = ["/home/matthew/.ssh/id_ed25519"];
+  sops.age.sshKeyPaths = [ "/home/matthew/.ssh/id_ed25519" ];
   sops.secrets.user-matthew-password.neededForUsers = true;
 
   users.users.matthew.openssh.authorizedKeys.keys = [
@@ -55,7 +55,7 @@ in {
     environmentVariables = {
       OLLAMA_CONTEXT_LENGTH = "65536";
     };
-    loadModels = ["qwen3:8b"];
+    loadModels = [ "qwen3:8b" ];
   };
 
   environment.systemPackages = [
@@ -89,7 +89,7 @@ in {
   # Firmware updates
   services.fwupd = {
     enable = true;
-    extraRemotes = ["lvfs-testing"];
+    extraRemotes = [ "lvfs-testing" ];
   };
 
   fileSystems."/mnt/appdata" = {

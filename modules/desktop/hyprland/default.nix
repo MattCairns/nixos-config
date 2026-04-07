@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-let
+{pkgs, ...}: let
   workFirefoxCmd = "firefox -p work --name=firefox-work";
   homeFirefoxCmd = "firefox -P home --name=firefox-home";
 
@@ -39,7 +38,7 @@ let
     fi
 
     hyprctl dispatch exec "[workspace $ws_ff_home silent] ${homeFirefoxCmd}"
-    hyprctl dispatch exec "[workspace $ws_kitty silent] kitty -e /home/matthew/.config/bin/ta"
+    hyprctl dispatch exec "[workspace $ws_kitty silent] kitty -1 -e /home/matthew/.config/bin/ta"
     hyprctl dispatch exec "[workspace special:spotify silent] spotify"
   '';
 
@@ -149,16 +148,21 @@ let
 
   workspaceKeyBinds = builtins.concatLists (
     builtins.genList (
-      i:
-      let
-        ws = if i == 9 then "10" else toString (i + 1);
-        key = if i == 9 then "0" else toString (i + 1);
-      in
-      [
+      i: let
+        ws =
+          if i == 9
+          then "10"
+          else toString (i + 1);
+        key =
+          if i == 9
+          then "0"
+          else toString (i + 1);
+      in [
         "$mod, ${key}, workspace, ${ws}"
         "$mod SHIFT, ${key}, movetoworkspace, ${ws}"
       ]
-    ) 10
+    )
+    10
   );
 
   workspaceRules = [
@@ -180,8 +184,7 @@ let
     "center on, match:class ^(signal|signal-desktop|Signal)$"
     "size 70% 70%, match:class ^(signal|signal-desktop|Signal)$"
   ];
-in
-{
+in {
   home.packages = with pkgs; [
     fuzzel
     workspaceRouter
@@ -200,7 +203,7 @@ in
     settings = {
       "$mod" = "SUPER";
 
-      monitor = [ ", preferred, auto, 1" ];
+      monitor = [", preferred, auto, 1"];
 
       exec-once = [
         "${startApps}"
@@ -257,48 +260,49 @@ in
         focus_on_activate = true;
       };
 
-      bind = [
-        "$mod, Return, exec, kitty -e bash -c 'exec ~/.config/bin/ta || $SHELL'"
-        "$mod CTRL, Return, exec, kitty"
-        "$mod SHIFT, W, exec, ${workFirefoxCmd}"
-        "$mod SHIFT, H, exec, ${homeFirefoxCmd}"
-        "$mod ALT, W, exec, ~/.config/bin/chwall ~/.config/wallpapers"
-        "$mod CTRL, L, exec, hyprlock"
-        "$mod, Space, exec, fuzzel"
-        "$mod, S, exec, ${spotifyDropdown}/bin/spotify-dropdown"
-        "$mod, W, killactive"
-        "$mod, M, exit"
-        "$mod, E, exec, dolphin"
-        "$mod, V, togglefloating"
-        "$mod, R, exec, fuzzel --dmenu"
-        "$mod, B, exec, oor-bw-pw"
-        "$mod, P, exec, hyprshot -m region -z"
-        "$mod CTRL, left, focusmonitor, l"
-        "$mod CTRL, right, focusmonitor, r"
-        "$mod, H, movefocus, l"
-        "$mod, J, movefocus, d"
-        "$mod, K, movefocus, u"
-        "$mod, L, movefocus, r"
-        "$mod SHIFT, H, movewindow, l"
-        "$mod SHIFT, J, movewindow, d"
-        "$mod SHIFT, K, movewindow, u"
-        "$mod SHIFT, L, movewindow, r"
-        "$mod SHIFT, B, exec, bluetoothctl connect 88:C9:E8:44:61:64"
-        "$mod SHIFT, D, exec, ${pkgs.systemd}/bin/systemctl --user restart kanshi.service"
-        "$mod SHIFT, P, exec, hyprshot -m region -z --clipboard-only"
-        "$mod SHIFT, R, exec, ${rerouteScript}/bin/hypr-reroute"
-        ", XF86MonBrightnessDown, exec, brightnessctl set 5%-"
-        ", XF86MonBrightnessUp, exec, brightnessctl set 5%+"
-        ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-        ", XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
-        ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+"
-        ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-        ", XF86Display, exec, ${hyprctl} dispatch dpms off"
-        ", XF86WLAN, exec, nmcli radio wifi | grep -q enabled && nmcli radio wifi off || nmcli radio wifi on"
-        "$mod, mouse_down, workspace, e+1"
-        "$mod, mouse_up, workspace, e-1"
-      ]
-      ++ workspaceKeyBinds;
+      bind =
+        [
+          "$mod, Return, exec, kitty -1 -e bash -c 'exec ~/.config/bin/ta || $SHELL'"
+          "$mod CTRL, Return, exec, kitty -1"
+          "$mod SHIFT, W, exec, ${workFirefoxCmd}"
+          "$mod SHIFT, H, exec, ${homeFirefoxCmd}"
+          "$mod ALT, W, exec, ~/.config/bin/chwall ~/.config/wallpapers"
+          "$mod CTRL, L, exec, hyprlock"
+          "$mod, Space, exec, fuzzel"
+          "$mod, S, exec, ${spotifyDropdown}/bin/spotify-dropdown"
+          "$mod, W, killactive"
+          "$mod, M, exit"
+          "$mod, E, exec, dolphin"
+          "$mod, V, togglefloating"
+          "$mod, R, exec, fuzzel --dmenu"
+          "$mod, B, exec, oor-bw-pw"
+          "$mod, P, exec, hyprshot -m region -z"
+          "$mod CTRL, left, focusmonitor, l"
+          "$mod CTRL, right, focusmonitor, r"
+          "$mod, H, movefocus, l"
+          "$mod, J, movefocus, d"
+          "$mod, K, movefocus, u"
+          "$mod, L, movefocus, r"
+          "$mod SHIFT, H, movewindow, l"
+          "$mod SHIFT, J, movewindow, d"
+          "$mod SHIFT, K, movewindow, u"
+          "$mod SHIFT, L, movewindow, r"
+          "$mod SHIFT, B, exec, bluetoothctl connect 88:C9:E8:44:61:64"
+          "$mod SHIFT, D, exec, ${pkgs.systemd}/bin/systemctl --user restart kanshi.service"
+          "$mod SHIFT, P, exec, hyprshot -m region -z --clipboard-only"
+          "$mod SHIFT, R, exec, ${rerouteScript}/bin/hypr-reroute"
+          ", XF86MonBrightnessDown, exec, brightnessctl set 5%-"
+          ", XF86MonBrightnessUp, exec, brightnessctl set 5%+"
+          ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+          ", XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
+          ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+"
+          ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+          ", XF86Display, exec, ${hyprctl} dispatch dpms off"
+          ", XF86WLAN, exec, nmcli radio wifi | grep -q enabled && nmcli radio wifi off || nmcli radio wifi on"
+          "$mod, mouse_down, workspace, e+1"
+          "$mod, mouse_up, workspace, e-1"
+        ]
+        ++ workspaceKeyBinds;
 
       bindm = [
         "$mod, mouse:272, movewindow"

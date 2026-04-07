@@ -3,8 +3,7 @@
   pkgs,
   inputs,
   ...
-}:
-{
+}: {
   xdg.configFile."opencode/skills/pdf/SKILL.md".text = ''
     ---
     name: pdf
@@ -73,7 +72,7 @@
           "git push *" = "deny";
         };
       };
-      watcher.ignore = [ "/nix/store/**" ];
+      watcher.ignore = ["/nix/store/**"];
       mcp = {
         nixos = {
           type = "local";
