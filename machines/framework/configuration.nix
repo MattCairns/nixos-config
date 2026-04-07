@@ -101,6 +101,17 @@ in
     ];
   };
 
+  fileSystems."/mnt/Photos" = {
+    device = "192.168.1.10:/mnt/user/Photos";
+    fsType = "nfs";
+    options = [
+      "rw"
+      "noperm"
+      "x-systemd.automount"
+      "noauto"
+    ];
+  };
+
   fileSystems."/mnt/backup" = {
     device = "192.168.1.10:/mnt/user/backup";
     fsType = "nfs";
