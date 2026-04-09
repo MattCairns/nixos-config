@@ -188,6 +188,8 @@ in {
       # Custom scripts
       (import ../scripts/tmux-windowizer.nix {inherit pkgs;})
       (import ../scripts/tmux-switch-ssh-session.nix {inherit pkgs;})
+      (import ../scripts/mt-copy-id.nix {inherit pkgs;})
+      (import ../scripts/st.nix {inherit pkgs;})
       (import ../scripts/chwall.nix {inherit pkgs;})
       (import ../scripts/mosh-ssh.nix {inherit pkgs;})
       (import ../scripts/warp.nix {inherit pkgs;})
