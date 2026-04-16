@@ -1,4 +1,9 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  inputs,
+  ...
+}:
+{
   programs.nixvim = {
     enable = true;
     viAlias = true;
@@ -21,6 +26,7 @@
     opts = {
       number = true;
       relativenumber = true;
+      autoread = true;
       showmode = false;
       breakindent = true;
       undofile = true;
@@ -153,7 +159,7 @@
           clangd.enable = true;
           buf_ls.enable = true;
           dockerls.enable = true;
-          pyright.enable = true;
+          pyrefly.enable = true;
           bashls.enable = true;
           jsonls.enable = true;
         };
@@ -174,9 +180,9 @@
             completeopt = "menu,menuone,noinsert";
           };
           sources = [
-            {name = "nvim_lsp";}
-            {name = "path";}
-            {name = "buffer";}
+            { name = "nvim_lsp"; }
+            { name = "path"; }
+            { name = "buffer"; }
           ];
           mapping = {
             "<C-n>" = "cmp.mapping.select_next_item()";
@@ -221,6 +227,9 @@
         enable = true;
         autoLoad = true;
         settings = {
+          formatters_by_ft = {
+            python = [ "black" ];
+          };
           notify_on_error = true;
           notify_no_formatters = true;
           format_on_save = ''
@@ -293,7 +302,7 @@
                 check = {
                   command = "clippy";
                   workspace = false;
-                  extraArgs = ["--no-deps"];
+                  extraArgs = [ "--no-deps" ];
                 };
                 cargo = {
                   allFeatures = false;
@@ -305,7 +314,7 @@
                   enable = true;
                 };
                 diagnostics = {
-                  disabled = ["unresolved-proc-macro"];
+                  disabled = [ "unresolved-proc-macro" ];
                 };
                 cachePriming = {
                   enable = true;

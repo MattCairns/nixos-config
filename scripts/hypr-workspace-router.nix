@@ -2,7 +2,7 @@
   pkgs,
   externalMonitorOne,
   externalMonitorTwo,
-  systemd ? pkgs.systemd,
+  noctaliaShell,
 }:
 pkgs.writeShellScriptBin "hypr-workspace-router" ''
   set -uo pipefail
@@ -10,6 +10,11 @@ pkgs.writeShellScriptBin "hypr-workspace-router" ''
   export PATH="${pkgs.hyprland}/bin:${pkgs.jq}/bin:$PATH"
 
   PROFILE="''${1:-undocked}"
+
+  restart_noctalia() {
+    ${pkgs.procps}/bin/pkill -x noctalia-shell 2>/dev/null || true
+    ${noctaliaShell} >/dev/null 2>&1 &
+  }
 
   # Wait for Hyprland to register the monitor change before issuing commands.
   sleep 1
@@ -55,7 +60,7 @@ pkgs.writeShellScriptBin "hypr-workspace-router" ''
     # Restart noctalia so it re-initialises wallpaper and the bar on the
     # current monitor set. Brief pause lets Hyprland settle first.
     sleep 1
-    ${systemd}/bin/systemctl --user restart noctalia-shell.service
+    restart_noctalia
   }
 
   apply_docked() {
@@ -89,7 +94,7 @@ pkgs.writeShellScriptBin "hypr-workspace-router" ''
     # Restart noctalia so it re-initialises wallpaper and the bar on the
     # current monitor set. Brief pause lets Hyprland settle first.
     sleep 1
-    ${systemd}/bin/systemctl --user restart noctalia-shell.service
+    restart_noctalia
   }
 
   case "$PROFILE" in

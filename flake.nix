@@ -34,10 +34,6 @@
       url = "github:MattCairns/cargo-warp";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    opencode = {
-      url = "github:anomalyco/opencode?ref=v1.2.27";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nanocoder = {
       url = "github:Nano-Collective/nanocoder";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -78,11 +74,21 @@
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
     in {
       only-known-hosts-exist = pkgs.runCommand "check-only-known-hosts-exist" {} ''
-        ${pkgs.lib.concatStringsSep "\n" (
-          map (name: ''
+          ${pkgs.lib.concatStringsSep "\n" (
+          map
+          (name: ''
             echo "FAIL: unexpected configuration '${name}' found"
             exit 1
-          '') (builtins.filter (n: !builtins.elem n ["framework" "desktop"]) (builtins.attrNames nixosConfigurations))
+          '')
+          (
+            builtins.filter (
+              n:
+                !builtins.elem n [
+                  "framework"
+                  "desktop"
+                ]
+            ) (builtins.attrNames nixosConfigurations)
+          )
         )}
         echo "PASS" > $out
       '';

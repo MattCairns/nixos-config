@@ -1,7 +1,6 @@
 {
   config,
   pkgs,
-  inputs,
   ...
 }: {
   xdg.configFile."opencode/skills/pdf/SKILL.md".text = ''
@@ -26,7 +25,7 @@
 
   programs.opencode = {
     enable = true;
-    package = inputs.opencode.packages.${pkgs.stdenv.hostPlatform.system}.default;
+    package = pkgs.opencode;
     settings = {
       plugin = [
         "opencode-gemini-auth@latest"
@@ -95,6 +94,11 @@
               config.sops.secrets."context7-token".path
             }) exec npx -y @upstash/context7-mcp@latest"
           ];
+        };
+        homeAssistant = {
+          type = "remote";
+          url = "{file:${config.sops.secrets."ha-mcp-url".path}}";
+          oauth = false;
         };
       };
     };

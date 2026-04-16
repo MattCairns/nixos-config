@@ -31,11 +31,12 @@ write_config() {
     "set -g allow-rename off" \
     "setw -g automatic-rename on" \
     "setw -g automatic-rename-format '#{?pane_in_mode,[copy] ,}#{b:pane_current_path}'" \
+    "if-shell '[ -f /etc/vessel_uuid ]' \"set -g status-style 'bg=#9EE9ED,fg=black'\"" \
     "set -g status-interval 10" \
     "set -g status-left-length 40" \
     "set -g status-right-length 80" \
     "set -g status-left '#[bold]#H#[default]:#S '" \
-    "set -g status-right '#[dim]#(whoami) #[default]#{b:pane_current_path} %Y-%m-%d %H:%M'" \
+    "set -g status-right '#[dim]#(whoami) #[default]#{b:pane_current_path} #([ -f /etc/vessel_uuid ] && [ -s /var/lib/vessel-rejuvenate/artifact_info ] && IFS= read -r version < /var/lib/vessel-rejuvenate/artifact_info; printf %s "\$version" | grep -qi necromanteia || printf %.24s "\$version") %Y-%m-%d %H:%M'" \
     "set -g pane-border-status top" \
     "set -g pane-border-format ' #{pane_index} #{?pane_in_mode,[copy] ,}#{pane_current_command} '" \
     "bind h select-pane -L" \

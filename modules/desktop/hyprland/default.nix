@@ -1,6 +1,11 @@
-{pkgs, ...}: let
+{
+  pkgs,
+  config,
+  ...
+}: let
   workFirefoxCmd = "firefox -p work --name=firefox-work";
   homeFirefoxCmd = "firefox -P home --name=firefox-home";
+  noctaliaShell = pkgs.lib.getExe config.programs.noctalia-shell.package;
 
   startApps = pkgs.writeShellScript "hyprland-start-apps" ''
     #!/usr/bin/env bash
@@ -9,6 +14,10 @@
 
     # Wait for kanshi to apply the monitor layout before detecting monitors.
     sleep 2
+
+    if ! ${pkgs.procps}/bin/pidof noctalia-shell >/dev/null 2>&1; then
+      ${noctaliaShell} >/dev/null 2>&1 &
+    fi
 
     count=$(hyprctl monitors -j | jq 'length')
 
@@ -135,6 +144,7 @@
 
   workspaceRouter = pkgs.callPackage ../../../scripts/hypr-workspace-router.nix {
     inherit externalMonitorOne externalMonitorTwo;
+    inherit noctaliaShell;
   };
 
   rerouteScript = pkgs.writeShellScriptBin "hypr-reroute" ''
