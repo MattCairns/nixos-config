@@ -118,7 +118,6 @@ in
       # Video/Audio
       feh # Image Viewer
       scrot
-      mpv # Media Player
       vlc
       spotify
       rnnoise-plugin
@@ -150,7 +149,6 @@ in
       jira-cli-go
       wrappedGlab
       perl
-      codex
       qwen-code
       lmstudio
       envfs
@@ -177,7 +175,6 @@ in
       dfu-programmer
 
       blender
-      bottles
 
       # Sharing
       tmate
