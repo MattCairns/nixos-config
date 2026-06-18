@@ -1,19 +1,22 @@
 _: {
-  programs.noctalia-shell = {
+  programs.noctalia = {
     enable = true;
 
     settings = {
+      theme = {
+        mode = "dark";
+        source = "custom";
+        custom_palette = "tokyo-night-moon";
+      };
+
       wallpaper = {
         directory = "/home/matthew/.config/wallpapers";
-      };
-      notifications = {
-        enableBatteryToast = false;
       };
     };
 
     # Tokyo Night Moon colorscheme
     # https://github.com/noctalia-dev/noctalia-colorschemes/blob/main/Tokyo%20Night%20Moon/Tokyo%20Night%20Moon.json
-    colors = {
+    customPalettes.tokyo-night-moon.dark = {
       mPrimary = "#7a88cf";
       mOnPrimary = "#1f2335";
       mSecondary = "#d7729f";

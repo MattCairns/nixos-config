@@ -2,8 +2,7 @@
   pkgs,
   config,
   ...
-}:
-{
+}: {
   programs = {
     bash.initExtra = ''
       export OPENAI_API_KEY $(cat ${config.sops.secrets.openai-api-key.path})
@@ -12,7 +11,6 @@
     fzf = {
       enable = true;
       enableFishIntegration = true;
-      tmux.enableShellIntegration = true;
       defaultCommand = "${pkgs.fd}/bin/fd --type f --hidden --follow --exclude .git";
       fileWidgetCommand = "${pkgs.fd}/bin/fd --type f --hidden --follow --exclude .git";
       changeDirWidgetCommand = "${pkgs.fd}/bin/fd --type d --hidden --follow --exclude .git";

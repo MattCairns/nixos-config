@@ -5,7 +5,7 @@
 }: let
   externalMonitorOne = "desc:ASUSTek COMPUTER INC PA278CV LCLMQS261918";
   externalMonitorTwo = "desc:ASUSTek COMPUTER INC PA278QV LBLMQS297570";
-  noctaliaShell = pkgs.lib.getExe config.programs.noctalia-shell.package;
+  noctaliaShell = pkgs.lib.getExe config.programs.noctalia.package;
 
   workspaceRouter = pkgs.callPackage ../../../scripts/hypr-workspace-router.nix {
     inherit externalMonitorOne externalMonitorTwo;

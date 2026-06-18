@@ -5,7 +5,7 @@
 }: let
   workFirefoxCmd = "firefox -p work --name=firefox-work";
   homeFirefoxCmd = "firefox -P home --name=firefox-home";
-  noctaliaShell = pkgs.lib.getExe config.programs.noctalia-shell.package;
+  noctaliaShell = pkgs.lib.getExe config.programs.noctalia.package;
 
   startApps = pkgs.writeShellScript "hyprland-start-apps" ''
     #!/usr/bin/env bash
@@ -139,6 +139,24 @@
 
   lockCmd = "${pkgs.procps}/bin/pidof hyprlock || hyprlock";
   hyprctl = "${pkgs.hyprland}/bin/hyprctl";
+  systemctl = "${pkgs.systemd}/bin/systemctl";
+  dpmsOnCmd = "${hyprctl} dispatch dpms on; ${systemctl} --user start kanshi.service";
+  dpmsOff = pkgs.writeShellScriptBin "hypr-dpms-off" ''
+    set -euo pipefail
+
+    ${systemctl} --user stop kanshi.service
+    ${hyprctl} dispatch dpms off
+
+    (
+      sleep 2
+
+      while ${hyprctl} monitors -j | ${pkgs.jq}/bin/jq -e 'any(.[]; .dpmsStatus == false)' >/dev/null; do
+        sleep 1
+      done
+
+      ${systemctl} --user start kanshi.service
+    ) >/dev/null 2>&1 &
+  '';
   externalMonitorOne = "desc:ASUSTek COMPUTER INC PA278CV LCLMQS261918";
   externalMonitorTwo = "desc:ASUSTek COMPUTER INC PA278QV LBLMQS297570";
 
@@ -258,7 +276,6 @@ in {
       };
 
       dwindle = {
-        pseudotile = true;
         preserve_split = true;
         special_scale_factor = 1;
         smart_split = false;
@@ -307,7 +324,7 @@ in {
           ", XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
           ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+"
           ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-          ", XF86Display, exec, ${hyprctl} dispatch dpms off"
+          ", XF86Display, exec, ${dpmsOff}/bin/hypr-dpms-off"
           ", XF86WLAN, exec, nmcli radio wifi | grep -q enabled && nmcli radio wifi off || nmcli radio wifi on"
           "$mod, mouse_down, workspace, e+1"
           "$mod, mouse_up, workspace, e-1"
@@ -399,8 +416,8 @@ in {
         }
         {
           timeout = 420;
-          on-timeout = "${hyprctl} dispatch dpms off";
-          on-resume = "${hyprctl} dispatch dpms on";
+          on-timeout = "${dpmsOff}/bin/hypr-dpms-off";
+          on-resume = dpmsOnCmd;
         }
       ];
     };

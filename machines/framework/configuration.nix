@@ -1,19 +1,4 @@
-{
-  pkgs,
-  inputs,
-  ...
-}:
-let
-  nanocoderPatched =
-    inputs.nanocoder.packages.${pkgs.stdenv.hostPlatform.system}.default.overrideAttrs
-      (old: {
-        postInstall = (old.postInstall or "") + ''
-          mkdir -p "$out/lib/nanocoder/source/config"
-          cp ${inputs.nanocoder}/source/config/themes.json "$out/lib/nanocoder/source/config/themes.json"
-        '';
-      });
-in
-{
+{pkgs, ...}: {
   imports = [
     ./hardware-configuration.nix
     ../../config/base.nix
@@ -21,7 +6,7 @@ in
   ];
 
   sops.defaultSopsFile = ../../secrets/secrets.yaml;
-  sops.age.sshKeyPaths = [ "/home/matthew/.ssh/id_ed25519" ];
+  sops.age.sshKeyPaths = ["/home/matthew/.ssh/id_ed25519"];
   sops.secrets.user-matthew-password.neededForUsers = true;
 
   users.users.matthew.openssh.authorizedKeys.keys = [
@@ -55,32 +40,8 @@ in
     environmentVariables = {
       OLLAMA_CONTEXT_LENGTH = "65536";
     };
-    loadModels = [ "qwen3:8b" ];
+    loadModels = ["qwen3:8b"];
   };
-
-  environment.systemPackages = [
-    nanocoderPatched
-  ];
-
-  home-manager.users.matthew.xdg.configFile."nanocoder/agents.config.json".text = ''
-    {
-      "nanocoder": {
-        "providers": [
-          {
-            "name": "ollama",
-            "baseUrl": "http://192.168.1.232:11434/v1",
-            "models": [
-              "qwen2.5-coder:7b-instruct",
-              "qwen3.5:9b",
-              "qwen3:8b"
-            ],
-            "requestTimeout": -1,
-            "socketTimeout": -1
-          }
-        ]
-      }
-    }
-  '';
 
   hardware.xpadneo.enable = true;
 
@@ -89,7 +50,7 @@ in
   # Firmware updates
   services.fwupd = {
     enable = true;
-    extraRemotes = [ "lvfs-testing" ];
+    extraRemotes = ["lvfs-testing"];
   };
 
   fileSystems."/mnt/appdata" = {
@@ -100,13 +61,20 @@ in
       "noauto"
     ];
   };
-
+  fileSystems."/mnt/Media" = {
+    device = "192.168.1.10:/mnt/user/Media";
+    fsType = "nfs";
+    options = [
+      "rw"
+      "x-systemd.automount"
+      "noauto"
+    ];
+  };
   fileSystems."/mnt/Photos" = {
     device = "192.168.1.10:/mnt/user/Photos";
     fsType = "nfs";
     options = [
       "rw"
-      "noperm"
       "x-systemd.automount"
       "noauto"
     ];

@@ -49,10 +49,12 @@
 
       # ==================
       # Hotkeys for switching sessions and selecting projects
-      bind -r C-s display-popup -E "tmux-switch-ssh-session"
+      bind -r C-f run-shell -b "PATH=$PATH:/home/$USER/.fzf/bin/ tmux-switch-session"
+      bind -r C-s run-shell "PATH=$PATH:/home/$USER/.fzf/bin/ tmux neww tmux-switch-ssh-session"
       bind K run-shell 'tmux switch-client -n \; kill-session -t "$(tmux display-message -p "#S")" || tmux kill-s'
-      bind -r N run-shell "sesh connect /home/$USER/nixos-config"
-      bind -r O run-shell "sesh connect /home/$USER/dev/oor/hydromanteia"
+      bind -r f run-shell "PATH=$PATH:/home/$USER/.fzf/bin/ tmux neww tmux-sessionizer"
+      bind -r N run-shell "tmux-sessionizer /home/$USER/nixos-config/"
+      bind -r O run-shell "tmux-sessionizer /home/$USER/dev/oor/hydromanteia/"
       bind -r g run-shell "open-git"
       # ==================
 

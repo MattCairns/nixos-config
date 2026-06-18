@@ -75,13 +75,6 @@ in
       enable = true;
       enableFishIntegration = true;
     };
-
-    sesh = {
-      enable = true;
-      enableTmuxIntegration = true;
-      icons = true;
-      tmuxKey = "C-f";
-    };
   };
 
   home = {
@@ -150,7 +143,6 @@ in
       wrappedGlab
       perl
       qwen-code
-      lmstudio
       envfs
 
       # Formatters
@@ -186,7 +178,9 @@ in
       bubblewrap
 
       # Custom scripts
+      (import ../scripts/tmux-sessionizer.nix { inherit pkgs; })
       (import ../scripts/tmux-windowizer.nix { inherit pkgs; })
+      (import ../scripts/tmux-switch-session.nix { inherit pkgs; })
       (import ../scripts/tmux-switch-ssh-session.nix { inherit pkgs; })
       (import ../scripts/mt-copy-id.nix { inherit pkgs; })
       (import ../scripts/st.nix { inherit pkgs; })
