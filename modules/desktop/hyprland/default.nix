@@ -223,6 +223,7 @@ in {
   wayland.windowManager.hyprland = {
     enable = true;
     package = null;
+    configType = "hyprlang";
     xwayland.enable = true;
     systemd = {
       enable = true;

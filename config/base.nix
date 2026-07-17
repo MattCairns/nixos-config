@@ -1,11 +1,11 @@
 {
   pkgs,
-  config,
   user,
   lib,
   inputs,
   ...
-}: let
+}:
+let
   rnnoise_config = {
     "context.modules" = [
       {
@@ -43,7 +43,8 @@
       }
     ];
   };
-in {
+in
+{
   imports = [
     inputs.talon-nix.nixosModules.talon
   ];
@@ -53,7 +54,8 @@ in {
     allowUnfree = true;
 
     # Explicitly set which non-free packages can be installed
-    allowUnfreePredicate = pkg:
+    allowUnfreePredicate =
+      pkg:
       builtins.elem (lib.getName pkg) [
         "codeium"
         "discord"
@@ -71,6 +73,7 @@ in {
         "claude-code"
         "talon"
         "nomachine-client"
+        "rustdesk"
       ];
 
     permittedInsecurePackages = [
@@ -106,7 +109,7 @@ in {
 
   # udev rules
   services.udev = {
-    packages = [pkgs.qmk-udev-rules];
+    packages = [ pkgs.qmk-udev-rules ];
     extraRules = ''
       SUBSYSTEM=="tty", ATTRS{product}=="CubeOrange", SYMLINK="ttyPIXHAWK"
     '';
@@ -121,7 +124,7 @@ in {
     grub.efiSupport = false;
     grub.device = "nodev";
   };
-  boot.binfmt.emulatedSystems = ["aarch64-linux"];
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -145,7 +148,7 @@ in {
   # programs.adb.enable = true;
 
   # Set your time zone and locale
-  time.timeZone = "Europe/London";
+  time.timeZone = "America/Vancouver";
   i18n.defaultLocale = "en_CA.UTF-8";
 
   programs.talon.enable = true;
@@ -157,27 +160,12 @@ in {
     xwayland.enable = true;
   };
 
+  services.xserver.desktopManager.xfce.enable = true;
+
+  services.displayManager.sddm.enable = true;
+  services.displayManager.defaultSession = "hyprland";
+
   programs.hyprlock.enable = true;
-
-  programs.regreet = {
-    enable = true;
-    settings = {
-      background = {
-        path = "${../assets/wallpapers/pexels-eberhard-grossgasteiger-730981.jpg}";
-        fit = "Cover";
-      };
-      GTK = {
-        application_prefer_dark_theme = lib.mkForce true;
-        theme_name = lib.mkForce "Adwaita-dark";
-        font_name = lib.mkForce "JetBrainsMono Nerd Font 12";
-      };
-    };
-  };
-
-  # Explicitly set XDG_DATA_DIRS in greetd's systemd environment so regreet
-  # can discover session .desktop files. PAM DEFAULT= won't reliably propagate
-  # to the greeter child process without this.
-  systemd.services.greetd.environment.XDG_DATA_DIRS = "${config.services.displayManager.sessionData.desktops}/share";
 
   xdg.portal = {
     enable = true;
@@ -186,6 +174,7 @@ in {
       pkgs.xdg-desktop-portal-gnome
       pkgs.xdg-desktop-portal-hyprland
     ];
+    config.common.default = "*";
     config.hyprland = {
       default = [
         "hyprland"
@@ -216,12 +205,14 @@ in {
   # Enable CUPS to print documents.
   services.printing = {
     enable = true;
-    drivers = [pkgs.hplip];
+    drivers = [ pkgs.hplip ];
   };
 
   programs.gnupg.agent.enable = true;
   security.polkit.enable = true;
-  security.pam.services.swaylock = {};
+  security.pam.services.swaylock = { };
+
+  services.gnome.gcr-ssh-agent.enable = false;
 
   security.sudo = {
     enable = true;
@@ -230,19 +221,19 @@ in {
         commands = [
           {
             command = "/run/current-system/sw/bin/nixos-rebuild";
-            options = ["NOPASSWD"];
+            options = [ "NOPASSWD" ];
           }
         ];
-        users = ["${user}"];
+        users = [ "${user}" ];
       }
       {
         commands = [
           {
             command = "${pkgs.tailscale}/bin/tailscale";
-            options = ["NOPASSWD"];
+            options = [ "NOPASSWD" ];
           }
         ];
-        groups = ["wheel"];
+        groups = [ "wheel" ];
       }
     ];
   };
@@ -275,10 +266,10 @@ in {
     alsa.support32Bit = true;
     pulse.enable = true;
     jack.enable = true;
-    extraLadspaPackages = [pkgs.rnnoise-plugin];
+    extraLadspaPackages = [ pkgs.rnnoise-plugin ];
     extraConfig.pipewire."99-input-denoising" = rnnoise_config;
   };
-  users.extraGroups.audio.members = ["${user}"];
+  users.extraGroups.audio.members = [ "${user}" ];
 
   # Enable syncthing
   services.syncthing = {
@@ -294,7 +285,7 @@ in {
     XDG_CACHE_HOME = "\${HOME}/.local/cache";
     XDG_BIN_HOME = "\${HOME}/.local/bin";
     XDG_DATA_HOME = "\${HOME}/.local/share";
-    PATH = ["\${XDG_BIN_HOME}"];
+    PATH = [ "\${XDG_BIN_HOME}" ];
     EDITOR = "nvim";
     XCURSOR_SIZE = "32";
     NH_FLAKE = "\${HOME}/nixos-config";
@@ -331,14 +322,15 @@ in {
     pkgs.comma
     pkgs.nomachine-client
     # pkgs.vagrant
+    pkgs.rustdesk
   ];
 
   # Audio firmware and hardware support
-  hardware.firmware = [pkgs.linux-firmware];
+  hardware.firmware = [ pkgs.linux-firmware ];
   hardware.enableRedistributableFirmware = true;
 
   virtualisation.docker.enable = true;
-  users.extraGroups.docker.members = ["${user}"];
+  users.extraGroups.docker.members = [ "${user}" ];
 
   # Set up shell
   users.defaultUserShell = pkgs.fish;

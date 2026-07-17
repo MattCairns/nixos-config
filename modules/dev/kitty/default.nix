@@ -1,4 +1,4 @@
-{...}: {
+_: {
   programs.kitty = {
     enable = true;
     font.name = "FiraCode Nerd Font Mono";
@@ -9,7 +9,7 @@
       window_padding_width  4
     '';
 
-    theme = "Tokyo Night Moon";
+    themeFile = "tokyo_night_moon";
     # themeFile = "kanagawa_dragon";
     settings = {
       confirm_os_window_close = 0;

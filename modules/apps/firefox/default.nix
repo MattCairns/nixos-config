@@ -1,4 +1,4 @@
-{...}: let
+_: let
   lock-false = {
     Value = false;
     Status = "locked";
@@ -19,6 +19,7 @@ in {
   programs = {
     firefox = {
       enable = true;
+      configPath = ".mozilla/firefox";
       policies = {
         DisableTelemetry = true;
         DisableFirefoxStudies = true;
