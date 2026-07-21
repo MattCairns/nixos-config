@@ -96,8 +96,8 @@
 
   services.logind.settings.Login = {
     HandlePowerKey = "ignore";
-    HandleLidSwitch = "suspend-then-hibernate";
-    HandleLidSwitchDocked = "ignore";
+    HandleLidSwitch = "suspend";
+    HandleLidSwitchDocked = "suspend";
     HandleLidSwitchExternalPower = "suspend";
   };
 
