@@ -2,8 +2,7 @@
   pkgs,
   inputs,
   ...
-}:
-{
+}: {
   programs.nixvim = {
     enable = true;
     viAlias = true;
@@ -70,6 +69,10 @@
         action = "<cmd>lua require('conform').format({async = true})<CR>";
         key = "<leader>fm";
       }
+      {
+        action = "<cmd>Presenting<CR>";
+        key = "<leader>pp";
+      }
     ];
 
     colorschemes.tokyonight.enable = true;
@@ -98,6 +101,17 @@
           hash = "sha256-z8hafm8EWS7dXoDXnZ/1ddvtpWKVUtJfvQmWT4zXIdg=";
         };
       })
+
+      (pkgs.vimUtils.buildVimPlugin {
+        name = "presenting-nvim";
+        doCheck = false;
+        src = pkgs.fetchFromGitHub {
+          owner = "sotte";
+          repo = "presenting.nvim";
+          rev = "aa32b58b86fb1467922396f058cd69b1dc85b6e6";
+          hash = "sha256-nAOKUW01KyC5kCP86s0KUsNPfb9wWngDNH3KWvKBwo8=";
+        };
+      })
     ];
 
     extraConfigLua = ''
@@ -122,6 +136,8 @@
       vim.keymap.set("n", "<leader>ns", function() _99.search() end, { desc = "99: Search project" })
       vim.keymap.set("n", "<leader>nx", function() _99.stop_all_requests() end, { desc = "99: Stop all requests" })
       vim.keymap.set("n", "<leader>nl", function() _99.view_logs() end, { desc = "99: View logs" })
+
+      require("presenting").setup({})
     '';
 
     plugins = {
@@ -180,9 +196,9 @@
             completeopt = "menu,menuone,noinsert";
           };
           sources = [
-            { name = "nvim_lsp"; }
-            { name = "path"; }
-            { name = "buffer"; }
+            {name = "nvim_lsp";}
+            {name = "path";}
+            {name = "buffer";}
           ];
           mapping = {
             "<C-n>" = "cmp.mapping.select_next_item()";
@@ -228,7 +244,7 @@
         autoLoad = true;
         settings = {
           formatters_by_ft = {
-            python = [ "black" ];
+            python = ["black"];
           };
           notify_on_error = true;
           notify_no_formatters = true;
@@ -302,7 +318,7 @@
                 check = {
                   command = "clippy";
                   workspace = false;
-                  extraArgs = [ "--no-deps" ];
+                  extraArgs = ["--no-deps"];
                 };
                 cargo = {
                   allFeatures = false;
@@ -314,7 +330,7 @@
                   enable = true;
                 };
                 diagnostics = {
-                  disabled = [ "unresolved-proc-macro" ];
+                  disabled = ["unresolved-proc-macro"];
                 };
                 cachePriming = {
                   enable = true;

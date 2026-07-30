@@ -2,7 +2,6 @@
   pkgs,
   externalMonitorOne,
   externalMonitorTwo,
-  noctaliaShell,
 }:
 pkgs.writeShellScriptBin "hypr-workspace-router" ''
   set -uo pipefail
@@ -11,16 +10,31 @@ pkgs.writeShellScriptBin "hypr-workspace-router" ''
 
   PROFILE="''${1:-undocked}"
 
-  restart_noctalia() {
-    ${pkgs.procps}/bin/pkill -x noctalia-shell 2>/dev/null || true
-    ${noctaliaShell} >/dev/null 2>&1 &
-  }
+  lock_file="''${XDG_RUNTIME_DIR:-/tmp}/hypr-workspace-router.lock"
+  exec 9>"$lock_file"
+  if ! ${pkgs.util-linux}/bin/flock -n 9; then
+    exit 0
+  fi
 
   # Wait for Hyprland to register the monitor change before issuing commands.
-  sleep 1
+  sleep 2
+
+  monitor_count="$(hyprctl monitors -j 2>/dev/null | jq 'length' 2>/dev/null || printf '0')"
+  case "$monitor_count" in
+    1 | 2) PROFILE="undocked" ;;
+    3 | 4 | 5 | 6 | 7 | 8 | 9) PROFILE="docked" ;;
+  esac
+
+  is_locked() {
+    ${pkgs.procps}/bin/pidof hyprlock >/dev/null 2>&1
+  }
 
   migrate_windows() {
     # Usage: migrate_windows <class> <target_workspace>
+    if is_locked; then
+      return 0
+    fi
+
     local class="$1"
     local target="$2"
 
@@ -57,10 +71,6 @@ pkgs.writeShellScriptBin "hypr-workspace-router" ''
     migrate_windows "firefox-work" "4"
     migrate_windows "Slack" "5"
     migrate_windows "slack" "5"
-    # Restart noctalia so it re-initialises wallpaper and the bar on the
-    # current monitor set. Brief pause lets Hyprland settle first.
-    sleep 1
-    restart_noctalia
   }
 
   apply_docked() {
@@ -75,6 +85,14 @@ pkgs.writeShellScriptBin "hypr-workspace-router" ''
     hyprctl keyword workspace "8, monitor:${externalMonitorTwo}" 2>/dev/null || true
     hyprctl keyword workspace "9, monitor:${externalMonitorTwo}" 2>/dev/null || true
     hyprctl keyword workspace "10, monitor:${externalMonitorTwo}" 2>/dev/null || true
+
+    # Existing workspaces do not always move when workspace rules are updated.
+    for ws in 4 5 6; do
+      hyprctl dispatch moveworkspacetomonitor "$ws" "${externalMonitorOne}" 2>/dev/null || true
+    done
+    for ws in 7 8 9 10; do
+      hyprctl dispatch moveworkspacetomonitor "$ws" "${externalMonitorTwo}" 2>/dev/null || true
+    done
 
     # Override window rules so newly opened apps land on docked workspaces.
     hyprctl keyword windowrule "workspace 4 silent, match:class ^(kitty)$" 2>/dev/null || true
@@ -91,10 +109,6 @@ pkgs.writeShellScriptBin "hypr-workspace-router" ''
     migrate_windows "firefox-work" "7"
     migrate_windows "Slack" "9"
     migrate_windows "slack" "9"
-    # Restart noctalia so it re-initialises wallpaper and the bar on the
-    # current monitor set. Brief pause lets Hyprland settle first.
-    sleep 1
-    restart_noctalia
   }
 
   case "$PROFILE" in

@@ -139,30 +139,13 @@
 
   lockCmd = "${pkgs.procps}/bin/pidof hyprlock || hyprlock";
   hyprctl = "${pkgs.hyprland}/bin/hyprctl";
-  systemctl = "${pkgs.systemd}/bin/systemctl";
-  dpmsOnCmd = "${hyprctl} dispatch dpms on; ${systemctl} --user start kanshi.service";
-  dpmsOff = pkgs.writeShellScriptBin "hypr-dpms-off" ''
-    set -euo pipefail
-
-    ${systemctl} --user stop kanshi.service
-    ${hyprctl} dispatch dpms off
-
-    (
-      sleep 2
-
-      while ${hyprctl} monitors -j | ${pkgs.jq}/bin/jq -e 'any(.[]; .dpmsStatus == false)' >/dev/null; do
-        sleep 1
-      done
-
-      ${systemctl} --user start kanshi.service
-    ) >/dev/null 2>&1 &
-  '';
+  dpmsOffCmd = "${hyprctl} dispatch dpms off";
+  dpmsOnCmd = "${hyprctl} dispatch dpms on";
   externalMonitorOne = "desc:ASUSTek COMPUTER INC PA278CV LCLMQS261918";
   externalMonitorTwo = "desc:ASUSTek COMPUTER INC PA278QV LBLMQS297570";
 
   workspaceRouter = pkgs.callPackage ../../../scripts/hypr-workspace-router.nix {
     inherit externalMonitorOne externalMonitorTwo;
-    inherit noctaliaShell;
   };
 
   rerouteScript = pkgs.writeShellScriptBin "hypr-reroute" ''
@@ -325,7 +308,7 @@ in {
           ", XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
           ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+"
           ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-          ", XF86Display, exec, ${dpmsOff}/bin/hypr-dpms-off"
+          ", XF86Display, exec, ${dpmsOffCmd}"
           ", XF86WLAN, exec, nmcli radio wifi | grep -q enabled && nmcli radio wifi off || nmcli radio wifi on"
           "$mod, mouse_down, workspace, e+1"
           "$mod, mouse_up, workspace, e-1"
@@ -378,7 +361,7 @@ in {
 
       label {
           monitor =
-          text = cmd[update:1000] echo "$(date +'%H:%M')"
+          text = $TIME
           color = rgb(a9b1d6)
           font_size = 88
           font_family = JetBrainsMono Nerd Font
@@ -389,7 +372,7 @@ in {
 
       label {
           monitor =
-          text = cmd[update:1000] echo "$(date +'%A, %d %B')"
+          text = cmd[update:60000] ${pkgs.coreutils}/bin/date +'%A, %d %B'
           color = rgb(7a88cf)
           font_size = 18
           font_family = JetBrainsMono Nerd Font
@@ -416,7 +399,7 @@ in {
         }
         {
           timeout = 420;
-          on-timeout = "${dpmsOff}/bin/hypr-dpms-off";
+          on-timeout = dpmsOffCmd;
           on-resume = dpmsOnCmd;
         }
       ];
