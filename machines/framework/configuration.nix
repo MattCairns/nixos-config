@@ -105,8 +105,6 @@
     ${pkgs.util-linux}/bin/rfkill unblock wlan
   '';
 
-  systemd.services.lock-after-suspend.enable = true;
-
   virtualisation.libvirtd.enable = true;
   virtualisation.waydroid.enable = true;
 

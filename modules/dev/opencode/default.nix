@@ -2,26 +2,47 @@
   config,
   pkgs,
   ...
-}: {
-  xdg.configFile."opencode/skills/pdf/SKILL.md".text = ''
-    ---
-    name: pdf
-    description: Convert PDF files to markdown for reading and extraction. Use when the user asks to read, analyze, or extract content from PDF files.
-    compatibility: opencode
-    ---
+}: let
+  mattPocockSkills = pkgs.fetchFromGitHub {
+    owner = "mattpocock";
+    repo = "skills";
+    rev = "2ab958093e83e0ec752e6c1c5932da465bf23e0c";
+    hash = "sha256-dQtG6usJWlg/FqTajrjcs8GSdymH92WsgLiUaCfvKPA=";
+  };
+in {
+  xdg.configFile = {
+    "opencode/skills/pdf/SKILL.md".text = ''
+      ---
+      name: pdf
+      description: Convert PDF files to markdown for reading and extraction. Use when the user asks to read, analyze, or extract content from PDF files.
+      compatibility: opencode
+      ---
 
-    # PDF Processing
+      # PDF Processing
 
-    ## Quick start
+      ## Quick start
 
-    Use markitdown to convert a PDF to markdown:
+      Use markitdown to convert a PDF to markdown:
 
-    ```bash
-    nix run nixpkgs#python313Packages.markitdown -- "path/to/file.pdf" > output.md
-    ```
+      ```bash
+      nix run nixpkgs#python313Packages.markitdown -- "path/to/file.pdf" > output.md
+      ```
 
-    Remember to quote file paths that contain spaces.
-  '';
+      Remember to quote file paths that contain spaces.
+    '';
+
+    "opencode/skills/domain-modeling".source = "${mattPocockSkills}/skills/engineering/domain-modeling";
+    "opencode/skills/grill-with-docs".source = "${mattPocockSkills}/skills/engineering/grill-with-docs";
+    "opencode/skills/grilling".source = "${mattPocockSkills}/skills/productivity/grilling";
+
+    "opencode/command/grill-with-docs.md".text = ''
+      ---
+      description: Grill a design and write docs as terms and decisions resolve.
+      ---
+
+      Use the `grill-with-docs` skill on $ARGUMENTS.
+    '';
+  };
 
   programs.opencode = {
     enable = true;

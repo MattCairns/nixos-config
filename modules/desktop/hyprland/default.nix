@@ -140,7 +140,6 @@
   lockCmd = "${pkgs.procps}/bin/pidof hyprlock || hyprlock";
   hyprctl = "${pkgs.hyprland}/bin/hyprctl";
   dpmsOffCmd = "${hyprctl} dispatch dpms off";
-  dpmsOnCmd = "${hyprctl} dispatch dpms on";
   externalMonitorOne = "desc:ASUSTek COMPUTER INC PA278CV LCLMQS261918";
   externalMonitorTwo = "desc:ASUSTek COMPUTER INC PA278QV LBLMQS297570";
 
@@ -396,11 +395,6 @@ in {
         {
           timeout = 300;
           on-timeout = lockCmd;
-        }
-        {
-          timeout = 420;
-          on-timeout = dpmsOffCmd;
-          on-resume = dpmsOnCmd;
         }
       ];
     };
