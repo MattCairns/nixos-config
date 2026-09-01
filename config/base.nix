@@ -2,7 +2,6 @@
   pkgs,
   user,
   lib,
-  inputs,
   ...
 }:
 let
@@ -45,12 +44,8 @@ let
   };
 in
 {
-  imports = [
-    inputs.talon-nix.nixosModules.talon
-  ];
-
   nixpkgs.config = {
-    # Required for hardware.enableAllFirmware and Talon; predicate keeps the allowlist tight.
+    # Required for hardware.enableAllFirmware; predicate keeps the allowlist tight.
     allowUnfree = true;
 
     # Explicitly set which non-free packages can be installed
@@ -71,8 +66,6 @@ in
         "vscode-extension-ms-vscode-cpptools"
         "zoom"
         "claude-code"
-        "talon"
-        "nomachine-client"
         "rustdesk"
       ];
 
@@ -150,8 +143,6 @@ in
   # Set your time zone and locale
   time.timeZone = "America/Vancouver";
   i18n.defaultLocale = "en_CA.UTF-8";
-
-  programs.talon.enable = true;
 
   services.xserver.enable = true;
 
@@ -320,7 +311,6 @@ in
     pkgs.alsa-tools
     pkgs.wireplumber
     pkgs.comma
-    pkgs.nomachine-client
     # pkgs.vagrant
     pkgs.rustdesk
   ];

@@ -7,6 +7,10 @@
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    atuin = {
+      url = "github:atuinsh/atuin/v18.18.0";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     impermanence.url = "github:nix-community/impermanence";
     disko = {
       url = "github:nix-community/disko";
@@ -18,24 +22,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixvim.url = "github:nix-community/nixvim";
-    talon-nix = {
-      url = "github:nix-community/talon-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    talon-community = {
-      url = "github:talonhub/community";
-      flake = false;
-    };
     noctalia = {
       url = "github:noctalia-dev/noctalia-shell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     cargo-warp = {
       url = "github:MattCairns/cargo-warp";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    nanocoder = {
-      url = "github:Nano-Collective/nanocoder";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
