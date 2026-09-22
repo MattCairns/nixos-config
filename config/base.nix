@@ -172,6 +172,7 @@ in
         "gnome"
         "gtk"
       ];
+      "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
     };
   };
 
@@ -201,6 +202,8 @@ in
 
   programs.gnupg.agent.enable = true;
   security.polkit.enable = true;
+  # Let the user-session autostart launch the keyring with the correct HOME.
+  security.pam.services.login.enableGnomeKeyring = lib.mkForce false;
   security.pam.services.swaylock = { };
 
   services.gnome.gcr-ssh-agent.enable = false;

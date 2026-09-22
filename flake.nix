@@ -42,6 +42,7 @@
     installDesktop = import ./scripts/install-desktop.nix {inherit pkgs;};
   in rec {
     packages.x86_64-linux.install-desktop = installDesktop;
+    packages.x86_64-linux.hypruse = import ./modules/dev/hypruse/package.nix {inherit pkgs;};
     apps.x86_64-linux.install-desktop = {
       type = "app";
       program = "${installDesktop}/bin/install-desktop";

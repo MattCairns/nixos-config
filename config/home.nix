@@ -3,8 +3,7 @@
   pkgs,
   user,
   ...
-}:
-let
+}: let
   workFirefoxBrowser = pkgs.writeShellScriptBin "firefox-work" ''
     exec ${pkgs.firefox}/bin/firefox -P work --name=firefox-work "$@"
   '';
@@ -17,25 +16,32 @@ let
   slackWithWorkBrowser = pkgs.writeShellScriptBin "slack" ''
     exec env PATH="${slackBrowser}/bin:$PATH" ${pkgs.slack}/bin/slack "$@"
   '';
-in
-{
+in {
   imports = [
     (import ../modules)
   ];
   xdg.configFile."wallpapers".source = ../assets/wallpapers;
   xdg.configFile."bin".source = ../scripts/bin;
+  xdg.portal.config.hyprland = {
+    default = [
+      "hyprland"
+      "gnome"
+      "gtk"
+    ];
+    "org.freedesktop.impl.portal.FileChooser" = ["gtk"];
+  };
 
-  sops.age.sshKeyPaths = [ "/home/${user}/.ssh/id_ed25519" ];
+  sops.age.sshKeyPaths = ["/home/${user}/.ssh/id_ed25519"];
   sops.defaultSopsFile = ../secrets/secrets.yaml;
   sops.secrets = {
-    openai-api-key = { };
-    toggl-api-key = { };
-    context7-token = { };
-    ha-mcp-url = { };
-    bitwarden-session-key = { };
-    jira-cli-api-key = { };
-    gitlab-token = { };
-    vessel-configs-vault-pass = { };
+    openai-api-key = {};
+    toggl-api-key = {};
+    context7-token = {};
+    ha-mcp-url = {};
+    bitwarden-session-key = {};
+    jira-cli-api-key = {};
+    gitlab-token = {};
+    vessel-configs-vault-pass = {};
   };
 
   programs = {
@@ -53,7 +59,7 @@ in
   home = {
     username = "${user}";
     homeDirectory = "/home/${user}";
-    sessionPath = [ "/home/${user}/.config/bin" ];
+    sessionPath = ["/home/${user}/.config/bin"];
 
     packages = with pkgs; [
       home-manager
@@ -73,7 +79,7 @@ in
       magic-wormhole
       dust
       jq
-      inputs.atuin.packages.${pkgs.system}.atuin
+      inputs.atuin.packages.${pkgs.stdenv.hostPlatform.system}.atuin
 
       # Communication
       zoom-us
@@ -139,6 +145,7 @@ in
       dfu-programmer
 
       blender
+      codex
 
       # Sharing
       tmate
@@ -150,21 +157,22 @@ in
       bubblewrap
 
       # Custom scripts
-      (import ../scripts/tmux-sessionizer.nix { inherit pkgs; })
-      (import ../scripts/tmux-windowizer.nix { inherit pkgs; })
-      (import ../scripts/tmux-switch-session.nix { inherit pkgs; })
-      (import ../scripts/tmux-switch-ssh-session.nix { inherit pkgs; })
-      (import ../scripts/mt-copy-id.nix { inherit pkgs; })
-      (import ../scripts/st.nix { inherit pkgs; })
-      (import ../scripts/chwall.nix { inherit pkgs; })
-      (import ../scripts/mosh-ssh.nix { inherit pkgs; })
-      (import ../scripts/warp.nix { inherit pkgs; })
-      (import ../scripts/fs-diff.nix { inherit pkgs; })
-      (import ../scripts/oor-bw-pw.nix { inherit pkgs; })
-      (import ../scripts/open-git.nix { inherit pkgs; })
+      (import ../scripts/tmux-sessionizer.nix {inherit pkgs;})
+      (import ../scripts/tmux-windowizer.nix {inherit pkgs;})
+      (import ../scripts/tmux-switch-session.nix {inherit pkgs;})
+      (import ../scripts/tmux-switch-ssh-session.nix {inherit pkgs;})
+      (import ../scripts/mt-copy-id.nix {inherit pkgs;})
+      (import ../scripts/st.nix {inherit pkgs;})
+      (import ../scripts/chwall.nix {inherit pkgs;})
+      (import ../scripts/mosh-ssh.nix {inherit pkgs;})
+      (import ../scripts/warp.nix {inherit pkgs;})
+      (import ../scripts/fs-diff.nix {inherit pkgs;})
+      (import ../scripts/oor-bw-pw.nix {inherit pkgs;})
+      (import ../scripts/open-git.nix {inherit pkgs;})
     ];
 
     pointerCursor = {
+      enable = true;
       name = "phinger-cursors-light";
       package = pkgs.phinger-cursors;
       size = 32;
@@ -186,6 +194,6 @@ in
       "Network"
       "InstantMessaging"
     ];
-    mimeType = [ "x-scheme-handler/slack" ];
+    mimeType = ["x-scheme-handler/slack"];
   };
 }

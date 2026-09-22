@@ -12,8 +12,8 @@
       enable = true;
       enableFishIntegration = true;
       defaultCommand = "${pkgs.fd}/bin/fd --type f --hidden --follow --exclude .git";
-      fileWidgetCommand = "${pkgs.fd}/bin/fd --type f --hidden --follow --exclude .git";
-      changeDirWidgetCommand = "${pkgs.fd}/bin/fd --type d --hidden --follow --exclude .git";
+      fileWidget.command = "${pkgs.fd}/bin/fd --type f --hidden --follow --exclude .git";
+      changeDirWidget.command = "${pkgs.fd}/bin/fd --type d --hidden --follow --exclude .git";
     };
 
     fish = {

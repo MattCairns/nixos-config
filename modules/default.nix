@@ -9,10 +9,12 @@
     ++ [(import ../modules/dev/fish)]
     ++ [(import ../modules/dev/direnv)]
     ++ [(import ../modules/dev/claude-code)]
+    ++ [(import ../modules/dev/hypruse)]
     ++ [(import ../modules/dev/opencode)]
     ++ [(import ../modules/dev/cargo-warp)]
     ++ [(import ../modules/desktop/noctalia)]
     ++ [(import ../modules/desktop/hyprland)]
     ++ [(import ../modules/desktop/kanshi)]
-    ++ [(import ../modules/apps/firefox)];
+    ++ [(import ../modules/apps/firefox)]
+    ++ [(import ../modules/apps/chatgpt)];
 }
