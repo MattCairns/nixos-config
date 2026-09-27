@@ -44,6 +44,10 @@
         command = "npx";
         args = ["-y" "@drawio/mcp@latest"];
       };
+      playwright = {
+        command = lib.getExe pkgs.playwright-mcp;
+        args = [];
+      };
     };
   };
 

@@ -4,6 +4,7 @@
   user,
   ...
 }: let
+  codex = inputs.codex.packages.${pkgs.stdenv.hostPlatform.system}.default;
   workFirefoxBrowser = pkgs.writeShellScriptBin "firefox-work" ''
     exec ${pkgs.firefox}/bin/firefox -P work --name=firefox-work "$@"
   '';
@@ -56,10 +57,32 @@ in {
     };
   };
 
+  xdg = {
+    enable = true;
+    cacheHome = "/home/${user}/.local/cache";
+  };
+
+  # Also export to the systemd user manager so daemons it starts (e.g.
+  # gnome-keyring) see the same paths as login shells.
+  systemd.user.sessionVariables = {
+    XDG_CONFIG_HOME = "/home/${user}/.config";
+    XDG_CACHE_HOME = "/home/${user}/.local/cache";
+    XDG_DATA_HOME = "/home/${user}/.local/share";
+    XDG_BIN_HOME = "/home/${user}/.local/bin";
+    NH_FLAKE = "/home/${user}/nixos-config";
+  };
+
   home = {
     username = "${user}";
     homeDirectory = "/home/${user}";
-    sessionPath = ["/home/${user}/.config/bin"];
+    sessionPath = [
+      "/home/${user}/.config/bin"
+      "/home/${user}/.local/bin"
+    ];
+    sessionVariables = {
+      XDG_BIN_HOME = "/home/${user}/.local/bin";
+      NH_FLAKE = "/home/${user}/nixos-config";
+    };
 
     packages = with pkgs; [
       home-manager
@@ -80,6 +103,7 @@ in {
       dust
       jq
       inputs.atuin.packages.${pkgs.stdenv.hostPlatform.system}.atuin
+      inputs.claude-desktop.packages.${pkgs.stdenv.hostPlatform.system}.claude-desktop-fhs
 
       # Communication
       zoom-us
@@ -148,7 +172,6 @@ in {
       codex
 
       # Sharing
-      tmate
       junction
 
       prusa-slicer

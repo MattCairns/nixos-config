@@ -1,27 +1,21 @@
 {
-  pkgs,
   config,
+  lib,
+  pkgs,
   ...
 }: let
-  workFirefoxCmd = "firefox -p work --name=firefox-work";
+  workFirefoxCmd = "firefox -P work --name=firefox-work";
   homeFirefoxCmd = "firefox -P home --name=firefox-home";
-  noctaliaShell = pkgs.lib.getExe config.programs.noctalia.package;
+  noctalia = lib.getExe config.programs.noctalia.package;
 
   startApps = pkgs.writeShellScript "hyprland-start-apps" ''
     #!/usr/bin/env bash
 
     export PATH="${pkgs.hyprland}/bin:${pkgs.jq}/bin:$PATH"
 
-    # Wait for kanshi to apply the monitor layout before detecting monitors.
-    sleep 2
+    externals=$(hyprctl monitors -j | jq '[.[] | select(.name != "eDP-1")] | length')
 
-    if ! ${pkgs.procps}/bin/pidof noctalia-shell >/dev/null 2>&1; then
-      ${noctaliaShell} >/dev/null 2>&1 &
-    fi
-
-    count=$(hyprctl monitors -j | jq 'length')
-
-    if [ "$count" -gt 1 ]; then
+    if [ "$externals" -ge 2 ]; then
       ws_kitty=4
       ws_obsidian=5
       ws_ff_home=7
@@ -117,9 +111,7 @@
 
     address="$(printf '%s\n' "$client" | jq -r '.address')"
     workspace_name="$(printf '%s\n' "$client" | jq -r '.workspace.name')"
-    read -r window_width window_height window_x window_y <<EOF
-    $(get_geometry)
-    EOF
+    read -r window_width window_height window_x window_y <<< "$(get_geometry)"
 
     if [ "$workspace_name" != "$special_workspace" ]; then
       hyprctl dispatch movetoworkspacesilent "$special_workspace,address:$address"
@@ -137,23 +129,49 @@
     hyprctl dispatch focuswindow "address:$address"
   '';
 
+  # Manual and pre-sleep locks require the password immediately (grace = 0 in
+  # hyprlock's config); only the idle-timeout lock gets a grace period.
   lockCmd = "${pkgs.procps}/bin/pidof hyprlock || hyprlock";
+  idleLockCmd = "${pkgs.procps}/bin/pidof hyprlock || hyprlock --grace 5";
   hyprctl = "${pkgs.hyprland}/bin/hyprctl";
+  brightnessctl = "${pkgs.brightnessctl}/bin/brightnessctl";
   dpmsOffCmd = "${hyprctl} dispatch dpms off";
+  dpmsOnCmd = "${hyprctl} dispatch dpms on";
   externalMonitorOne = "desc:ASUSTek COMPUTER INC PA278CV LCLMQS261918";
   externalMonitorTwo = "desc:ASUSTek COMPUTER INC PA278QV LBLMQS297570";
+  laptopMonitor = "eDP-1, 2256x1504, 0x1224, 1.175";
 
   workspaceRouter = pkgs.callPackage ../../../scripts/hypr-workspace-router.nix {
     inherit externalMonitorOne externalMonitorTwo;
   };
+  routerBin = "${workspaceRouter}/bin/hypr-workspace-router";
 
-  rerouteScript = pkgs.writeShellScriptBin "hypr-reroute" ''
-    count=$(${pkgs.hyprland}/bin/hyprctl monitors -j | ${pkgs.jq}/bin/jq 'length')
-    if [ "$count" -eq 1 ]; then
-      exec "${workspaceRouter}/bin/hypr-workspace-router" undocked
-    else
-      exec "${workspaceRouter}/bin/hypr-workspace-router" docked
-    fi
+  # Re-run the workspace router whenever a monitor is plugged or unplugged.
+  monitorWatcher = pkgs.writeShellScript "hypr-monitor-watcher" ''
+    sock="$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock"
+    ${pkgs.socat}/bin/socat -U - UNIX-CONNECT:"$sock" | while IFS= read -r line; do
+      case "$line" in
+        "monitoraddedv2>>"* | "monitorremovedv2>>"*) ${routerBin} & ;;
+      esac
+    done
+  '';
+
+  # With the lid closed while docked, turn the laptop panel off instead of
+  # suspending (logind ignores the lid when docked). Undocked, logind suspends.
+  lidSwitch = pkgs.writeShellScript "hypr-lid-switch" ''
+    export PATH="${pkgs.hyprland}/bin:${pkgs.jq}/bin:$PATH"
+    case "$1" in
+      close)
+        externals=$(hyprctl monitors -j | jq '[.[] | select(.name != "eDP-1")] | length')
+        if [ "$externals" -gt 0 ]; then
+          hyprctl keyword monitor "eDP-1, disable"
+        fi
+        ;;
+      open)
+        hyprctl keyword monitor "${laptopMonitor}"
+        ${routerBin}
+        ;;
+    esac
   '';
 
   workspaceKeyBinds = builtins.concatLists (
@@ -198,7 +216,6 @@ in {
   home.packages = with pkgs; [
     fuzzel
     workspaceRouter
-    rerouteScript
     spotifyDropdown
   ];
 
@@ -214,16 +231,30 @@ in {
     settings = {
       "$mod" = "SUPER";
 
-      monitor = [", preferred, auto, 1"];
+      monitor = [
+        laptopMonitor
+        "${externalMonitorOne}, 2560x1440, 2256x560, 1"
+        "${externalMonitorTwo}, 2560x1440, 4816x0, 1, transform, 3"
+        ", preferred, auto, 1"
+      ];
 
       exec-once = [
         "${startApps}"
+        "${monitorWatcher}"
       ];
 
       env = [
         "NIXOS_OZONE_WL,1"
         "MOZ_ENABLE_WAYLAND,1"
-        "QT_QPA_PLATFORM,wayland"
+        "QT_QPA_PLATFORM,wayland;xcb"
+      ];
+
+      # Let XWayland apps render at native resolution instead of being
+      # upscaled (blurry) at the laptop's 1.175 scale.
+      xwayland.force_zero_scaling = true;
+
+      gesture = [
+        "3, horizontal, workspace"
       ];
 
       input = {
@@ -267,7 +298,8 @@ in {
       misc = {
         disable_hyprland_logo = true;
         disable_splash_rendering = true;
-        focus_on_activate = true;
+        # Don't let apps (Slack, Firefox link opens) steal focus while typing.
+        focus_on_activate = false;
       };
 
       bind =
@@ -275,20 +307,25 @@ in {
           "$mod, Return, exec, kitty -1 -e bash -c 'exec ~/.config/bin/ta || $SHELL'"
           "$mod CTRL, Return, exec, kitty -1"
           "$mod SHIFT, W, exec, ${workFirefoxCmd}"
-          "$mod SHIFT, H, exec, ${homeFirefoxCmd}"
-          "$mod ALT, W, exec, ~/.config/bin/chwall ~/.config/wallpapers"
-          "$mod CTRL, L, exec, hyprlock"
+          "$mod CTRL, H, exec, ${homeFirefoxCmd}"
+          "$mod ALT, W, exec, ${noctalia} msg wallpaper-random"
+          "$mod CTRL, L, exec, ${lockCmd}"
           "$mod, Space, exec, fuzzel"
           "$mod, S, exec, ${spotifyDropdown}/bin/spotify-dropdown"
           "$mod, W, killactive"
-          "$mod, M, exit"
-          "$mod, E, exec, dolphin"
+          "$mod SHIFT, M, exec, ${noctalia} msg panel-toggle session"
+          ", XF86PowerOff, exec, ${noctalia} msg panel-toggle session"
+          "$mod, E, exec, thunar"
           "$mod, V, togglefloating"
-          "$mod, R, exec, fuzzel --dmenu"
+          "$mod SHIFT, V, exec, ${noctalia} msg panel-toggle clipboard"
+          "$mod, F, fullscreen, 0"
+          "$mod SHIFT, F, fullscreen, 1"
           "$mod, B, exec, oor-bw-pw"
           "$mod, P, exec, hyprshot -m region -z"
           "$mod CTRL, left, focusmonitor, l"
           "$mod CTRL, right, focusmonitor, r"
+          "$mod CTRL SHIFT, left, movewindow, mon:l"
+          "$mod CTRL SHIFT, right, movewindow, mon:r"
           "$mod, H, movefocus, l"
           "$mod, J, movefocus, d"
           "$mod, K, movefocus, u"
@@ -298,21 +335,41 @@ in {
           "$mod SHIFT, K, movewindow, u"
           "$mod SHIFT, L, movewindow, r"
           "$mod SHIFT, B, exec, bluetoothctl connect 88:C9:E8:44:61:64"
-          "$mod SHIFT, D, exec, ${pkgs.systemd}/bin/systemctl --user restart kanshi.service"
           "$mod SHIFT, P, exec, hyprshot -m region -z --clipboard-only"
-          "$mod SHIFT, R, exec, ${rerouteScript}/bin/hypr-reroute"
-          ", XF86MonBrightnessDown, exec, brightnessctl set 5%-"
-          ", XF86MonBrightnessUp, exec, brightnessctl set 5%+"
-          ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-          ", XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
-          ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+"
-          ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-          ", XF86Display, exec, ${dpmsOffCmd}"
-          ", XF86WLAN, exec, nmcli radio wifi | grep -q enabled && nmcli radio wifi off || nmcli radio wifi on"
+          "$mod SHIFT, R, exec, ${routerBin}"
           "$mod, mouse_down, workspace, e+1"
           "$mod, mouse_up, workspace, e-1"
         ]
         ++ workspaceKeyBinds;
+
+      # Repeat while held, and keep working on the lock screen.
+      bindel = [
+        ", XF86MonBrightnessDown, exec, ${brightnessctl} set 5%-"
+        ", XF86MonBrightnessUp, exec, ${brightnessctl} set 5%+"
+        ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+"
+        ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+      ];
+
+      # Keep working on the lock screen.
+      bindl = [
+        ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+        ", XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
+        ", XF86AudioPlay, exec, ${noctalia} msg media toggle"
+        ", XF86AudioPause, exec, ${noctalia} msg media toggle"
+        ", XF86AudioNext, exec, ${noctalia} msg media next"
+        ", XF86AudioPrev, exec, ${noctalia} msg media previous"
+        ", XF86Display, exec, ${dpmsOffCmd}"
+        ", XF86WLAN, exec, nmcli radio wifi | grep -q enabled && nmcli radio wifi off || nmcli radio wifi on"
+        ", switch:on:Lid Switch, exec, ${lidSwitch} close"
+        ", switch:off:Lid Switch, exec, ${lidSwitch} open"
+      ];
+
+      binde = [
+        "$mod ALT, H, resizeactive, -40 0"
+        "$mod ALT, J, resizeactive, 0 40"
+        "$mod ALT, K, resizeactive, 0 -40"
+        "$mod ALT, L, resizeactive, 40 0"
+      ];
 
       bindm = [
         "$mod, mouse:272, movewindow"
@@ -330,13 +387,13 @@ in {
       general {
           disable_loading_bar = true
           hide_cursor = false
-          grace = 2
+          grace = 0
           no_fade_in = false
       }
 
       background {
           monitor =
-          path = /home/matthew/.config/wallpapers/pexels-eberhard-grossgasteiger-730981.jpg
+          path = /home/matthew/.config/wallpapers/cliffs.jpg
           blur_passes = 2
           blur_size = 6
       }
@@ -388,13 +445,29 @@ in {
       general = {
         lock_cmd = lockCmd;
         before_sleep_cmd = lockCmd;
+        after_sleep_cmd = dpmsOnCmd;
         ignore_dbus_inhibit = false;
         ignore_systemd_inhibit = false;
       };
       listener = [
         {
+          timeout = 240;
+          on-timeout = "${brightnessctl} -s set 10%";
+          on-resume = "${brightnessctl} -r";
+        }
+        {
           timeout = 300;
-          on-timeout = lockCmd;
+          on-timeout = idleLockCmd;
+        }
+        {
+          timeout = 330;
+          on-timeout = dpmsOffCmd;
+          on-resume = dpmsOnCmd;
+        }
+        {
+          # Suspend after 20 minutes idle, but only on battery.
+          timeout = 1200;
+          on-timeout = "[ \"$(${pkgs.coreutils}/bin/cat /sys/class/power_supply/ACAD/online)\" = 0 ] && ${pkgs.systemd}/bin/systemctl suspend";
         }
       ];
     };

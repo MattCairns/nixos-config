@@ -30,6 +30,14 @@
       url = "github:MattCairns/cargo-warp";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    codex = {
+      url = "github:sadjow/codex-cli-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    claude-desktop = {
+      url = "github:aaddrick/claude-desktop-debian";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {

@@ -14,7 +14,6 @@
     ++ [(import ../modules/dev/cargo-warp)]
     ++ [(import ../modules/desktop/noctalia)]
     ++ [(import ../modules/desktop/hyprland)]
-    ++ [(import ../modules/desktop/kanshi)]
     ++ [(import ../modules/apps/firefox)]
     ++ [(import ../modules/apps/chatgpt)];
 }

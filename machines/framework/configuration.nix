@@ -31,8 +31,8 @@
 
   networking.hostName = "framework";
   hardware.graphics.enable = true;
+  # Bluetooth UI is provided by Noctalia.
   hardware.bluetooth.enable = true;
-  services.blueman.enable = true;
 
   services.ollama = {
     enable = true;
@@ -89,6 +89,35 @@
     ];
   };
 
+  # Relay markv's Ollama (reachable here over Tailscale) to the LAN so
+  # paperless-ngx on nas (192.168.1.10) can use it as an AI backend.
+  # Port 11435 (not 11434) because this laptop's own local Ollama already
+  # owns 11434.
+  systemd.services.ollama-forward-markv = {
+    description = "Forward markv's Ollama to LAN for paperless-ngx";
+    after = ["network-online.target" "tailscaled.service"];
+    wants = ["network-online.target"];
+    wantedBy = ["multi-user.target"];
+    serviceConfig = {
+      ExecStart = ''
+        ${pkgs.openssh}/bin/ssh -N \
+          -o ExitOnForwardFailure=yes \
+          -o ServerAliveInterval=30 -o ServerAliveCountMax=3 \
+          -o StrictHostKeyChecking=accept-new \
+          -i /home/matthew/.ssh/matthew_openoceanrobotics_com \
+          -L 0.0.0.0:11435:localhost:11434 matthew@100.77.5.87
+      '';
+      User = "matthew";
+      Restart = "always";
+      RestartSec = 5;
+    };
+  };
+
+  # Only nas may reach the forwarded Ollama port (Ollama has no auth of its own).
+  networking.firewall.extraCommands = ''
+    iptables -A nixos-fw -p tcp -s 192.168.1.10 --dport 11435 -j ACCEPT
+  '';
+
   ## Power Management ##
   services.upower.enable = true;
   services.power-profiles-daemon.enable = true;
@@ -97,7 +126,8 @@
   services.logind.settings.Login = {
     HandlePowerKey = "ignore";
     HandleLidSwitch = "suspend";
-    HandleLidSwitchDocked = "suspend";
+    # Docked: Hyprland turns the laptop panel off instead (see lid bindl).
+    HandleLidSwitchDocked = "ignore";
     HandleLidSwitchExternalPower = "suspend";
   };
 

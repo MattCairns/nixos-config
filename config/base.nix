@@ -3,8 +3,7 @@
   user,
   lib,
   ...
-}:
-let
+}: let
   rnnoise_config = {
     "context.modules" = [
       {
@@ -42,15 +41,13 @@ let
       }
     ];
   };
-in
-{
+in {
   nixpkgs.config = {
     # Required for hardware.enableAllFirmware; predicate keeps the allowlist tight.
     allowUnfree = true;
 
     # Explicitly set which non-free packages can be installed
-    allowUnfreePredicate =
-      pkg:
+    allowUnfreePredicate = pkg:
       builtins.elem (lib.getName pkg) [
         "codeium"
         "discord"
@@ -102,7 +99,7 @@ in
 
   # udev rules
   services.udev = {
-    packages = [ pkgs.qmk-udev-rules ];
+    packages = [pkgs.qmk-udev-rules];
     extraRules = ''
       SUBSYSTEM=="tty", ATTRS{product}=="CubeOrange", SYMLINK="ttyPIXHAWK"
     '';
@@ -117,7 +114,7 @@ in
     grub.efiSupport = false;
     grub.device = "nodev";
   };
-  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+  boot.binfmt.emulatedSystems = ["aarch64-linux"];
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -151,7 +148,13 @@ in
     xwayland.enable = true;
   };
 
-  services.xserver.desktopManager.xfce.enable = true;
+  # File manager and the services XFCE used to provide for it.
+  programs.thunar.enable = true;
+  programs.xfconf.enable = true;
+  programs.dconf.enable = true;
+  services.gvfs.enable = true;
+  services.tumbler.enable = true;
+  services.udisks2.enable = true;
 
   services.displayManager.sddm.enable = true;
   services.displayManager.defaultSession = "hyprland";
@@ -172,7 +175,7 @@ in
         "gnome"
         "gtk"
       ];
-      "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
+      "org.freedesktop.impl.portal.FileChooser" = ["gtk"];
     };
   };
 
@@ -197,14 +200,16 @@ in
   # Enable CUPS to print documents.
   services.printing = {
     enable = true;
-    drivers = [ pkgs.hplip ];
+    drivers = [pkgs.hplip];
   };
 
   programs.gnupg.agent.enable = true;
   security.polkit.enable = true;
-  # Let the user-session autostart launch the keyring with the correct HOME.
-  security.pam.services.login.enableGnomeKeyring = lib.mkForce false;
-  security.pam.services.swaylock = { };
+  # Unlocks the login keyring with your SDDM password (SDDM's PAM stack
+  # substacks "login", so this applies there too) so apps like Slack that
+  # use libsecret/Secret Service don't prompt for it after every reboot.
+  services.gnome.gnome-keyring.enable = true;
+  security.pam.services.swaylock = {};
 
   services.gnome.gcr-ssh-agent.enable = false;
 
@@ -215,26 +220,26 @@ in
         commands = [
           {
             command = "/run/current-system/sw/bin/nixos-rebuild";
-            options = [ "NOPASSWD" ];
+            options = ["NOPASSWD"];
           }
         ];
-        users = [ "${user}" ];
+        users = ["${user}"];
       }
       {
         commands = [
           {
             command = "${pkgs.tailscale}/bin/tailscale";
-            options = [ "NOPASSWD" ];
+            options = ["NOPASSWD"];
           }
         ];
-        groups = [ "wheel" ];
+        groups = ["wheel"];
       }
     ];
   };
 
   # Prevent UPower from tracking Cantor keyboard battery via BlueZ
   services.dbus.packages = [
-    pkgs.gcr
+    pkgs.gcr_4
     (pkgs.writeTextDir "share/dbus-1/system.d/block-cantor-battery.conf" ''
       <!DOCTYPE busconfig PUBLIC
        "-//freedesktop//DTD D-BUS Bus Configuration 1.0//EN"
@@ -260,10 +265,10 @@ in
     alsa.support32Bit = true;
     pulse.enable = true;
     jack.enable = true;
-    extraLadspaPackages = [ pkgs.rnnoise-plugin ];
+    extraLadspaPackages = [pkgs.rnnoise-plugin];
     extraConfig.pipewire."99-input-denoising" = rnnoise_config;
   };
-  users.extraGroups.audio.members = [ "${user}" ];
+  users.extraGroups.audio.members = ["${user}"];
 
   # Enable syncthing
   services.syncthing = {
@@ -274,15 +279,12 @@ in
     user = "${user}";
   };
 
+  # HOME-relative variables (XDG_*_HOME, NH_FLAKE, ~/.local/bin) live in
+  # config/home.nix: pam_env expands ${HOME} before it is set, which
+  # produced paths like /.local/share for early session daemons.
   environment.sessionVariables = {
-    XDG_CONFIG_HOME = "\${HOME}/.config";
-    XDG_CACHE_HOME = "\${HOME}/.local/cache";
-    XDG_BIN_HOME = "\${HOME}/.local/bin";
-    XDG_DATA_HOME = "\${HOME}/.local/share";
-    PATH = [ "\${XDG_BIN_HOME}" ];
     EDITOR = "nvim";
     XCURSOR_SIZE = "32";
-    NH_FLAKE = "\${HOME}/nixos-config";
   };
 
   # Globally available packages
@@ -319,11 +321,11 @@ in
   ];
 
   # Audio firmware and hardware support
-  hardware.firmware = [ pkgs.linux-firmware ];
+  hardware.firmware = [pkgs.linux-firmware];
   hardware.enableRedistributableFirmware = true;
 
   virtualisation.docker.enable = true;
-  users.extraGroups.docker.members = [ "${user}" ];
+  users.extraGroups.docker.members = ["${user}"];
 
   # Set up shell
   users.defaultUserShell = pkgs.fish;

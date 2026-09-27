@@ -11,5 +11,5 @@ bash
   if [[ $url == git@* ]]; then
     url=$(echo "$url" | sed 's/^git@//' | sed 's/:/\//')
   fi
-  ${pkgs.firefox}/bin/firefox -p work "$url"
+  ${pkgs.firefox}/bin/firefox -P work "$url"
 ''

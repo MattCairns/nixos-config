@@ -175,12 +175,12 @@ pkgs.writeShellScriptBin "install-desktop" ''
 
       info "Setting disk path..."
       ${pkgs.gnused}/bin/sed -i \
-        "s|disk = \"/dev/disk/by-id/PLACEHOLDER\";|disk = \"$DISK_ID\";|" \
+        "s|disk = \"[^\"]*\";|disk = \"$DISK_ID\";|" \
         "$DESKTOP_CFG"
 
       info "Setting swap size..."
       ${pkgs.gnused}/bin/sed -i \
-        "s|swapSize = \"32G\";|swapSize = \"$SWAP_SIZE\";|" \
+        "s|swapSize = \"[^\"]*\";|swapSize = \"$SWAP_SIZE\";|" \
         "$DESKTOP_CFG"
 
       info "Detecting kernel modules for this hardware..."
