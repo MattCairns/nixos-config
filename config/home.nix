@@ -1,4 +1,5 @@
 {
+  config,
   inputs,
   pkgs,
   user,
@@ -19,30 +20,22 @@
   '';
 in {
   imports = [
-    (import ../modules)
+    ../modules
   ];
-  xdg.configFile."wallpapers".source = ../assets/wallpapers;
-  xdg.configFile."bin".source = ../scripts/bin;
-  xdg.portal.config.hyprland = {
-    default = [
-      "hyprland"
-      "gnome"
-      "gtk"
-    ];
-    "org.freedesktop.impl.portal.FileChooser" = ["gtk"];
-  };
 
-  sops.age.sshKeyPaths = ["/home/${user}/.ssh/id_ed25519"];
-  sops.defaultSopsFile = ../secrets/secrets.yaml;
-  sops.secrets = {
-    openai-api-key = {};
-    toggl-api-key = {};
-    context7-token = {};
-    ha-mcp-url = {};
-    bitwarden-session-key = {};
-    jira-cli-api-key = {};
-    gitlab-token = {};
-    vessel-configs-vault-pass = {};
+  sops = {
+    age.sshKeyPaths = ["${config.home.homeDirectory}/.ssh/id_ed25519"];
+    defaultSopsFile = ../secrets/secrets.yaml;
+    secrets = {
+      openai-api-key = {};
+      toggl-api-key = {};
+      context7-token = {};
+      ha-mcp-url = {};
+      bitwarden-session-key = {};
+      jira-cli-api-key = {};
+      gitlab-token = {};
+      vessel-configs-vault-pass = {};
+    };
   };
 
   programs = {
@@ -55,144 +48,152 @@ in {
       enable = true;
       enableFishIntegration = true;
     };
+
+    atuin.enable = true;
   };
 
   xdg = {
     enable = true;
-    cacheHome = "/home/${user}/.local/cache";
+    cacheHome = "${config.home.homeDirectory}/.local/cache";
+    configFile."wallpapers".source = ../assets/wallpapers;
+    configFile."bin".source = ../scripts/bin;
+
+    desktopEntries.slack = {
+      name = "Slack";
+      comment = "Slack Desktop";
+      genericName = "Slack Client for Linux";
+      exec = "${slackWithWorkBrowser}/bin/slack %U";
+      icon = "slack";
+      type = "Application";
+      startupNotify = true;
+      categories = [
+        "Network"
+        "InstantMessaging"
+      ];
+      mimeType = ["x-scheme-handler/slack"];
+    };
   };
 
   # Also export to the systemd user manager so daemons it starts (e.g.
   # gnome-keyring) see the same paths as login shells.
   systemd.user.sessionVariables = {
-    XDG_CONFIG_HOME = "/home/${user}/.config";
-    XDG_CACHE_HOME = "/home/${user}/.local/cache";
-    XDG_DATA_HOME = "/home/${user}/.local/share";
-    XDG_BIN_HOME = "/home/${user}/.local/bin";
-    NH_FLAKE = "/home/${user}/nixos-config";
+    XDG_CONFIG_HOME = config.xdg.configHome;
+    XDG_CACHE_HOME = config.xdg.cacheHome;
+    XDG_DATA_HOME = config.xdg.dataHome;
+    inherit (config.home.sessionVariables) XDG_BIN_HOME;
   };
 
   home = {
-    username = "${user}";
+    username = user;
     homeDirectory = "/home/${user}";
     sessionPath = [
-      "/home/${user}/.config/bin"
-      "/home/${user}/.local/bin"
+      "${config.xdg.configHome}/bin"
+      "${config.home.homeDirectory}/.local/bin"
     ];
-    sessionVariables = {
-      XDG_BIN_HOME = "/home/${user}/.local/bin";
-      NH_FLAKE = "/home/${user}/nixos-config";
-    };
+    sessionVariables.XDG_BIN_HOME = "${config.home.homeDirectory}/.local/bin";
 
-    packages = with pkgs; [
-      home-manager
+    packages = with pkgs;
+      [
+        # Terminal
+        mosh
+        btop
+        ripgrep
+        fd
+        wget
+        curlWithGnuTls
+        ncdu
+        eza
+        wl-clipboard
+        magic-wormhole
+        dust
+        jq
+        inputs.claude-desktop.packages.${pkgs.stdenv.hostPlatform.system}.claude-desktop-fhs
 
-      # Terminal
-      mosh
-      btop
-      ripgrep
-      fd
-      wget
-      curlWithGnuTls
-      ncdu
-      eza
-      xclip
-      xsel
-      wl-clipboard
-      magic-wormhole
-      dust
-      jq
-      inputs.atuin.packages.${pkgs.stdenv.hostPlatform.system}.atuin
-      inputs.claude-desktop.packages.${pkgs.stdenv.hostPlatform.system}.claude-desktop-fhs
+        # Communication
+        zoom-us
+        slackWithWorkBrowser
+        discord
+        signal-desktop
 
-      # Communication
-      zoom-us
-      slackWithWorkBrowser
-      discord
-      signal-desktop
+        # Video/Audio
+        feh # Image Viewer
+        scrot
+        vlc
+        spotify
 
-      # Video/Audio
-      feh # Image Viewer
-      scrot
-      vlc
-      spotify
-      rnnoise-plugin
+        # File Management
+        ranger
+        rsync
+        unzip
 
-      # File Management
-      ranger
-      rsync
-      unzip
+        # Misc Apps
+        killall
+        veracrypt
+        obsidian # electron insecure
+        libnotify
+        hyprshot
+        texstudio
+        qgroundcontrol
+        bitwarden-cli
+        gnome-solanum
+        workFirefoxBrowser
+        gum
 
-      # Misc Apps
-      killall
-      veracrypt
-      obsidian # electron insecure
-      libnotify
-      hyprshot
-      texstudio
-      qgroundcontrol
-      bitwarden-cli
-      gnome-solanum
-      workFirefoxBrowser
-      gum
+        # Dev tools
+        pre-commit
+        lazygit
+        kubectl
+        cppcheck
+        jira-cli-go
+        wrappedGlab
+        qwen-code
+        envfs
 
-      # Dev tools
-      pre-commit
-      lazygit
-      kubectl
-      cppcheck
-      jira-cli-go
-      wrappedGlab
-      perl
-      qwen-code
-      envfs
+        # Formatters
+        alejandra
+        cmake-format
+        black
 
-      # Formatters
-      alejandra
-      nixpkgs-fmt
-      cmake-format
-      black
+        # LSP Servers
+        pyrefly
+        cmake-language-server
+        nil
+        dockerfile-language-server
+        lua-language-server
+        buf
+        codeium
+        perl5Packages.PerlLanguageServer
 
-      # LSP Servers
-      pyrefly
-      cmake-language-server
-      nil
-      dockerfile-language-server
-      lua-language-server
-      buf
-      codeium
-      perl5Packages.PerlLanguageServer
+        # Keyboards
+        qmk
+        dfu-util
+        dfu-programmer
 
-      # Keyboards
-      qmk
-      dfu-util
-      dfu-programmer
+        blender
+        codex
 
-      blender
-      codex
+        # Sharing
+        junction
 
-      # Sharing
-      junction
+        prusa-slicer
 
-      prusa-slicer
-
-      socat
-      bubblewrap
-
-      # Custom scripts
-      (import ../scripts/tmux-sessionizer.nix {inherit pkgs;})
-      (import ../scripts/tmux-windowizer.nix {inherit pkgs;})
-      (import ../scripts/tmux-switch-session.nix {inherit pkgs;})
-      (import ../scripts/tmux-switch-ssh-session.nix {inherit pkgs;})
-      (import ../scripts/mt-copy-id.nix {inherit pkgs;})
-      (import ../scripts/st.nix {inherit pkgs;})
-      (import ../scripts/chwall.nix {inherit pkgs;})
-      (import ../scripts/mosh-ssh.nix {inherit pkgs;})
-      (import ../scripts/warp.nix {inherit pkgs;})
-      (import ../scripts/fs-diff.nix {inherit pkgs;})
-      (import ../scripts/oor-bw-pw.nix {inherit pkgs;})
-      (import ../scripts/open-git.nix {inherit pkgs;})
-    ];
+        socat
+        bubblewrap
+      ]
+      ++ map (script: pkgs.callPackage script {}) [
+        ../scripts/tmux-sessionizer.nix
+        ../scripts/tmux-windowizer.nix
+        ../scripts/tmux-switch-session.nix
+        ../scripts/tmux-switch-ssh-session.nix
+        ../scripts/mt-copy-id.nix
+        ../scripts/st.nix
+        ../scripts/chwall.nix
+        ../scripts/mosh-ssh.nix
+        ../scripts/warp.nix
+        ../scripts/fs-diff.nix
+        ../scripts/oor-bw-pw.nix
+        ../scripts/open-git.nix
+      ];
 
     pointerCursor = {
       enable = true;
@@ -203,20 +204,5 @@ in {
     };
 
     stateVersion = "22.11";
-  };
-
-  xdg.desktopEntries.slack = {
-    name = "Slack";
-    comment = "Slack Desktop";
-    genericName = "Slack Client for Linux";
-    exec = "${slackWithWorkBrowser}/bin/slack %U";
-    icon = "slack";
-    type = "Application";
-    startupNotify = true;
-    categories = [
-      "Network"
-      "InstantMessaging"
-    ];
-    mimeType = ["x-scheme-handler/slack"];
   };
 }

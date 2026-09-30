@@ -17,25 +17,7 @@
   };
 in {
   xdg.configFile = {
-    "opencode/skills/pdf/SKILL.md".text = ''
-      ---
-      name: pdf
-      description: Convert PDF files to markdown for reading and extraction. Use when the user asks to read, analyze, or extract content from PDF files.
-      compatibility: opencode
-      ---
-
-      # PDF Processing
-
-      ## Quick start
-
-      Use markitdown to convert a PDF to markdown:
-
-      ```bash
-      nix run nixpkgs#python313Packages.markitdown -- "path/to/file.pdf" > output.md
-      ```
-
-      Remember to quote file paths that contain spaces.
-    '';
+    "opencode/skills/pdf/SKILL.md".source = ../skills/pdf/SKILL.md;
 
     "opencode/skills/domain-modeling".source = "${mattPocockSkills}/skills/engineering/domain-modeling";
     "opencode/skills/grill-with-docs".source = "${mattPocockSkills}/skills/engineering/grill-with-docs";

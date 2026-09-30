@@ -1,7 +1,6 @@
 {
   pkgs,
   user,
-  lib,
   ...
 }: let
   rnnoise_config = {
@@ -42,50 +41,28 @@
     ];
   };
 in {
-  nixpkgs.config = {
-    # Required for hardware.enableAllFirmware; predicate keeps the allowlist tight.
-    allowUnfree = true;
+  nixpkgs.config.allowUnfree = true;
 
-    # Explicitly set which non-free packages can be installed
-    allowUnfreePredicate = pkg:
-      builtins.elem (lib.getName pkg) [
-        "codeium"
-        "discord"
-        "google-chrome"
-        "obsidian"
-        "parsec-bin"
-        "slack"
-        "spotify"
-        "teams"
-        "teamviewer"
-        "vagrant"
-        "veracrypt"
-        "vscode-extension-ms-vscode-cpptools"
-        "zoom"
-        "claude-code"
-        "rustdesk"
-      ];
+  boot = {
+    kernelPackages = pkgs.linuxPackages_latest;
 
-    permittedInsecurePackages = [
-      "electron-25.9.0"
-    ];
+    # Bootloader.
+    loader = {
+      timeout = 1;
+      efi.canTouchEfiVariables = true;
+      systemd-boot.enable = true;
+    };
+    binfmt.emulatedSystems = ["aarch64-linux"];
   };
-
-  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   nix = {
     package = pkgs.nixVersions.stable;
-    extraOptions = "experimental-features = nix-command flakes";
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 30d";
-    };
-    settings.trusted-users = [
-      "root"
-      "${user}"
-    ];
     settings = {
+      experimental-features = ["nix-command" "flakes"];
+      trusted-users = [
+        "root"
+        user
+      ];
       substituters = [
         "https://cache.nixos.org"
         "https://mattcairns-cachix.cachix.org"
@@ -97,76 +74,140 @@ in {
     };
   };
 
-  # udev rules
-  services.udev = {
-    packages = [pkgs.qmk-udev-rules];
-    extraRules = ''
-      SUBSYSTEM=="tty", ATTRS{product}=="CubeOrange", SYMLINK="ttyPIXHAWK"
-    '';
-  };
-
-  # Bootloader.
-  boot.loader = {
-    timeout = 1;
-    efi.canTouchEfiVariables = true;
-    systemd-boot.enable = true;
-    grub.enable = false;
-    grub.efiSupport = false;
-    grub.device = "nodev";
-  };
-  boot.binfmt.emulatedSystems = ["aarch64-linux"];
-
   # Enable networking
-  networking.networkmanager.enable = true;
-  networking.firewall = {
-    enable = true;
-    checkReversePath = "loose";
-    allowedUDPPorts = [
-      14559
-      14557
-      5000
-      51820
-    ];
-    allowedTCPPorts = [
-      4096
-      14557
-    ];
+  networking = {
+    networkmanager.enable = true;
+    firewall = {
+      enable = true;
+      checkReversePath = "loose";
+      allowedUDPPorts = [
+        14559
+        14557
+        5000
+        51820
+      ];
+      allowedTCPPorts = [
+        4096
+        14557
+      ];
+    };
   };
-  services.openssh.enable = true;
-  programs.ssh.startAgent = true;
-  services.tailscale.enable = true;
-  # programs.adb.enable = true;
 
   # Set your time zone and locale
   time.timeZone = "America/Vancouver";
   i18n.defaultLocale = "en_CA.UTF-8";
 
-  services.xserver.enable = true;
+  programs = {
+    nh = {
+      enable = true;
+      flake = "/home/${user}/nixos-config";
+      clean = {
+        enable = true;
+        dates = "weekly";
+        extraArgs = "--keep-since 30d";
+      };
+    };
 
-  programs.hyprland = {
-    enable = true;
-    xwayland.enable = true;
+    ssh.startAgent = true;
+    # adb.enable = true;
+
+    hyprland = {
+      enable = true;
+      xwayland.enable = true;
+    };
+    hyprlock.enable = true;
+
+    # File manager and the services XFCE used to provide for it.
+    thunar.enable = true;
+    xfconf.enable = true;
+    dconf.enable = true;
+
+    gnupg.agent.enable = true;
+
+    # Set up shell
+    fish.enable = true;
   };
 
-  # File manager and the services XFCE used to provide for it.
-  programs.thunar.enable = true;
-  programs.xfconf.enable = true;
-  programs.dconf.enable = true;
-  services.gvfs.enable = true;
-  services.tumbler.enable = true;
-  services.udisks2.enable = true;
+  services = {
+    # udev rules
+    udev = {
+      packages = [pkgs.qmk-udev-rules];
+      extraRules = ''
+        SUBSYSTEM=="tty", ATTRS{product}=="CubeOrange", SYMLINK="ttyPIXHAWK"
+      '';
+    };
 
-  services.displayManager.sddm.enable = true;
-  services.displayManager.defaultSession = "hyprland";
+    openssh.enable = true;
+    tailscale.enable = true;
 
-  programs.hyprlock.enable = true;
+    xserver.enable = true;
+
+    # File manager services (see programs.thunar).
+    gvfs.enable = true;
+    tumbler.enable = true;
+    udisks2.enable = true;
+
+    displayManager.sddm.enable = true;
+    displayManager.defaultSession = "hyprland";
+
+    # Enable CUPS to print documents.
+    printing = {
+      enable = true;
+      drivers = [pkgs.hplip];
+    };
+
+    # Unlocks the login keyring with your SDDM password (SDDM's PAM stack
+    # substacks "login", so this applies there too) so apps like Slack that
+    # use libsecret/Secret Service don't prompt for it after every reboot.
+    gnome.gnome-keyring.enable = true;
+
+    gnome.gcr-ssh-agent.enable = false;
+
+    # Prevent UPower from tracking Cantor keyboard battery via BlueZ
+    dbus.packages = [
+      pkgs.gcr_4
+      (pkgs.writeTextDir "share/dbus-1/system.d/block-cantor-battery.conf" ''
+        <!DOCTYPE busconfig PUBLIC
+         "-//freedesktop//DTD D-BUS Bus Configuration 1.0//EN"
+         "http://www.freedesktop.org/standards/dbus/1.0/busconfig.dtd">
+        <busconfig>
+          <policy user="root">
+            <deny send_destination="org.bluez"
+                  send_path="/org/bluez/hci0/dev_C8_7B_89_9F_45_98"
+                  send_interface="org.freedesktop.DBus.Properties"
+                  send_member="GetAll"/>
+          </policy>
+        </busconfig>
+      '')
+    ];
+
+    # Enable sound with pipewire.
+    pulseaudio.enable = false;
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+      jack.enable = true;
+      extraLadspaPackages = [pkgs.rnnoise-plugin];
+      extraConfig.pipewire."99-input-denoising" = rnnoise_config;
+    };
+
+    # Enable syncthing
+    syncthing = {
+      enable = true;
+      openDefaultPorts = true;
+      configDir = "/home/${user}/.config/syncthing";
+      dataDir = "/home/${user}/.config/syncthing";
+      user = "${user}";
+    };
+  };
 
   xdg.portal = {
     enable = true;
     extraPortals = [
       pkgs.xdg-desktop-portal-gtk
       pkgs.xdg-desktop-portal-gnome
-      pkgs.xdg-desktop-portal-hyprland
     ];
     config.common.default = "*";
     config.hyprland = {
@@ -197,89 +238,46 @@ in {
     liberation_ttf
   ];
 
-  # Enable CUPS to print documents.
-  services.printing = {
-    enable = true;
-    drivers = [pkgs.hplip];
+  security = {
+    polkit.enable = true;
+
+    sudo = {
+      enable = true;
+      extraRules = [
+        {
+          commands = [
+            {
+              command = "/run/current-system/sw/bin/nixos-rebuild";
+              options = ["NOPASSWD"];
+            }
+          ];
+          users = ["${user}"];
+        }
+        {
+          commands = [
+            {
+              command = "${pkgs.tailscale}/bin/tailscale";
+              options = ["NOPASSWD"];
+            }
+          ];
+          groups = ["wheel"];
+        }
+      ];
+    };
+
+    # Realtime scheduling for pipewire.
+    rtkit.enable = true;
   };
 
-  programs.gnupg.agent.enable = true;
-  security.polkit.enable = true;
-  # Unlocks the login keyring with your SDDM password (SDDM's PAM stack
-  # substacks "login", so this applies there too) so apps like Slack that
-  # use libsecret/Secret Service don't prompt for it after every reboot.
-  services.gnome.gnome-keyring.enable = true;
-  security.pam.services.swaylock = {};
+  users = {
+    extraGroups.audio.members = ["${user}"];
+    extraGroups.docker.members = ["${user}"];
 
-  services.gnome.gcr-ssh-agent.enable = false;
-
-  security.sudo = {
-    enable = true;
-    extraRules = [
-      {
-        commands = [
-          {
-            command = "/run/current-system/sw/bin/nixos-rebuild";
-            options = ["NOPASSWD"];
-          }
-        ];
-        users = ["${user}"];
-      }
-      {
-        commands = [
-          {
-            command = "${pkgs.tailscale}/bin/tailscale";
-            options = ["NOPASSWD"];
-          }
-        ];
-        groups = ["wheel"];
-      }
-    ];
+    # Set up shell
+    defaultUserShell = pkgs.fish;
   };
 
-  # Prevent UPower from tracking Cantor keyboard battery via BlueZ
-  services.dbus.packages = [
-    pkgs.gcr_4
-    (pkgs.writeTextDir "share/dbus-1/system.d/block-cantor-battery.conf" ''
-      <!DOCTYPE busconfig PUBLIC
-       "-//freedesktop//DTD D-BUS Bus Configuration 1.0//EN"
-       "http://www.freedesktop.org/standards/dbus/1.0/busconfig.dtd">
-      <busconfig>
-        <policy user="root">
-          <deny send_destination="org.bluez"
-                send_path="/org/bluez/hci0/dev_C8_7B_89_9F_45_98"
-                send_interface="org.freedesktop.DBus.Properties"
-                send_member="GetAll"/>
-        </policy>
-      </busconfig>
-    '')
-  ];
-
-  # Enable sound with pipewire.
-  services.pulseaudio.enable = false;
-  services.pulseaudio.support32Bit = true;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    jack.enable = true;
-    extraLadspaPackages = [pkgs.rnnoise-plugin];
-    extraConfig.pipewire."99-input-denoising" = rnnoise_config;
-  };
-  users.extraGroups.audio.members = ["${user}"];
-
-  # Enable syncthing
-  services.syncthing = {
-    enable = true;
-    openDefaultPorts = true;
-    configDir = "/home/${user}/.config/syncthing";
-    dataDir = "/home/${user}/.config/syncthing";
-    user = "${user}";
-  };
-
-  # HOME-relative variables (XDG_*_HOME, NH_FLAKE, ~/.local/bin) live in
+  # HOME-relative variables (XDG_*_HOME, ~/.local/bin) live in
   # config/home.nix: pam_env expands ${HOME} before it is set, which
   # produced paths like /.local/share for early session daemons.
   environment.sessionVariables = {
@@ -295,17 +293,14 @@ in {
     ]))
     pkgs.nixos-generators
     pkgs.docker-compose
-    pkgs.brightnessctl
     pkgs.qjackctl
     pkgs.v4l-utils
     pkgs.distrobox
     pkgs.google-chrome
-    pkgs.fw-ectool
     pkgs.xkeyboard_config
     pkgs.nodejs
     pkgs.libde265
     pkgs.pavucontrol
-    pkgs.nh
     pkgs.git-lfs
     pkgs.parsec-bin
     pkgs.moonlight-qt
@@ -320,14 +315,7 @@ in {
     pkgs.rustdesk
   ];
 
-  # Audio firmware and hardware support
-  hardware.firmware = [pkgs.linux-firmware];
   hardware.enableRedistributableFirmware = true;
 
   virtualisation.docker.enable = true;
-  users.extraGroups.docker.members = ["${user}"];
-
-  # Set up shell
-  users.defaultUserShell = pkgs.fish;
-  programs.fish.enable = true;
 }

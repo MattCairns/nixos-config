@@ -1,4 +1,4 @@
-{ pkgs }:
+{pkgs}:
 pkgs.writeShellScriptBin "tmux-switch-ssh-session" ''
   # Define the location of the SSH config file
   ssh_config_file=~/.ssh/config

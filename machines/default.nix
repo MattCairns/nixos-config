@@ -5,101 +5,40 @@
   user,
   ...
 }: let
-  inherit (nixpkgs) lib;
-
-  defaultSystem = "x86_64-linux";
-
-  mkPkgs = system:
-    import nixpkgs {
-      inherit system;
-      config.allowUnfree = true;
-    };
-
-  mkHomeManagerModule = {
-    machine,
-    pkgs,
-  }: {
-    home-manager.extraSpecialArgs = {
-      inherit user inputs machine;
-    };
-
-    home-manager.users.${user}.imports = [
-      (import ../config/home.nix)
-    ];
-
-    home-manager.backupFileExtension =
-      "backup-" + pkgs.lib.readFile "${pkgs.runCommand "timestamp" {} "echo -n `date '+%Y%m%d%H%M%S'` > $out"}";
-
-    home-manager.useGlobalPkgs = true;
-    home-manager.useUserPackages = true;
-    home-manager.sharedModules = [
-      inputs.nixvim.homeModules.nixvim
-      inputs.sops-nix.homeManagerModules.sops
-      inputs.noctalia.homeModules.default
-      inputs.cargo-warp.homeManagerModules.default
-    ];
-  };
-
-  mkBaseModules = {
-    machine,
-    pkgs,
-  }: [
+  commonModules = [
+    ../config/base.nix
+    ../config/users.nix
+    ../config/optin-persistence.nix
     inputs.disko.nixosModules.disko
     inputs.sops-nix.nixosModules.sops
     home-manager.nixosModules.home-manager
-    (mkHomeManagerModule {inherit machine pkgs;})
+    {
+      home-manager = {
+        useGlobalPkgs = true;
+        useUserPackages = true;
+        backupFileExtension = "backup";
+        overwriteBackup = true;
+        extraSpecialArgs = {inherit inputs user;};
+        sharedModules = [
+          inputs.nixvim.homeModules.nixvim
+          inputs.sops-nix.homeManagerModules.sops
+          inputs.noctalia.homeModules.default
+          inputs.cargo-warp.homeManagerModules.default
+        ];
+        users.${user}.imports = [../config/home.nix];
+      };
+    }
   ];
 
-  persistenceModule = ../config/optin-persistence.nix;
-
-  hostDefaults = {
-    system = defaultSystem;
-    useHomeManager = true;
-    enablePersistence = true;
-    modules = [];
-    extraModules = [];
-    specialArgs = {};
-  };
-
-  mkHost = name: hostCfg: let
-    cfg = lib.recursiveUpdate hostDefaults hostCfg;
-    system = cfg.system;
-    pkgs = mkPkgs system;
-
-    hmModules =
-      if cfg.useHomeManager
-      then
-        mkBaseModules {
-          machine = name;
-          inherit pkgs;
-        }
-      else [];
-
-    persistenceModules =
-      lib.optionals cfg.enablePersistence [persistenceModule];
-
-    modules =
-      cfg.modules
-      ++ persistenceModules
-      ++ hmModules
-      ++ cfg.extraModules;
-
-    specialArgs =
-      {inherit inputs user;}
-      // cfg.specialArgs;
-  in
-    lib.nixosSystem {
-      inherit system modules specialArgs;
+  mkHost = modules:
+    nixpkgs.lib.nixosSystem {
+      specialArgs = {inherit inputs user;};
+      modules = commonModules ++ modules;
     };
-
-  hosts = {
-    framework.modules = [
-      ./framework/configuration.nix
-      inputs.nixos-hardware.nixosModules.framework-13-7040-amd
-    ];
-    desktop.modules = [
-      ./desktop/configuration.nix
-    ];
-  };
-in
-  lib.mapAttrs mkHost hosts
+in {
+  framework = mkHost [
+    ./framework/configuration.nix
+    inputs.nixos-hardware.nixosModules.framework-13-7040-amd
+  ];
+  desktop = mkHost [./desktop/configuration.nix];
+}

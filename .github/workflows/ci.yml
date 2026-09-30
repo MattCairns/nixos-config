@@ -4,7 +4,7 @@ on:
   pull_request:
   push:
     branches:
-      - main
+      - master
   schedule:
     - cron: "0 3 * * *"
   workflow_dispatch:
@@ -32,7 +32,7 @@ jobs:
         run: nix run nixpkgs#alejandra -- --check .
 
       - name: Run deadnix
-        run: nix run nixpkgs#deadnix -- .
+        run: nix run nixpkgs#deadnix -- --fail .
 
       - name: Run statix
         run: nix run nixpkgs#statix -- check .

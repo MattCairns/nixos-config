@@ -25,15 +25,19 @@ This repo is constantly evolving to suite my purposes and contains everything I 
 ## Dependencies
 - NixOS.  
 
-If you have NixOS then installation is a simple as:
+Hosts are `framework` and `desktop`. A fresh `desktop` is installed from a NixOS installer with disko:
 
 ```bash
-cd ~
 git clone git@github.com:MattCairns/nixos-config.git
-cp /etc/nixos/hardware-configuration.nix ~/nixos-config/machines/<MACHINE>/.
-cd ~/nixos-config/
-sudo nixos-rebuild switch --flake .#<MACHINE>
-sudo reboot now
+cd nixos-config
+sudo nix run .#install-desktop
+```
+
+On an existing install:
+
+```bash
+cd ~/nixos-config
+nh os switch   # or: sudo nixos-rebuild switch --flake .#<host>
 ```
 
 If you dont have NixOS feel free to pull stuff out of here for your own purposes.

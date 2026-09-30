@@ -5,8 +5,6 @@
   ...
 }: {
   imports = [
-    ../../config/base.nix
-    ../../config/users.nix
     (import ../../config/disko.nix {
       inherit lib;
       disk = "/dev/disk/by-id/nvme-KINGSTON_SA2000M81000G_50026B7282469435";
@@ -14,16 +12,15 @@
     })
   ];
 
-  users.users.matthew.hashedPasswordFile = "/persist/passwords/matthew";
-  users.users.root.hashedPasswordFile = "/persist/passwords/root";
-
   networking.hostName = "desktop";
 
   # Fill in after running nixos-generate-config on the hardware, or set manually.
   # Common NVMe modules: ["nvme" "xhci_pci" "ahci" "usb_storage" "sd_mod" "usbhid"]
-  boot.initrd.availableKernelModules = [];
-  boot.kernelModules = [];
-  boot.extraModulePackages = [];
+  boot = {
+    initrd.availableKernelModules = [];
+    kernelModules = [];
+    extraModulePackages = [];
+  };
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 

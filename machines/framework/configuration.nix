@@ -1,22 +1,14 @@
-{pkgs, ...}: {
-  imports = [
-    ./hardware-configuration.nix
-    ../../config/base.nix
-    ../../config/users.nix
-  ];
+{
+  pkgs,
+  user,
+  ...
+}: {
+  imports = [./hardware-configuration.nix];
 
-  sops.defaultSopsFile = ../../secrets/secrets.yaml;
-  sops.age.sshKeyPaths = ["/home/matthew/.ssh/id_ed25519"];
-  sops.secrets.user-matthew-password.neededForUsers = true;
-
-  users.users.matthew.openssh.authorizedKeys.keys = [
+  users.users.${user}.openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC1qMj3QQYsUCzTaEzOembl/EC9uk4s9e5wWaiRUklau ha@cairns.pro"
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMtxf6vcdvDoSx1IUtboLcK+EACy5H2E90apGqdHAyDe mattrcairns@gmail.com"
   ];
-
-  #users.users.matthew.passwordFile = config.sops.secrets.user-matthew-password.path;
-  users.users.matthew.hashedPasswordFile = "/persist/passwords/matthew";
-  users.users.root.hashedPasswordFile = "/persist/passwords/root";
 
   # Kernel parameters for better AMD graphics suspend/resume
   boot.kernelParams = [
@@ -24,69 +16,99 @@
     "amdgpu.gpu_recovery=1" # Enable GPU recovery on hang
   ];
 
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "us";
+  networking = {
+    hostName = "framework";
+    # Only nas may reach the forwarded Ollama port (Ollama has no auth of its own).
+    firewall.extraCommands = ''
+      iptables -A nixos-fw -p tcp -s 192.168.1.10 --dport 11435 -j ACCEPT
+    '';
+    networkmanager.wifi.powersave = false;
   };
 
-  networking.hostName = "framework";
-  hardware.graphics.enable = true;
-  # Bluetooth UI is provided by Noctalia.
-  hardware.bluetooth.enable = true;
+  hardware = {
+    graphics.enable = true;
+    # Bluetooth UI is provided by Noctalia.
+    bluetooth.enable = true;
+    xpadneo.enable = true;
+  };
 
-  services.ollama = {
-    enable = true;
-    package = pkgs.ollama;
-    environmentVariables = {
-      OLLAMA_CONTEXT_LENGTH = "65536";
+  services = {
+    # Configure keymap in X11
+    xserver.xkb = {
+      layout = "us";
     };
-    loadModels = ["qwen3:8b"];
+
+    ollama = {
+      enable = true;
+      package = pkgs.ollama;
+      environmentVariables = {
+        OLLAMA_CONTEXT_LENGTH = "65536";
+      };
+      loadModels = ["qwen3:8b"];
+    };
+
+    # Enable touchpad support
+    libinput.enable = true;
+    # Firmware updates
+    fwupd = {
+      enable = true;
+      extraRemotes = ["lvfs-testing"];
+    };
+
+    ## Power Management ##
+    upower.enable = true;
+    power-profiles-daemon.enable = true;
+
+    logind.settings.Login = {
+      HandlePowerKey = "ignore";
+      HandleLidSwitch = "suspend";
+      # Docked: Hyprland turns the laptop panel off instead (see lid bindl).
+      HandleLidSwitchDocked = "ignore";
+      HandleLidSwitchExternalPower = "suspend";
+    };
   };
 
-  hardware.xpadneo.enable = true;
+  environment.systemPackages = [
+    pkgs.fw-ectool
+    pkgs.brightnessctl
+  ];
 
-  # Enable touchpad support
-  services.libinput.enable = true;
-  # Firmware updates
-  services.fwupd = {
-    enable = true;
-    extraRemotes = ["lvfs-testing"];
-  };
+  fileSystems = {
+    "/mnt/appdata" = {
+      device = "192.168.1.10:/mnt/user/appdata";
+      fsType = "nfs";
+      options = [
+        "x-systemd.automount"
+        "noauto"
+      ];
+    };
+    "/mnt/Media" = {
+      device = "192.168.1.10:/mnt/user/Media";
+      fsType = "nfs";
+      options = [
+        "rw"
+        "x-systemd.automount"
+        "noauto"
+      ];
+    };
+    "/mnt/Photos" = {
+      device = "192.168.1.10:/mnt/user/Photos";
+      fsType = "nfs";
+      options = [
+        "rw"
+        "x-systemd.automount"
+        "noauto"
+      ];
+    };
 
-  fileSystems."/mnt/appdata" = {
-    device = "192.168.1.10:/mnt/user/appdata";
-    fsType = "nfs";
-    options = [
-      "x-systemd.automount"
-      "noauto"
-    ];
-  };
-  fileSystems."/mnt/Media" = {
-    device = "192.168.1.10:/mnt/user/Media";
-    fsType = "nfs";
-    options = [
-      "rw"
-      "x-systemd.automount"
-      "noauto"
-    ];
-  };
-  fileSystems."/mnt/Photos" = {
-    device = "192.168.1.10:/mnt/user/Photos";
-    fsType = "nfs";
-    options = [
-      "rw"
-      "x-systemd.automount"
-      "noauto"
-    ];
-  };
-
-  fileSystems."/mnt/backup" = {
-    device = "192.168.1.10:/mnt/user/backup";
-    fsType = "nfs";
-    options = [
-      "x-systemd.automount"
-      "noauto"
-    ];
+    "/mnt/backup" = {
+      device = "192.168.1.10:/mnt/user/backup";
+      fsType = "nfs";
+      options = [
+        "x-systemd.automount"
+        "noauto"
+      ];
+    };
   };
 
   # Relay markv's Ollama (reachable here over Tailscale) to the LAN so
@@ -104,31 +126,13 @@
           -o ExitOnForwardFailure=yes \
           -o ServerAliveInterval=30 -o ServerAliveCountMax=3 \
           -o StrictHostKeyChecking=accept-new \
-          -i /home/matthew/.ssh/matthew_openoceanrobotics_com \
+          -i /home/${user}/.ssh/matthew_openoceanrobotics_com \
           -L 0.0.0.0:11435:localhost:11434 matthew@100.77.5.87
       '';
-      User = "matthew";
+      User = user;
       Restart = "always";
       RestartSec = 5;
     };
-  };
-
-  # Only nas may reach the forwarded Ollama port (Ollama has no auth of its own).
-  networking.firewall.extraCommands = ''
-    iptables -A nixos-fw -p tcp -s 192.168.1.10 --dport 11435 -j ACCEPT
-  '';
-
-  ## Power Management ##
-  services.upower.enable = true;
-  services.power-profiles-daemon.enable = true;
-  networking.networkmanager.wifi.powersave = false;
-
-  services.logind.settings.Login = {
-    HandlePowerKey = "ignore";
-    HandleLidSwitch = "suspend";
-    # Docked: Hyprland turns the laptop panel off instead (see lid bindl).
-    HandleLidSwitchDocked = "ignore";
-    HandleLidSwitchExternalPower = "suspend";
   };
 
   powerManagement.resumeCommands = ''

@@ -1,19 +1,20 @@
-{...}: {
-  imports =
-    [(import ../modules/dev/nixvim)]
-    ++ [(import ../modules/dev/git)]
-    ++ [(import ../modules/dev/kitty)]
-    ++ [(import ../modules/dev/wezterm)]
-    ++ [(import ../modules/dev/starship)]
-    ++ [(import ../modules/dev/tmux)]
-    ++ [(import ../modules/dev/fish)]
-    ++ [(import ../modules/dev/direnv)]
-    ++ [(import ../modules/dev/claude-code)]
-    ++ [(import ../modules/dev/hypruse)]
-    ++ [(import ../modules/dev/opencode)]
-    ++ [(import ../modules/dev/cargo-warp)]
-    ++ [(import ../modules/desktop/noctalia)]
-    ++ [(import ../modules/desktop/hyprland)]
-    ++ [(import ../modules/apps/firefox)]
-    ++ [(import ../modules/apps/chatgpt)];
+{
+  imports = [
+    ./dev/nixvim
+    ./dev/git
+    ./dev/kitty
+    ./dev/wezterm
+    ./dev/starship
+    ./dev/tmux
+    ./dev/fish
+    ./dev/direnv
+    ./dev/claude-code
+    ./dev/hypruse
+    ./dev/opencode
+    ./dev/cargo-warp
+    ./desktop/noctalia
+    ./desktop/hyprland
+    ./apps/firefox
+    ./apps/chatgpt
+  ];
 }

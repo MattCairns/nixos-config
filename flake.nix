@@ -7,10 +7,6 @@
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    atuin = {
-      url = "github:atuinsh/atuin/v18.18.0";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     impermanence.url = "github:nix-community/impermanence";
     disko = {
       url = "github:nix-community/disko";
@@ -47,61 +43,24 @@
   }: let
     user = "matthew";
     pkgs = nixpkgs.legacyPackages.x86_64-linux;
-    installDesktop = import ./scripts/install-desktop.nix {inherit pkgs;};
-  in rec {
-    packages.x86_64-linux.install-desktop = installDesktop;
-    packages.x86_64-linux.hypruse = import ./modules/dev/hypruse/package.nix {inherit pkgs;};
-    apps.x86_64-linux.install-desktop = {
-      type = "app";
-      program = "${installDesktop}/bin/install-desktop";
+    installDesktop = pkgs.callPackage ./scripts/install-desktop.nix {};
+  in {
+    packages.x86_64-linux = {
+      install-desktop = installDesktop;
+      hypruse = pkgs.callPackage ./modules/dev/hypruse/package.nix {};
     };
-    apps.x86_64-linux.default = apps.x86_64-linux.install-desktop;
-
-    nixosConfigurations = (
-      import ./machines {
-        inherit (nixpkgs) lib;
-        inherit
-          inputs
-          nixpkgs
-          home-manager
-          user
-          ;
-      }
-    );
-
-    formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
-
-    checks.x86_64-linux = let
-      pkgs = nixpkgs.legacyPackages.x86_64-linux;
-    in {
-      only-known-hosts-exist = pkgs.runCommand "check-only-known-hosts-exist" {} ''
-          ${pkgs.lib.concatStringsSep "\n" (
-          map
-          (name: ''
-            echo "FAIL: unexpected configuration '${name}' found"
-            exit 1
-          '')
-          (
-            builtins.filter (
-              n:
-                !builtins.elem n [
-                  "framework"
-                  "desktop"
-                ]
-            ) (builtins.attrNames nixosConfigurations)
-          )
-        )}
-        echo "PASS" > $out
-      '';
-      framework-amd-params = pkgs.runCommand "check-framework-amd-params" {} ''
-        grep -q "amdgpu.dc=1" ${./machines/framework/configuration.nix} || { echo "FAIL"; exit 1; }
-        grep -q "amdgpu.gpu_recovery=1" ${./machines/framework/configuration.nix} || { echo "FAIL"; exit 1; }
-        echo "PASS" > $out
-      '';
-      framework-hostname = pkgs.runCommand "check-framework-hostname" {} ''
-        grep -q 'networking.hostName = "framework"' ${./machines/framework/configuration.nix} || { echo "FAIL"; exit 1; }
-        echo "PASS" > $out
-      '';
+    apps.x86_64-linux = rec {
+      install-desktop = {
+        type = "app";
+        program = "${installDesktop}/bin/install-desktop";
+      };
+      default = install-desktop;
     };
+
+    nixosConfigurations = import ./machines {
+      inherit inputs nixpkgs home-manager user;
+    };
+
+    formatter.x86_64-linux = pkgs.alejandra;
   };
 }

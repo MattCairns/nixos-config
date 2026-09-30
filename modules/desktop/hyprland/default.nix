@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  workFirefoxCmd = "firefox -P work --name=firefox-work";
+  workFirefoxCmd = "firefox-work"; # wrapper from config/home.nix
   homeFirefoxCmd = "firefox -P home --name=firefox-home";
   noctalia = lib.getExe config.programs.noctalia.package;
 
@@ -41,7 +41,7 @@
     fi
 
     hyprctl dispatch exec "[workspace $ws_ff_home silent] ${homeFirefoxCmd}"
-    hyprctl dispatch exec "[workspace $ws_kitty silent] kitty -1 -e /home/matthew/.config/bin/ta"
+    hyprctl dispatch exec "[workspace $ws_kitty silent] kitty -1 -e ${config.xdg.configHome}/bin/ta"
     hyprctl dispatch exec "[workspace special:spotify silent] spotify"
   '';
 
@@ -393,7 +393,7 @@ in {
 
       background {
           monitor =
-          path = /home/matthew/.config/wallpapers/cliffs.jpg
+          path = ${config.xdg.configHome}/wallpapers/cliffs.jpg
           blur_passes = 2
           blur_size = 6
       }

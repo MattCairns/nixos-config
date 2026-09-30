@@ -1,4 +1,8 @@
-_: {
+{config, ...}: let
+  name = "Matthew Cairns";
+  email = "git@cairns.pro";
+  signingKey = "${config.home.homeDirectory}/.ssh/matthew_openoceanrobotics_com.pub";
+in {
   programs = {
     git = {
       enable = true;
@@ -9,9 +13,8 @@ _: {
       ];
       settings = {
         user = {
-          name = "Matthew Cairns";
-          email = "git@cairns.pro";
-          signingkey = "/home/matthew/.ssh/matthew_openoceanrobotics_com.pub";
+          inherit name email;
+          signingkey = signingKey;
         };
         init = {
           defaultBranch = "main";
@@ -49,13 +52,12 @@ _: {
       enable = true;
       settings = {
         user = {
-          name = "Matthew Cairns";
-          email = "git@cairns.pro";
+          inherit name email;
         };
         signing = {
           behavior = "drop";
           backend = "ssh";
-          key = "/home/matthew/.ssh/matthew_openoceanrobotics_com.pub";
+          key = signingKey;
         };
         git.sign-on-push = true;
         ui.editor = "vim";

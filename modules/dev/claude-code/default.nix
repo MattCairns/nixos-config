@@ -3,28 +3,10 @@
   lib,
   pkgs,
   ...
-}:
-{
+}: {
   programs.claude-code = {
     enable = true;
-    skills.pdf = ''
-      ---
-      name: pdf
-      description: Convert PDF files to markdown for reading and extraction. Use when the user asks to read, analyze, or extract content from PDF files.
-      ---
-
-      # PDF Processing
-
-      ## Quick start
-
-      Use markitdown to convert a PDF to markdown:
-
-      ```bash
-      nix run nixpkgs#python313Packages.markitdown -- "path/to/file.pdf" > output.md
-      ```
-
-      Remember to quote file paths that contain spaces.
-    '';
+    skills.pdf = builtins.readFile ../skills/pdf/SKILL.md;
     mcpServers = {
       nixos = {
         command = "nix";
@@ -62,12 +44,12 @@
       };
       playwright = {
         command = lib.getExe pkgs.playwright-mcp;
-        args = [ ];
+        args = [];
       };
     };
   };
 
-  home.activation.claudeCodeSettings = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
+  home.activation.claudeCodeSettings = lib.hm.dag.entryAfter ["linkGeneration"] ''
     export PATH="${
       lib.makeBinPath [
         pkgs.coreutils

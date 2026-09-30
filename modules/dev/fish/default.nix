@@ -1,19 +1,26 @@
 {
   pkgs,
   config,
+  lib,
   ...
-}: {
+}: let
+  secretEnv = {
+    JIRA_API_TOKEN = "jira-cli-api-key";
+    OPENAI_API_KEY = "openai-api-key";
+    GITLAB_TOKEN = "gitlab-token";
+    BW_SESSION = "bitwarden-session-key";
+    VAULT_PASS = "vessel-configs-vault-pass";
+  };
+in {
   programs = {
-    bash.initExtra = ''
-      export OPENAI_API_KEY $(cat ${config.sops.secrets.openai-api-key.path})
-    '';
-
     fzf = {
       enable = true;
       enableFishIntegration = true;
       defaultCommand = "${pkgs.fd}/bin/fd --type f --hidden --follow --exclude .git";
       fileWidget.command = "${pkgs.fd}/bin/fd --type f --hidden --follow --exclude .git";
       changeDirWidget.command = "${pkgs.fd}/bin/fd --type d --hidden --follow --exclude .git";
+      # Atuin owns Ctrl-R.
+      historyWidget.command = "";
     };
 
     fish = {
@@ -24,17 +31,13 @@
         ''
           function fish_greeting
           end
-          set JIRA_API_TOKEN $(cat ${config.sops.secrets.jira-cli-api-key.path})
-          set JIRA_AUTH_TYPE basic
-          set OPENAI_API_KEY $(cat ${config.sops.secrets.openai-api-key.path})
-          export OPENAI_API_KEY=$(cat ${config.sops.secrets.openai-api-key.path})
-          set GITLAB_TOKEN $(cat ${config.sops.secrets.gitlab-token.path})
-          set BW_SESSION $(cat ${config.sops.secrets.bitwarden-session-key.path})
-          export BW_SESSION=$(cat ${config.sops.secrets.bitwarden-session-key.path})
-          export VAULT_PASS=$(cat ${config.sops.secrets.vessel-configs-vault-pass.path})
-          export ANSIBLE_VAULT_PASSWORD_FILE=${config.sops.secrets.vessel-configs-vault-pass.path}
-          atuin init fish | sed "s/-k up/up/g" | source
-        '';
+          set -gx JIRA_AUTH_TYPE basic
+          set -gx ANSIBLE_VAULT_PASSWORD_FILE ${config.sops.secrets.vessel-configs-vault-pass.path}
+        ''
+        + lib.concatStrings (lib.mapAttrsToList (var: secret: ''
+            set -gx ${var} (cat ${config.sops.secrets.${secret}.path})
+          '')
+          secretEnv);
       plugins = [
         {
           name = "sponge";
