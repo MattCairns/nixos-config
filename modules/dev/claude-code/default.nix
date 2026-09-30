@@ -3,7 +3,8 @@
   lib,
   pkgs,
   ...
-}: {
+}:
+{
   programs.claude-code = {
     enable = true;
     skills.pdf = ''
@@ -27,7 +28,10 @@
     mcpServers = {
       nixos = {
         command = "nix";
-        args = ["run" "github:utensils/mcp-nixos"];
+        args = [
+          "run"
+          "github:utensils/mcp-nixos"
+        ];
       };
       atlassian = {
         type = "http";
@@ -37,22 +41,39 @@
         command = "sh";
         args = [
           "-c"
-          "GITLAB_PERSONAL_ACCESS_TOKEN=$(cat ${config.sops.secrets."gitlab-token".path}) exec npx -y @modelcontextprotocol/server-gitlab@latest"
+          "GITLAB_PERSONAL_ACCESS_TOKEN=$(cat ${
+            config.sops.secrets."gitlab-token".path
+          }) exec npx -y @modelcontextprotocol/server-gitlab@latest"
+        ];
+      };
+      homeAssistant = {
+        command = "sh";
+        args = [
+          "-c"
+          "exec npx -y mcp-remote@latest \"$(cat ${config.sops.secrets."ha-mcp-url".path})\" --allow-http"
         ];
       };
       drawio = {
         command = "npx";
-        args = ["-y" "@drawio/mcp@latest"];
+        args = [
+          "-y"
+          "@drawio/mcp@latest"
+        ];
       };
       playwright = {
         command = lib.getExe pkgs.playwright-mcp;
-        args = [];
+        args = [ ];
       };
     };
   };
 
-  home.activation.claudeCodeSettings = lib.hm.dag.entryAfter ["linkGeneration"] ''
-    export PATH="${lib.makeBinPath [pkgs.coreutils pkgs.jq]}:$PATH"
+  home.activation.claudeCodeSettings = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
+    export PATH="${
+      lib.makeBinPath [
+        pkgs.coreutils
+        pkgs.jq
+      ]
+    }:$PATH"
 
     claude_dir="$HOME/.claude"
     settings_path="$claude_dir/settings.json"
@@ -67,12 +88,16 @@
       "env": {
         "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
       },
-      "model": "sonnet",
       "permissions": {
-        "defaultMode": "default",
+        "defaultMode": "plan",
         "additionalDirectories": [
           "/tmp"
         ]
+      },
+      "modelSettings": {
+        "claude-opus-5-5": {
+          "effortLevel": "medium"
+        }
       }
     }
     EOF
