@@ -40,6 +40,47 @@
       }
     ];
   };
+
+  # Login screen themed to match hyprlock (Tokyo Night Moon over cliffs.jpg).
+  sddmTheme = pkgs.sddm-astronaut.override {
+    embeddedTheme = "astronaut";
+    themeConfig = {
+      Background = "${../assets/wallpapers/cliffs.jpg}";
+      CropBackground = "true";
+      PartialBlur = "true";
+      Font = "JetBrainsMono Nerd Font";
+      HourFormat = "HH:mm";
+      DateFormat = "dddd, d MMMM";
+      TimeTextColor = "#c8d3f5";
+      DateTextColor = "#82aaff";
+      HeaderTextColor = "#82aaff";
+      FormBackgroundColor = "#1e2030";
+      LoginFieldBackgroundColor = "#222436";
+      PasswordFieldBackgroundColor = "#222436";
+      LoginFieldTextColor = "#c8d3f5";
+      PasswordFieldTextColor = "#c8d3f5";
+      UserIconColor = "#82aaff";
+      PasswordIconColor = "#82aaff";
+      PlaceholderTextColor = "#828bb8";
+      WarningColor = "#ff757f";
+      LoginButtonBackgroundColor = "#82aaff";
+      LoginButtonTextColor = "#1e2030";
+      SystemButtonsIconsColor = "#c8d3f5";
+      SessionButtonTextColor = "#c8d3f5";
+      VirtualKeyboardButtonTextColor = "#c8d3f5";
+      DropdownTextColor = "#c8d3f5";
+      DropdownBackgroundColor = "#1e2030";
+      DropdownSelectedBackgroundColor = "#2f334d";
+      HighlightTextColor = "#1e2030";
+      HighlightBackgroundColor = "#82aaff";
+      HighlightBorderColor = "#82aaff";
+      HoverUserIconColor = "#c099ff";
+      HoverPasswordIconColor = "#c099ff";
+      HoverSystemButtonsIconsColor = "#c099ff";
+      HoverSessionButtonTextColor = "#c099ff";
+      HoverVirtualKeyboardButtonTextColor = "#c099ff";
+    };
+  };
 in {
   nixpkgs.config.allowUnfree = true;
 
@@ -147,7 +188,13 @@ in {
     tumbler.enable = true;
     udisks2.enable = true;
 
-    displayManager.sddm.enable = true;
+    displayManager.sddm = {
+      enable = true;
+      wayland.enable = true;
+      package = pkgs.kdePackages.sddm;
+      theme = "sddm-astronaut-theme";
+      extraPackages = [sddmTheme] ++ (with pkgs.kdePackages; [qtmultimedia qtsvg qtvirtualkeyboard]);
+    };
     displayManager.defaultSession = "hyprland";
 
     # Enable CUPS to print documents.
@@ -287,32 +334,21 @@ in {
 
   # Globally available packages
   environment.systemPackages = [
-    (pkgs.perl.withPackages (p: [
-      p.PLS
-      p.XMLSimple
-    ]))
-    pkgs.nixos-generators
+    sddmTheme
     pkgs.docker-compose
     pkgs.qjackctl
-    pkgs.v4l-utils
-    pkgs.distrobox
     pkgs.google-chrome
     pkgs.xkeyboard_config
     pkgs.nodejs
-    pkgs.libde265
     pkgs.pavucontrol
     pkgs.git-lfs
     pkgs.parsec-bin
     pkgs.moonlight-qt
     pkgs.sccache
-    pkgs.teamviewer
     # Audio tools
-    pkgs.alsa-utils
-    pkgs.alsa-tools
     pkgs.wireplumber
     pkgs.comma
     # pkgs.vagrant
-    pkgs.rustdesk
   ];
 
   hardware.enableRedistributableFirmware = true;

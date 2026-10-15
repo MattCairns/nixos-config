@@ -32,9 +32,14 @@ in {
       context7-token = {};
       ha-mcp-url = {};
       bitwarden-session-key = {};
-      jira-cli-api-key = {};
       gitlab-token = {};
       vessel-configs-vault-pass = {};
+      mender-api-key = {};
+      mender-tenant-token = {};
+      xmg-user-staging = {};
+      xmg-pass-staging = {};
+      xmg-entry-user-staging = {};
+      xmg-entry-pass-staging = {};
     };
   };
 
@@ -110,14 +115,11 @@ in {
         inputs.claude-desktop.packages.${pkgs.stdenv.hostPlatform.system}.claude-desktop-fhs
 
         # Communication
-        zoom-us
         slackWithWorkBrowser
         discord
         signal-desktop
 
         # Video/Audio
-        feh # Image Viewer
-        scrot
         vlc
         spotify
 
@@ -132,26 +134,18 @@ in {
         obsidian # electron insecure
         libnotify
         hyprshot
-        texstudio
         qgroundcontrol
         bitwarden-cli
-        gnome-solanum
         workFirefoxBrowser
-        gum
 
         # Dev tools
         pre-commit
         lazygit
-        kubectl
-        cppcheck
-        jira-cli-go
         wrappedGlab
         qwen-code
-        envfs
 
         # Formatters
         alejandra
-        cmake-format
         black
 
         # LSP Servers
@@ -159,10 +153,7 @@ in {
         cmake-language-server
         nil
         dockerfile-language-server
-        lua-language-server
         buf
-        codeium
-        perl5Packages.PerlLanguageServer
 
         # Keyboards
         qmk
@@ -173,7 +164,6 @@ in {
         codex
 
         # Sharing
-        junction
 
         prusa-slicer
 
@@ -187,8 +177,6 @@ in {
         ../scripts/tmux-switch-ssh-session.nix
         ../scripts/mt-copy-id.nix
         ../scripts/st.nix
-        ../scripts/chwall.nix
-        ../scripts/mosh-ssh.nix
         ../scripts/warp.nix
         ../scripts/fs-diff.nix
         ../scripts/oor-bw-pw.nix

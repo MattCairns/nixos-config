@@ -72,6 +72,7 @@
       },
       "permissions": {
         "defaultMode": "plan",
+        "blockReadsOutsideWorkingDirectories": false,
         "additionalDirectories": [
           "/tmp"
         ]

@@ -222,6 +222,8 @@ in {
   wayland.windowManager.hyprland = {
     enable = true;
     package = null;
+    # Portals are configured system-wide in config/base.nix.
+    portalPackage = null;
     configType = "hyprlang";
     xwayland.enable = true;
     systemd = {

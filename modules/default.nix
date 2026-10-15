@@ -3,7 +3,6 @@
     ./dev/nixvim
     ./dev/git
     ./dev/kitty
-    ./dev/wezterm
     ./dev/starship
     ./dev/tmux
     ./dev/fish
@@ -15,6 +14,5 @@
     ./desktop/noctalia
     ./desktop/hyprland
     ./apps/firefox
-    ./apps/chatgpt
   ];
 }
