@@ -3,26 +3,15 @@
   pkgs,
   ...
 }: let
-  mattPocockSkills = pkgs.fetchFromGitHub {
-    owner = "mattpocock";
-    repo = "skills";
-    rev = "2ab958093e83e0ec752e6c1c5932da465bf23e0c";
-    hash = "sha256-dQtG6usJWlg/FqTajrjcs8GSdymH92WsgLiUaCfvKPA=";
-  };
-  typesafeAiSkills = pkgs.fetchFromGitHub {
-    owner = "typesafe-ai";
-    repo = "skills";
-    rev = "65a39f393687675ce170e6094757de20370365b9";
-    hash = "sha256-Lh2Y90TFv+njKqo/g5WXEHw0Rk1jQSH5POqKtrvy5kM=";
-  };
+  sources = import ../skills/sources.nix {inherit pkgs;};
 in {
   xdg.configFile = {
     "opencode/skills/pdf/SKILL.md".source = ../skills/pdf/SKILL.md;
 
-    "opencode/skills/domain-modeling".source = "${mattPocockSkills}/skills/engineering/domain-modeling";
-    "opencode/skills/grill-with-docs".source = "${mattPocockSkills}/skills/engineering/grill-with-docs";
-    "opencode/skills/grilling".source = "${mattPocockSkills}/skills/productivity/grilling";
-    "opencode/skills/typesafe-ai".source = "${typesafeAiSkills}/skills/typesafe-ai";
+    "opencode/skills/domain-modeling".source = "${sources.mattPocock}/skills/engineering/domain-modeling";
+    "opencode/skills/grill-with-docs".source = "${sources.mattPocock}/skills/engineering/grill-with-docs";
+    "opencode/skills/grilling".source = "${sources.mattPocock}/skills/productivity/grilling";
+    "opencode/skills/typesafe-ai".source = "${sources.typesafeAi}/skills/typesafe-ai";
 
     "opencode/command/grill-with-docs.md".text = ''
       ---

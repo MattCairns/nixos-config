@@ -3,10 +3,17 @@
   lib,
   pkgs,
   ...
-}: {
+}: let
+  sources = import ../skills/sources.nix {inherit pkgs;};
+in {
   programs.claude-code = {
     enable = true;
-    skills.pdf = builtins.readFile ../skills/pdf/SKILL.md;
+    skills = {
+      pdf = builtins.readFile ../skills/pdf/SKILL.md;
+      domain-modeling = "${sources.mattPocock}/skills/engineering/domain-modeling";
+      grill-with-docs = "${sources.mattPocock}/skills/engineering/grill-with-docs";
+      grilling = "${sources.mattPocock}/skills/productivity/grilling";
+    };
     mcpServers = {
       nixos = {
         command = "nix";
