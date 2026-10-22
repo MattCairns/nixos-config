@@ -314,6 +314,13 @@ in {
 
     # Realtime scheduling for pipewire.
     rtkit.enable = true;
+
+    # eMudhra intermediate key compromise (https://emudhra.we-have-a-problem.com/).
+    # Remove once nixpkgs cacert drops/blocks these roots.
+    pki.caCertificateBlacklist = [
+      "Comodo AAA Services root"
+      "emSign ECC Root CA - G3"
+    ];
   };
 
   users = {
