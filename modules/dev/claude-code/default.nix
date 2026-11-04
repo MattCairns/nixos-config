@@ -8,12 +8,11 @@
 in {
   programs.claude-code = {
     enable = true;
-    skills = {
-      pdf = builtins.readFile ../skills/pdf/SKILL.md;
-      domain-modeling = "${sources.mattPocock}/skills/engineering/domain-modeling";
-      grill-with-docs = "${sources.mattPocock}/skills/engineering/grill-with-docs";
-      grilling = "${sources.mattPocock}/skills/productivity/grilling";
-    };
+    skills =
+      {
+        pdf = builtins.readFile ../skills/pdf/SKILL.md;
+      }
+      // sources.sharedSkills;
     mcpServers = {
       nixos = {
         command = "nix";
@@ -30,23 +29,23 @@ in {
         command = "sh";
         args = [
           "-c"
-          "GITLAB_PERSONAL_ACCESS_TOKEN=$(cat ${
-            config.sops.secrets."gitlab-token".path
-          }) exec npx -y @modelcontextprotocol/server-gitlab@latest"
+          "GITLAB_TOKEN=$(cat ${
+            config.sops.secrets.gitlab-token.path
+          }) exec ${lib.getExe pkgs.glab} mcp serve"
         ];
       };
       homeAssistant = {
         command = "sh";
         args = [
           "-c"
-          "exec npx -y mcp-remote@latest \"$(cat ${config.sops.secrets."ha-mcp-url".path})\" --allow-http"
+          "exec npx -y mcp-remote@0.16.0 \"$(cat ${config.sops.secrets."ha-mcp-url".path})\" --allow-http"
         ];
       };
       drawio = {
         command = "npx";
         args = [
           "-y"
-          "@drawio/mcp@latest"
+          "@drawio/mcp@1.10.1"
         ];
       };
       playwright = {
@@ -54,6 +53,21 @@ in {
         args = [];
       };
     };
+  };
+
+  # Space is a hold-tap layer key on the keyboard, so push-to-talk can't hold it.
+  home.file.".claude/keybindings.json".text = builtins.toJSON {
+    "$schema" = "https://www.schemastore.org/claude-code-keybindings.json";
+    "$docs" = "https://code.claude.com/docs/en/keybindings";
+    bindings = [
+      {
+        context = "Chat";
+        bindings = {
+          space = null;
+          "meta+v" = "voice:pushToTalk";
+        };
+      }
+    ];
   };
 
   home.activation.claudeCodeSettings = lib.hm.dag.entryAfter ["linkGeneration"] ''
@@ -75,7 +89,13 @@ in {
     {
       "$schema": "https://json.schemastore.org/claude-code-settings.json",
       "env": {
-        "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+        "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
+        "DISABLE_TELEMETRY": "1",
+        "DISABLE_ERROR_REPORTING": "1"
+      },
+      "attribution": {
+        "commit": "",
+        "pr": ""
       },
       "permissions": {
         "defaultMode": "plan",
@@ -88,6 +108,18 @@ in {
         "claude-opus-5-5": {
           "effortLevel": "medium"
         }
+      },
+      "extraKnownMarketplaces": {
+        "unifi-plugins": {
+          "source": {
+            "source": "github",
+            "repo": "sirkirby/unifi-mcp",
+            "ref": "network/v0.44.0"
+          }
+        }
+      },
+      "enabledPlugins": {
+        "unifi-network@unifi-plugins": true
       }
     }
     EOF

@@ -39,11 +39,18 @@
     enable = true;
     package = pkgs.ollama-cuda;
     environmentVariables = {
-      OLLAMA_CONTEXT_LENGTH = "16384";
+      OLLAMA_CONTEXT_LENGTH = "32768";
+      OLLAMA_FLASH_ATTENTION = "1";
+      OLLAMA_KEEP_ALIVE = "-1";
+      OLLAMA_KV_CACHE_TYPE = "q4_0";
+      OLLAMA_MAX_LOADED_MODELS = "1";
+      OLLAMA_NUM_PARALLEL = "1";
     };
     host = "0.0.0.0";
     openFirewall = true;
     loadModels = [
+      "lfm2.5:8b"
+      "qwen3-vl:4b-instruct"
       "qwen2.5:7b-instruct-q4_K_M"
       "qwen2.5-coder:7b-instruct"
       "qwen3.5:9b"

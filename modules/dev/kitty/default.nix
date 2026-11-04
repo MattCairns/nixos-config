@@ -16,7 +16,6 @@ _: {
       copy_and_clear_or_interrupt = true;
       term = "tmux-256color";
       cursor_trail = 3;
-      clipboard_control = "write-clipboard write-primary read-clipboard read-primary";
     };
   };
 }

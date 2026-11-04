@@ -2,6 +2,10 @@
 pkgs.writeShellScriptBin "fs-diff" ''
   set -euo pipefail
 
+  # The rollback unmounts the btrfs top level after boot; mount it for the diff.
+  sudo mount -o subvol=/ /dev/mapper/enc /mnt
+  trap 'sudo umount /mnt' EXIT
+
   OLD_TRANSID=$(sudo btrfs subvolume find-new /mnt/root-blank 9999999)
   OLD_TRANSID=''${OLD_TRANSID#transid marker was }
 

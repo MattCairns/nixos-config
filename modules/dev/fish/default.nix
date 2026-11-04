@@ -6,6 +6,7 @@
 }: let
   secretEnv = {
     OPENAI_API_KEY = "openai-api-key";
+    TOGGL_API_KEY = "toggl-api-key";
     GITLAB_TOKEN = "gitlab-token";
     BW_SESSION = "bitwarden-session-key";
     VAULT_PASS = "vessel-configs-vault-pass";

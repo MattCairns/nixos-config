@@ -143,15 +143,13 @@ pkgs.writeShellScriptBin "install-desktop" ''
       confirm "Are you absolutely sure you want to continue?" || die "Aborted."
 
       # ── step 3: swap size ─────────────────────────────────────────────────────
-      banner "Step 3 of 5 — Swap / hibernate"
+      banner "Step 3 of 5 — Swap"
 
       TOTAL_RAM_GB=$(${pkgs.gawk}/bin/awk '/MemTotal/ { printf "%.0f", $2/1024/1024 }' /proc/meminfo)
-      HIBERNATE_GB=$(echo "$TOTAL_RAM_GB * 3 / 2" | ${pkgs.bc}/bin/bc)
       info "Detected RAM: ~$TOTAL_RAM_GB GB"
       echo ""
       echo "  Swap size guide:"
-      echo "    No hibernate  → equal to RAM  : ''${TOTAL_RAM_GB}G"
-      echo "    With hibernate → 1.5× RAM     : ''${HIBERNATE_GB}G"
+      echo "    Equal to RAM: ''${TOTAL_RAM_GB}G"
       echo ""
 
       SWAP_SIZE=""
@@ -191,22 +189,29 @@ pkgs.writeShellScriptBin "install-desktop" ''
       HW_CFG="$TMPROOT/etc/nixos/hardware-configuration.nix"
 
       if [[ -f "$HW_CFG" ]]; then
-        AVAIL=$(grep -oP 'availableKernelModules = \[.*?\]' "$HW_CFG" || true)
-        KMODS=$(grep -oP 'kernelModules = \[.*?\]' "$HW_CFG" | head -1 || true)
+        AVAIL=$(grep -oP 'availableKernelModules = \[.*?\]' "$HW_CFG" | head -1 || true)
+        # Anchor on "boot.": a bare "kernelModules" also matches inside availableKernelModules.
+        KMODS=$(grep -oP '^\s*boot\.\KkernelModules = \[.*?\]' "$HW_CFG" | head -1 || true)
+        BEFORE=$(cat "$DESKTOP_CFG")
 
+        # The desktop config nests these inside `boot = { ... };`.
         if [[ -n "$AVAIL" ]]; then
           info "  initrd.$AVAIL"
           ${pkgs.gnused}/bin/sed -i \
-            "s|boot.initrd.availableKernelModules = \[\];|boot.initrd.$AVAIL;|" \
+            "s|initrd.availableKernelModules = \[\];|initrd.$AVAIL;|" \
             "$DESKTOP_CFG"
         fi
         if [[ -n "$KMODS" ]]; then
           info "  $KMODS"
           ${pkgs.gnused}/bin/sed -i \
-            "s|boot.kernelModules = \[\];|boot.$KMODS;|" \
+            "s|^\(\s*\)kernelModules = \[\];|\1$KMODS;|" \
             "$DESKTOP_CFG"
         fi
-        success "Kernel modules patched"
+        if [[ "$(cat "$DESKTOP_CFG")" != "$BEFORE" ]]; then
+          success "Kernel modules patched"
+        else
+          warn "Kernel modules not patched (already set, or none detected)."
+        fi
       else
         warn "Could not auto-detect kernel modules."
         warn "Fill in boot.initrd.availableKernelModules in $DESKTOP_CFG after install."

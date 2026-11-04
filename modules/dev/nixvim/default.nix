@@ -69,6 +69,18 @@
         action = "<cmd>Presenting<CR>";
         key = "<leader>pp";
       }
+      {
+        action = "<cmd>CodeReview<CR>";
+        key = "<leader>cr";
+      }
+      {
+        action = "<cmd>DiffviewOpen<CR>";
+        key = "<leader>dv";
+      }
+      {
+        action = "<cmd>DiffviewClose<CR>";
+        key = "<leader>dc";
+      }
     ];
 
     colorschemes.tokyonight.enable = true;
@@ -108,6 +120,18 @@
           hash = "sha256-nAOKUW01KyC5kCP86s0KUsNPfb9wWngDNH3KWvKBwo8=";
         };
       })
+
+      (pkgs.vimUtils.buildVimPlugin {
+        name = "codereview-nvim";
+        doCheck = false;
+        dependencies = [pkgs.vimPlugins.plenary-nvim];
+        src = pkgs.fetchFromGitHub {
+          owner = "afewyards";
+          repo = "codereview.nvim";
+          rev = "3b7a2bdc92614f88d85c0813bf65bc84b76c0c30";
+          hash = "sha256-ItZyEZ/BLCshhHP24jDlO1w/3l4orvkfPUkkxfzeMtQ=";
+        };
+      })
     ];
 
     extraConfigLua = ''
@@ -134,6 +158,8 @@
       vim.keymap.set("n", "<leader>nl", function() _99.view_logs() end, { desc = "99: View logs" })
 
       require("presenting").setup({})
+
+      require("codereview").setup({})
     '';
 
     plugins = {

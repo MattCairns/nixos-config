@@ -2,10 +2,16 @@
   config,
   lib,
   pkgs,
+  inputs,
   ...
 }: {
   programs.noctalia = {
     enable = true;
+
+    # Category "x-noctalia.image-preview" notifications show their image full-width (HA camera alerts).
+    package = inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default.overrideAttrs (old: {
+      patches = (old.patches or []) ++ [./image-preview.patch];
+    });
 
     settings = {
       # Polkit authentication prompts (replaces XFCE's polkit-gnome agent).
@@ -18,8 +24,8 @@
       };
 
       wallpaper = {
-        directory = "/home/matthew/.config/wallpapers";
-        default.path = "/home/matthew/.config/wallpapers/cliffs.jpg";
+        directory = "${config.xdg.configHome}/wallpapers";
+        default.path = "${config.xdg.configHome}/wallpapers/cliffs.jpg";
       };
     };
 

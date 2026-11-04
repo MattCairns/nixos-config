@@ -19,11 +19,27 @@
   networking = {
     hostName = "framework";
     # Only nas may reach the forwarded Ollama port (Ollama has no auth of its own).
+    # Match nas's MAC too: on other networks 192.168.1.10 can be anyone.
     firewall.extraCommands = ''
-      iptables -A nixos-fw -p tcp -s 192.168.1.10 --dport 11435 -j ACCEPT
+      iptables -A nixos-fw -p tcp -s 192.168.1.10 -m mac --mac-source 70:85:c2:6c:b0:b0 --dport 11435 -j ACCEPT
+      iptables -A nixos-fw -p tcp -s 192.168.1.10 -m mac --mac-source 70:85:c2:6c:b0:b0 --dport 11436 -j ACCEPT
     '';
+    # Dock ethernet, used to share wifi: NetworkManager "shared" mode needs DHCP/DNS in.
+    # Only those ports, since the dock may also be plugged into untrusted networks.
+    firewall.interfaces.enp195s0f3u1u1 = {
+      allowedUDPPorts = [53 67];
+      allowedTCPPorts = [53];
+    };
     networkmanager.wifi.powersave = false;
   };
+
+  # Pin "desktop" (Ollama box on the shared dock link) to one address. It runs two
+  # DHCP clients on one NIC (initrd networkd for the LUKS-unlock SSH, then
+  # NetworkManager) with different client IDs, so it got two leases and the initrd
+  # one (previously .232) lapsed after the 1h lease time. id:* matches on MAC only.
+  environment.etc."NetworkManager/dnsmasq-shared.d/desktop.conf".text = ''
+    dhcp-host=4c:cc:6a:f9:47:3c,id:*,10.42.0.232,desktop
+  '';
 
   hardware = {
     graphics.enable = true;
@@ -132,6 +148,24 @@
       User = user;
       Restart = "always";
       RestartSec = 5;
+    };
+  };
+
+  # Relay the desktop's Ollama (GPU box on the dock link, 10.42.0.0/24, which only
+  # exists on this laptop) to the LAN so Frigate/Home Assistant on nas can use it.
+  # 10.42.0.232 is the address pinned by the dnsmasq reservation above.
+  # Port 11436: 11434 is this laptop's own Ollama, 11435 is the markv relay.
+  systemd.sockets.ollama-forward-desktop = {
+    description = "LAN socket for the desktop's Ollama";
+    wantedBy = ["sockets.target"];
+    listenStreams = ["0.0.0.0:11436"];
+  };
+  systemd.services.ollama-forward-desktop = {
+    description = "Forward the desktop's Ollama to LAN for Frigate/Home Assistant";
+    serviceConfig = {
+      ExecStart = "${pkgs.systemd}/lib/systemd/systemd-socket-proxyd 10.42.0.232:11434";
+      DynamicUser = true;
+      PrivateTmp = true;
     };
   };
 

@@ -10,11 +10,14 @@ pkgs.python3Packages.buildPythonApplication rec {
   };
 
   build-system = [pkgs.python3Packages.hatchling];
-  dependencies = [pkgs.python3Packages.mcp];
+  dependencies = [pkgs.python3Packages.mcp_1];
   pythonImportsCheck = ["hypruse"];
 
   makeWrapperArgs = [
-    "--prefix PATH : ${pkgs.lib.makeBinPath [pkgs.hyprland pkgs.grim pkgs.wtype pkgs.systemd pkgs.imagemagick pkgs.procps]}"
+    "--prefix"
+    "PATH"
+    ":"
+    (pkgs.lib.makeBinPath [pkgs.hyprland pkgs.grim pkgs.wtype pkgs.systemd pkgs.imagemagick pkgs.procps])
   ];
 
   meta = {

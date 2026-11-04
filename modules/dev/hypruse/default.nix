@@ -10,10 +10,10 @@ in {
   home.packages = [hypruse];
 
   # Merge this server into Codex's mutable configuration, preserving other settings.
+  # Re-add every time so the entry follows the current store path.
   home.activation.hypruseCodex = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    if ! ${codex}/bin/codex mcp get hypruse >/dev/null 2>&1; then
-      run ${codex}/bin/codex mcp add hypruse \
-        --env HYPRUSE_SCREENSHOT_MODE=image -- ${hypruse}/bin/hypruse
-    fi
+    run ${codex}/bin/codex mcp remove hypruse >/dev/null 2>&1 || true
+    run ${codex}/bin/codex mcp add hypruse \
+      --env HYPRUSE_SCREENSHOT_MODE=image -- ${hypruse}/bin/hypruse
   '';
 }

@@ -1,5 +1,5 @@
 # Reusable disko module for a single-disk GPT layout:
-#   EFI (vfat) + swap + LUKS -> btrfs subvolumes
+#   EFI (vfat) + swap (random-key encrypted) + LUKS -> btrfs subvolumes
 #
 # Subvolumes created:
 #   /root      -> /           (ephemeral, rolled back on boot by optin-persistence.nix)
@@ -21,14 +21,14 @@
   lib,
   disk,
   swapSize ? "8G",
-  efiSize ? "1G",
-  luksName ? "enc",
-  btrfsMountOptions ? [
+}: let
+  # optin-persistence.nix's rollback unit depends on dev-mapper-enc.device.
+  luksName = "enc";
+  btrfsMountOptions = [
     "compress=zstd"
     "noatime"
-  ],
-  enableHibernate ? true,
-}: {
+  ];
+in {
   assertions = [
     {
       assertion = disk != null && disk != "";
@@ -45,7 +45,7 @@
         partitions =
           {
             ESP = {
-              size = efiSize;
+              size = "1G";
               type = "EF00";
               content = {
                 type = "filesystem";
@@ -56,11 +56,13 @@
             };
           }
           // lib.optionalAttrs (swapSize != null) {
+            # Outside LUKS, so re-key it every boot (no hibernate).
             swap = {
               size = swapSize;
-              content =
-                {type = "swap";}
-                // lib.optionalAttrs enableHibernate {resumeDevice = true;};
+              content = {
+                type = "swap";
+                randomEncryption = true;
+              };
             };
           }
           // {

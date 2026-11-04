@@ -1,0 +1,134 @@
+diff -ru a/src/shell/notification/notification_toast.cpp b/src/shell/notification/notification_toast.cpp
+--- a/src/shell/notification/notification_toast.cpp	2026-11-03 16:17:03.030764265 -0700
++++ b/src/shell/notification/notification_toast.cpp	2026-11-03 16:17:53.423441518 -0700
+@@ -162,6 +162,20 @@
+ 
+   [[nodiscard]] float maxToastCardHeight(float scale) { return static_cast<float>(kMaxToastCardHeight) * scale; }
+ 
++  constexpr std::string_view kImagePreviewCategory = "x-noctalia.image-preview";
++
++  [[nodiscard]] float imagePreviewWidth(float scale) { return cardWidth(scale) - cardInnerPad(scale) * 2.0F; }
++
++  // 4:3 box (camera snapshots); the image is cover-fitted into it.
++  [[nodiscard]] float imagePreviewHeight(float scale) { return std::round(imagePreviewWidth(scale) * 0.75F); }
++
++  // Preview row = image plus bottom padding (the content row above already pads its bottom).
++  [[nodiscard]] float imagePreviewRowHeight(float scale) { return imagePreviewHeight(scale) + cardInnerPad(scale); }
++
++  [[nodiscard]] float maxToastCardHeight(float scale, bool imagePreview) {
++    return maxToastCardHeight(scale) + (imagePreview ? imagePreviewRowHeight(scale) : 0.0F);
++  }
++
+   [[nodiscard]] std::uint32_t surfaceWidth(float scale, float innerPadX) {
+     return static_cast<std::uint32_t>(std::max(1, static_cast<int>(std::ceil(cardWidth(scale) + innerPadX * 2.0F))));
+   }
+@@ -351,10 +365,10 @@
+   float measureToastCardHeight(
+       Renderer& renderer, const ConfigService* config, std::string_view appName, std::string_view summary,
+       std::string_view body, const std::vector<std::string>& actions, Urgency urgency, int displayDurationMs,
+-      int summaryLines, int bodyLines, float scale
++      int summaryLines, int bodyLines, float scale, bool imagePreview
+   ) {
+     const float cardW = cardWidth(scale);
+-    const float maxCardHeight = maxToastCardHeight(scale);
++    const float maxCardHeight = maxToastCardHeight(scale, imagePreview);
+     const bool showActions = shouldShowNotificationActions(config);
+     const float iconSize = notificationIconSize(scale, showActions);
+     const float textMaxWidth = notificationTextMaxWidth(scale, showActions);
+@@ -449,6 +463,9 @@
+ 
+     content->addChild(std::move(textColumn));
+     card->addChild(std::move(content));
++    if (imagePreview) {
++      card->addChild(ui::node({.width = cardW, .height = imagePreviewRowHeight(scale)}));
++    }
+     card->layout(renderer);
+     return std::ceil(std::min(maxCardHeight, card->height()));
+   }
+@@ -656,6 +673,7 @@
+         m_entries[i].actions = n.actions;
+         m_entries[i].icon = n.icon;
+         m_entries[i].imageData = n.imageData;
++        m_entries[i].imagePreview = n.category == kImagePreviewCategory;
+         m_entries[i].dndPolicy = n.dndPolicy;
+         refreshEntryGeometry(m_entries[i]);
+         m_entries[i].rawTimeoutMs = n.timeout;
+@@ -876,6 +894,7 @@
+   entry.actions = n.actions;
+   entry.icon = n.icon;
+   entry.imageData = n.imageData;
++  entry.imagePreview = n.category == kImagePreviewCategory;
+   entry.urgency = n.urgency;
+   entry.dndPolicy = n.dndPolicy;
+   entry.displayDurationMs = resolveDisplayDuration(n.timeout);
+@@ -1638,7 +1657,7 @@
+ void NotificationToast::refreshEntryGeometry(PopupEntry& entry) const {
+   if (m_renderContext == nullptr) {
+     entry.toastBodyLines = StringUtils::isBlank(entry.body) ? 0 : kToastMaxBodyLines;
+-    entry.height = maxToastCardHeight(notificationUiScale(m_config));
++    entry.height = maxToastCardHeight(notificationUiScale(m_config), entry.imagePreview);
+     return;
+   }
+ 
+@@ -1646,10 +1665,10 @@
+   entry.toastBodyLines = StringUtils::isBlank(entry.body) ? 0 : kToastMaxBodyLines;
+   ScaledRenderer measureRenderer(*m_renderContext, notificationScale());
+   entry.height = std::min(
+-      maxToastCardHeight(scale),
++      maxToastCardHeight(scale, entry.imagePreview),
+       measureToastCardHeight(
+           measureRenderer, m_config, entry.appName, entry.summary, entry.body, entry.actions, entry.urgency,
+-          entry.displayDurationMs, kMaxSummaryLines, entry.toastBodyLines, scale
++          entry.displayDurationMs, kMaxSummaryLines, entry.toastBodyLines, scale, entry.imagePreview
+       )
+   );
+ }
+@@ -2277,7 +2296,7 @@
+   const float iconSize = notificationIconSize(scale, showActions);
+   const float iconGlyphSize = notificationIconGlyphSize(scale, showActions);
+   const float cardW = cardWidth(scale);
+-  const float maxCardHeight = maxToastCardHeight(scale);
++  const float maxCardHeight = maxToastCardHeight(scale, entry.imagePreview);
+   const float textMaxWidth = notificationTextMaxWidth(scale, showActions);
+   const float topTextMaxWidth = std::max(0.0F, textMaxWidth - closeButtonSize(scale) - Style::spaceSm * scale);
+   const bool showAppName = shouldShowNotificationAppName(m_config, entry.appName);
+@@ -2650,6 +2669,27 @@
+ 
+   contentRow->addChild(std::move(textColumn));
+   foreground->addChild(std::move(contentRow));
++  if (entry.imagePreview) {
++    // Always reserve the row so the painted card matches the measured height.
++    auto previewRow = ui::node({.width = cardW, .height = imagePreviewRowHeight(scale)});
++    const std::string previewPath = resolveNotificationIconPath(entry);
++    if (!previewPath.empty()) {
++      const float previewW = imagePreviewWidth(scale);
++      auto preview = ui::image({
++          .fit = ImageFit::Cover,
++          .radius = Style::radiusMd * scale,
++          .width = previewW,
++          .height = imagePreviewHeight(scale),
++          .configure = [scale](Image& image) { image.setPosition(cardInnerPad(scale), 0.0F); },
++      });
++      if (preview->setSourceFile(renderer, previewPath, static_cast<int>(std::round(previewW)))) {
++        previewRow->addChild(std::move(preview));
++      } else {
++        kLog.warn("notification toast: failed to load preview image for #{} from '{}'", entry.notificationId, previewPath);
++      }
++    }
++    foreground->addChild(std::move(previewRow));
++  }
+   foreground->layout(renderer);
+ 
+   const float cardHeight = std::min(maxCardHeight, foreground->height());
+diff -ru a/src/shell/notification/notification_toast.h b/src/shell/notification/notification_toast.h
+--- a/src/shell/notification/notification_toast.h	2026-11-03 16:17:03.030764265 -0700
++++ b/src/shell/notification/notification_toast.h	2026-11-03 16:17:53.417340259 -0700
+@@ -63,6 +63,8 @@
+     std::vector<std::string> actions;
+     std::optional<std::string> icon;
+     std::optional<NotificationImageData> imageData;
++    // category "x-noctalia.image-preview": show the image full-width under the text.
++    bool imagePreview = false;
+     Urgency urgency = Urgency::Normal;
+     NotificationDndPolicy dndPolicy = NotificationDndPolicy::Respect;
+     int displayDurationMs = 0; // -1 = persistent (no auto-dismiss)

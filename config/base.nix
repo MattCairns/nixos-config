@@ -94,12 +94,19 @@ in {
       systemd-boot.enable = true;
     };
     binfmt.emulatedSystems = ["aarch64-linux"];
+
+    # Root is only visible after LUKS unlock; don't drop to emergency mode
+    # if the password takes longer than the default 90s device timeout.
+    initrd.systemd.settings.Manager.DefaultDeviceTimeoutSec = "infinity";
   };
 
   nix = {
     package = pkgs.nixVersions.stable;
     settings = {
-      experimental-features = ["nix-command" "flakes"];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
       trusted-users = [
         "root"
         user
@@ -129,6 +136,7 @@ in {
       ];
       allowedTCPPorts = [
         4096
+        6768 # Orca runtime server (Orca Mobile over LAN)
         14557
       ];
     };
@@ -193,7 +201,15 @@ in {
       wayland.enable = true;
       package = pkgs.kdePackages.sddm;
       theme = "sddm-astronaut-theme";
-      extraPackages = [sddmTheme] ++ (with pkgs.kdePackages; [qtmultimedia qtsvg qtvirtualkeyboard]);
+      extraPackages =
+        [
+          sddmTheme
+        ]
+        ++ (with pkgs.kdePackages; [
+          qtmultimedia
+          qtsvg
+          qtvirtualkeyboard
+        ]);
     };
     displayManager.defaultSession = "hyprland";
 
@@ -319,7 +335,6 @@ in {
     # Remove once nixpkgs cacert drops/blocks these roots.
     pki.caCertificateBlacklist = [
       "Comodo AAA Services root"
-      "emSign ECC Root CA - G3"
     ];
   };
 

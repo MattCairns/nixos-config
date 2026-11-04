@@ -1,6 +1,7 @@
 {
   config,
   inputs,
+  lib,
   pkgs,
   user,
   ...
@@ -18,10 +19,20 @@
   slackWithWorkBrowser = pkgs.writeShellScriptBin "slack" ''
     exec env PATH="${slackBrowser}/bin:$PATH" ${pkgs.slack}/bin/slack "$@"
   '';
+  # 4.4.5 fails with -Werror under newer GCC (unused-but-set-variable).
+  qgroundcontrol = pkgs.qgroundcontrol.overrideAttrs (old: {
+    env = (old.env or {}) // {NIX_CFLAGS_COMPILE = "-Wno-error=unused-but-set-variable";};
+  });
 in {
   imports = [
     ../modules
   ];
+
+  # Merge into Codex's mutable config; re-add so the entry follows the store path.
+  home.activation.playwrightCodex = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    run ${codex}/bin/codex mcp remove playwright >/dev/null 2>&1 || true
+    run ${codex}/bin/codex mcp add playwright -- ${lib.getExe pkgs.playwright-mcp}
+  '';
 
   sops = {
     age.sshKeyPaths = ["${config.home.homeDirectory}/.ssh/id_ed25519"];
@@ -31,6 +42,7 @@ in {
       toggl-api-key = {};
       context7-token = {};
       ha-mcp-url = {};
+      ha-ntfy-topic = {};
       bitwarden-session-key = {};
       gitlab-token = {};
       vessel-configs-vault-pass = {};
@@ -40,6 +52,14 @@ in {
       xmg-pass-staging = {};
       xmg-entry-user-staging = {};
       xmg-entry-pass-staging = {};
+      # Fine-grained: Code Download + Package Read on open-ocean-robotics (git + uv/PyPI registries).
+      gitlab-netrc-token = {};
+    };
+    templates.netrc = {
+      content = ''
+        machine gitlab.com login oauth2 password ${config.sops.placeholder.gitlab-netrc-token}
+      '';
+      path = "${config.home.homeDirectory}/.netrc";
     };
   };
 
@@ -121,7 +141,6 @@ in {
 
         # Video/Audio
         vlc
-        spotify
 
         # File Management
         ranger
@@ -143,6 +162,8 @@ in {
         lazygit
         wrappedGlab
         qwen-code
+        antigravity-cli
+        python3
 
         # Formatters
         alejandra
@@ -175,8 +196,7 @@ in {
         ../scripts/tmux-windowizer.nix
         ../scripts/tmux-switch-session.nix
         ../scripts/tmux-switch-ssh-session.nix
-        ../scripts/mt-copy-id.nix
-        ../scripts/st.nix
+        ../scripts/tmux-ssh.nix
         ../scripts/warp.nix
         ../scripts/fs-diff.nix
         ../scripts/oor-bw-pw.nix

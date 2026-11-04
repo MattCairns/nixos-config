@@ -61,7 +61,12 @@
   };
 
   swapDevices = [
-    {device = "/dev/disk/by-uuid/9dab7227-5026-43be-b0a7-8592f1807464";}
+    {
+      # by-partuuid: the swap UUID is erased once the partition is encrypted.
+      device = "/dev/disk/by-partuuid/02e1d0fd-87f0-408c-8b9d-a670f65b5b3d";
+      # Swap sits outside LUKS; re-key it every boot so RAM never hits disk in clear.
+      randomEncryption.enable = true;
+    }
   ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking

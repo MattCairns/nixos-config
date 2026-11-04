@@ -13,6 +13,14 @@
     inputs.impermanence.nixosModules.impermanence
   ];
 
+  # Without this device the rollback unit fails and boot silently keeps the old /.
+  assertions = [
+    {
+      assertion = config.boot.initrd.luks.devices ? enc;
+      message = "optin-persistence: rollback needs a LUKS device named \"enc\" (boot.initrd.luks.devices.enc).";
+    }
+  ];
+
   # Roll / back to the blank snapshot after LUKS is unlocked and before the
   # root filesystem is mounted.
   boot.initrd.systemd.services.rollback = {
@@ -75,6 +83,15 @@
         "/etc/NetworkManager"
         "/etc/ssh"
         "/var/lib/nixos"
+        "/var/lib/libvirt"
+        "/var/lib/waydroid"
+        # Timers plus credential.secret, which encrypts libvirt's secrets key.
+        "/var/lib/systemd"
+        # DynamicUser services keep state here (e.g. Ollama models).
+        {
+          directory = "/var/lib/private";
+          mode = "0700";
+        }
       ];
       files = [
       ];

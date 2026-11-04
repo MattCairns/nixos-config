@@ -9,10 +9,13 @@
     ./dev/direnv
     ./dev/claude-code
     ./dev/hypruse
+    ./dev/actual-mcp
     ./dev/opencode
     ./dev/cargo-warp
     ./desktop/noctalia
     ./desktop/hyprland
+    ./desktop/ha-notify
     ./apps/firefox
+    ./apps/orca
   ];
 }

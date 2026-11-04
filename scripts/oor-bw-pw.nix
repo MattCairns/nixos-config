@@ -1,23 +1,21 @@
 {pkgs}:
 pkgs.writeShellScriptBin "oor-bw-pw" ''
-  pw="$(${pkgs.bitwarden-cli}/bin/bw get password bitwarden.com)"
-  copied=0
-  if [ -n "$WAYLAND_DISPLAY" ] && command -v ${pkgs.wl-clipboard}/bin/wl-copy >/dev/null; then
-    printf "%s" "$pw" | ${pkgs.wl-clipboard}/bin/wl-copy
-    copied=1
-  elif [ -n "$DISPLAY" ] && command -v ${pkgs.xclip}/bin/xclip >/dev/null; then
-    printf "%s" "$pw" | ${pkgs.xclip}/bin/xclip -selection clipboard
-    copied=1
-  fi
+  notify() { ${pkgs.libnotify}/bin/notify-send "Bitwarden" "$1"; }
 
-  if [ "$copied" = "1" ]; then
-    if command -v ${pkgs.dunst}/bin/dunstify >/dev/null; then
-      ${pkgs.dunst}/bin/dunstify "Copied password to clipboard"
-    else
-      echo "Copied password to clipboard"
-    fi
-  else
-    echo "No suitable clipboard manager found (need wl-copy or xclip)."
+  # Keybinds don't inherit fish's BW_SESSION, so read the sops secret directly.
+  session_file="''${XDG_CONFIG_HOME:-$HOME/.config}/sops-nix/secrets/bitwarden-session-key"
+  if ! pw="$(BW_SESSION="$(cat "$session_file")" ${pkgs.bitwarden-cli}/bin/bw get password bitwarden.com)" || [ -z "$pw" ]; then
+    notify "Failed to get password"
     exit 1
   fi
+
+  if [ -n "$WAYLAND_DISPLAY" ]; then
+    printf "%s" "$pw" | ${pkgs.wl-clipboard}/bin/wl-copy
+  elif [ -n "$DISPLAY" ]; then
+    printf "%s" "$pw" | ${pkgs.xclip}/bin/xclip -selection clipboard
+  else
+    echo "No display to copy to (need Wayland or X11)."
+    exit 1
+  fi
+  notify "Copied password to clipboard"
 ''
