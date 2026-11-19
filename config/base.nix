@@ -126,6 +126,8 @@ in {
   # Enable networking
   networking = {
     networkmanager.enable = true;
+    # Unraid box shared from the personal tailnet; MagicDNS is off in the work tailnet.
+    hosts."100.74.61.112" = ["tower.alligator-beaver.ts.net"];
     firewall = {
       enable = true;
       checkReversePath = "loose";
