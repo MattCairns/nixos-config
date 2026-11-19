@@ -1,5 +1,6 @@
 {
   pkgs,
+  options,
   user,
   ...
 }: let
@@ -158,6 +159,10 @@ in {
     };
 
     ssh.startAgent = true;
+    ssh.extraConfig = ''
+      Match localuser ${user}
+        IdentityFile ~/.ssh/${user}_openoceanrobotics_com
+    '';
     # adb.enable = true;
 
     hyprland = {
@@ -184,6 +189,29 @@ in {
       extraRules = ''
         SUBSYSTEM=="tty", ATTRS{product}=="CubeOrange", SYMLINK="ttyPIXHAWK"
       '';
+    };
+
+    # Local speech-to-text dictation (Super+D, bound in Hyprland).
+    hyprwhspr = {
+      enable = true;
+      users = [user];
+      # Upstream builds whisper.cpp CPU-only with no SIMD flags (SSE only).
+      # Enable AVX2/FMA/F16C and Vulkan GPU offload: 3s clip 5.1s -> 0.1s on the 780M.
+      package = options.services.hyprwhspr.package.default.override {
+        callPackage = fn: args:
+          if baseNameOf fn == "pywhispercpp.nix"
+          then
+            (pkgs.callPackage fn args).overridePythonAttrs (old: {
+              nativeBuildInputs = old.nativeBuildInputs ++ [pkgs.shaderc];
+              buildInputs = (old.buildInputs or []) ++ (with pkgs; [vulkan-headers vulkan-loader spirv-headers]);
+              env =
+                old.env
+                // {
+                  CMAKE_ARGS = "${old.env.CMAKE_ARGS} -DGGML_AVX=ON -DGGML_AVX2=ON -DGGML_FMA=ON -DGGML_F16C=ON -DGGML_VULKAN=ON";
+                };
+            })
+          else pkgs.callPackage fn args;
+      };
     };
 
     openssh.enable = true;

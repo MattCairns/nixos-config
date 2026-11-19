@@ -11,6 +11,7 @@
     ../config/optin-persistence.nix
     inputs.disko.nixosModules.disko
     inputs.sops-nix.nixosModules.sops
+    inputs.hyprwhspr.nixosModules.default
     home-manager.nixosModules.home-manager
     {
       home-manager = {

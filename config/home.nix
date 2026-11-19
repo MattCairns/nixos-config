@@ -7,6 +7,9 @@
   ...
 }: let
   codex = inputs.codex.packages.${pkgs.stdenv.hostPlatform.system}.default;
+  homeAssistantMcp = pkgs.writeShellScript "home-assistant-mcp" ''
+    exec ${pkgs.nodejs}/bin/npx -y mcp-remote@0.16.0 "$(cat ${config.sops.secrets."ha-mcp-url".path})" --allow-http
+  '';
   workFirefoxBrowser = pkgs.writeShellScriptBin "firefox-work" ''
     exec ${pkgs.firefox}/bin/firefox -P work --name=firefox-work "$@"
   '';
@@ -19,10 +22,6 @@
   slackWithWorkBrowser = pkgs.writeShellScriptBin "slack" ''
     exec env PATH="${slackBrowser}/bin:$PATH" ${pkgs.slack}/bin/slack "$@"
   '';
-  # 4.4.5 fails with -Werror under newer GCC (unused-but-set-variable).
-  qgroundcontrol = pkgs.qgroundcontrol.overrideAttrs (old: {
-    env = (old.env or {}) // {NIX_CFLAGS_COMPILE = "-Wno-error=unused-but-set-variable";};
-  });
 in {
   imports = [
     ../modules
@@ -32,6 +31,11 @@ in {
   home.activation.playwrightCodex = lib.hm.dag.entryAfter ["writeBoundary"] ''
     run ${codex}/bin/codex mcp remove playwright >/dev/null 2>&1 || true
     run ${codex}/bin/codex mcp add playwright -- ${lib.getExe pkgs.playwright-mcp}
+  '';
+
+  home.activation.homeAssistantCodex = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    run ${codex}/bin/codex mcp remove homeAssistant >/dev/null 2>&1 || true
+    run ${codex}/bin/codex mcp add homeAssistant -- ${homeAssistantMcp}
   '';
 
   sops = {
@@ -121,6 +125,7 @@ in {
       [
         # Terminal
         mosh
+        tailcat
         btop
         ripgrep
         fd

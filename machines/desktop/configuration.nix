@@ -13,6 +13,7 @@
   ];
 
   networking.hostName = "desktop";
+  networking.firewall.interfaces.enp34s0.allowedTCPPorts = [8080];
 
   # Fill in after running nixos-generate-config on the hardware, or set manually.
   # Common NVMe modules: ["nvme" "xhci_pci" "ahci" "usb_storage" "sd_mod" "usbhid"]
@@ -49,12 +50,8 @@
     host = "0.0.0.0";
     openFirewall = true;
     loadModels = [
-      "lfm2.5:8b"
+      # Only fetch the models used by Frigate and Home Assistant.
       "qwen3-vl:4b-instruct"
-      "qwen2.5:7b-instruct-q4_K_M"
-      "qwen2.5-coder:7b-instruct"
-      "qwen3.5:9b"
-      "qwen3:8b"
     ];
   };
 

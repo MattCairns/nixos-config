@@ -2,7 +2,7 @@
   imports = [
     ./dev/nixvim
     ./dev/git
-    ./dev/kitty
+    ./dev/ghostty
     ./dev/starship
     ./dev/tmux
     ./dev/fish

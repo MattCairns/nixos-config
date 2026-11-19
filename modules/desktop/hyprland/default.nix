@@ -16,8 +16,8 @@
   # App workspaces when docked (both externals) and undocked. Used at startup and
   # by the workspace router; classes are the window classes to migrate.
   layout = {
-    kitty = {
-      classes = ["kitty"];
+    terminal = {
+      classes = ["com.mitchellh.ghostty"];
       docked = 4;
       undocked = 1;
     };
@@ -76,7 +76,7 @@
     fi
 
     exec_on "$ws_ffHome" "${homeFirefoxCmd}"
-    exec_on "$ws_kitty" "kitty -1 -e ${config.xdg.configHome}/bin/ta"
+    exec_on "$ws_terminal" "ghostty -e ${config.xdg.configHome}/bin/ta"
   '';
 
   # Manual and pre-sleep locks require the password immediately (grace = 0 in
@@ -104,12 +104,22 @@
   };
   routerBin = "${workspaceRouter}/bin/hypr-workspace-router";
 
+  # The PA278QV drops off DisplayPort when put into DPMS off and then reconnects;
+  # Hyprland lights up re-added monitors, so it never stays dark. If any other
+  # monitor is still DPMS-off, we're idle-blanked: turn displays off again.
+  redpmsIfIdle = pkgs.writeShellScript "hypr-redpms-if-idle" ''
+    sleep 2
+    ${pkgs.hyprland}/bin/hyprctl monitors -j | ${pkgs.jq}/bin/jq -e 'any(.[]; .dpmsStatus == false)' >/dev/null \
+      && ${dpmsOffCmd}
+  '';
+
   # Re-run the workspace router whenever a monitor is plugged or unplugged.
   monitorWatcher = pkgs.writeShellScript "hypr-monitor-watcher" ''
     sock="$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock"
     ${pkgs.socat}/bin/socat -U - UNIX-CONNECT:"$sock" | while IFS= read -r line; do
       case "$line" in
-        "monitoraddedv2>>"* | "monitorremovedv2>>"*) ${routerBin} & ;;
+        "monitoraddedv2>>"*) ${routerBin} & ${redpmsIfIdle} & ;;
+        "monitorremovedv2>>"*) ${routerBin} & ;;
       esac
     done
   '';
@@ -296,6 +306,10 @@ in {
           disable_splash_rendering = true;
           # Don't let apps (Slack, Firefox link opens) steal focus while typing.
           focus_on_activate = false;
+          # Wake displays on input directly. hypridle's dpms on-resume gets
+          # skipped if an inhibitor (e.g. Firefox video) starts after dpms off.
+          key_press_enables_dpms = true;
+          mouse_move_enables_dpms = true;
         };
 
         ecosystem.no_donation_nag = true;
@@ -303,11 +317,12 @@ in {
 
       bind =
         [
-          (bind "${mod} + Return" (exec "kitty -1 -e bash -c 'exec ~/.config/bin/ta || $SHELL'"))
-          (bind "${mod} + CTRL + Return" (exec "kitty -1"))
+          (bind "${mod} + Return" (exec "ghostty -e bash -c 'exec ~/.config/bin/ta || $SHELL'"))
+          (bind "${mod} + CTRL + Return" (exec "ghostty"))
           (bind "${mod} + CTRL + W" (exec workFirefoxCmd))
           (bind "${mod} + CTRL + H" (exec homeFirefoxCmd))
           (bind "${mod} + ALT + W" (exec "${noctalia} msg wallpaper-random"))
+          (bind "${mod} + D" (exec "hyprwhspr record toggle"))
           (bind "${mod} + CTRL + L" (exec lockCmd))
           (bind "${mod} + Space" (exec "fuzzel"))
           (bind "${mod} + W" "hl.dsp.window.close()")

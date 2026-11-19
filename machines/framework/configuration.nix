@@ -10,6 +10,57 @@
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMtxf6vcdvDoSx1IUtboLcK+EACy5H2E90apGqdHAyDe mattrcairns@gmail.com"
   ];
 
+  home-manager.users.${user} = {
+    programs.opencode.settings.providers.strata = {
+      name = "Strata (desktop)";
+      package = "@opencode/ai/providers/openai-compatible";
+      settings.baseURL = "http://127.0.0.1:18080/v1";
+      body.reasoning_effort = "none";
+      models."qwen3.8-flash-next-gyro-gyro-s" = {
+        name = "Qwen3.8 Flash Next Gyro-S (Strata)";
+        capabilities.tools = true;
+        limit = {
+          context = 32768;
+          output = 8192;
+        };
+      };
+    };
+
+    home.packages = [
+      (pkgs.writeShellScriptBin "claude-strata" ''
+        exec env \
+          ANTHROPIC_BASE_URL="http://127.0.0.1:18080" \
+          ANTHROPIC_AUTH_TOKEN="strata-local" \
+          ANTHROPIC_MODEL="claude-sonnet-4-5" \
+          ANTHROPIC_DEFAULT_OPUS_MODEL="claude-sonnet-4-5" \
+          ANTHROPIC_DEFAULT_SONNET_MODEL="claude-sonnet-4-5" \
+          ANTHROPIC_DEFAULT_HAIKU_MODEL="claude-sonnet-4-5" \
+          CLAUDE_CODE_EFFORT_LEVEL="low" \
+          claude "$@"
+      '')
+    ];
+
+    systemd.user.services.strata-tunnel = {
+      Unit = {
+        Description = "SSH tunnel to Strata on the desktop";
+        After = ["network-online.target"];
+        Wants = ["network-online.target"];
+      };
+      Service = {
+        ExecStart = ''
+          ${pkgs.openssh}/bin/ssh -N \
+            -o ExitOnForwardFailure=yes \
+            -o ServerAliveInterval=30 -o ServerAliveCountMax=3 \
+            -o IdentitiesOnly=yes -i /home/${user}/.ssh/id_ed25519 \
+            -L 127.0.0.1:18080:127.0.0.1:8080 matthew@10.42.0.232
+        '';
+        Restart = "always";
+        RestartSec = 5;
+      };
+      Install.WantedBy = ["default.target"];
+    };
+  };
+
   # Kernel parameters for better AMD graphics suspend/resume
   boot.kernelParams = [
     "amdgpu.dc=1" # Enable Display Core for better display handling

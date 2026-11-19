@@ -24,7 +24,7 @@ in {
     enable = true;
     package = pkgs.opencode;
     settings = {
-      model = "ollama/qwen3-vl:4b-instruct";
+      model = "ollama/qwen3.5-opencode:9b";
       agents.build.steps = 12;
       plugin = [
         # Pinned: these run with your credentials, so upgrade deliberately.
@@ -53,7 +53,7 @@ in {
             };
           };
           "qwen2.5-coder:7b-instruct" = {
-            name = "Qwen 2.5 Coder 7B Instruct (desktop)";
+            name = "Qwen 2.5 Coder 7B Instruct (unreliable on this runtime)";
             capabilities.tools = true;
             limit = {
               context = 32768;
@@ -71,16 +71,25 @@ in {
           "qwen3:8b" = {
             name = "Qwen 3 8B (desktop)";
             capabilities.tools = true;
-            body.think = false;
+            body.reasoning_effort = "none";
             limit = {
               context = 32768;
               output = 8192;
             };
           };
           "qwen3.5:9b" = {
-            name = "Qwen 3.5 9B (desktop, non-thinking)";
+            name = "Qwen 3.5 9B (desktop, 64K default context)";
             capabilities.tools = true;
-            body.think = false;
+            body.reasoning_effort = "none";
+            limit = {
+              context = 32768;
+              output = 8192;
+            };
+          };
+          "qwen3.5-opencode:9b" = {
+            name = "Qwen 3.5 9B OpenCode (32K, non-thinking)";
+            capabilities.tools = true;
+            body.reasoning_effort = "none";
             limit = {
               context = 32768;
               output = 8192;
