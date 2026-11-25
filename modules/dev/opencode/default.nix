@@ -117,7 +117,7 @@ in {
         };
         atlassian = {
           type = "remote";
-          url = "https://mcp.atlassian.com/v1/mcp";
+          url = "https://mcp.atlassian.com/v2/mcp";
         };
         context7 = {
           type = "local";
