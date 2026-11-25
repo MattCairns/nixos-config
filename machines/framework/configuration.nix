@@ -11,17 +11,37 @@
   ];
 
   home-manager.users.${user} = {
-    programs.opencode.settings.providers.strata = {
-      name = "Strata (desktop)";
-      package = "@opencode/ai/providers/openai-compatible";
-      settings.baseURL = "http://127.0.0.1:18080/v1";
-      body.reasoning_effort = "none";
-      models."qwen3.8-flash-next-gyro-gyro-s" = {
-        name = "Qwen3.8 Flash Next Gyro-S (Strata)";
-        capabilities.tools = true;
-        limit = {
-          context = 32768;
-          output = 8192;
+    programs.opencode.settings = {
+      model = "markv/qwen3.8:27b-mtp-64k";
+
+      # markv (RTX 3090) via the ollama-forward-markv relay below.
+      providers.markv = {
+        name = "Ollama (markv)";
+        package = "@opencode/ai/providers/openai-compatible";
+        settings.baseURL = "http://127.0.0.1:11435/v1";
+        # Ollama variant of qwen3.8:27b-mtp-q4_K_M with num_ctx 65536 baked in
+        # (largest context that stays 100% on the 3090; 80K spills to CPU).
+        models."qwen3.8:27b-mtp-64k" = {
+          name = "Qwen 3.8 27B MTP 64K (markv)";
+          capabilities.tools = true;
+          limit = {
+            context = 65536;
+            output = 8192;
+          };
+        };
+      };
+
+      providers.inkling-markv = {
+        name = "Inkling 2 Mini (markv)";
+        package = "@opencode/ai/providers/openai-compatible";
+        settings.baseURL = "http://100.77.5.87:11435/v1";
+        models.inkling-2-mini = {
+          name = "Inkling 2 Mini (markv)";
+          capabilities.tools = true;
+          limit = {
+            context = 32768;
+            output = 8192;
+          };
         };
       };
     };

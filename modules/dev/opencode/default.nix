@@ -24,14 +24,11 @@ in {
     enable = true;
     package = pkgs.opencode;
     settings = {
-      model = "ollama/qwen3.5-opencode:9b";
+      model = lib.mkDefault "ollama/qwen3.5-opencode:9b"; # machine configs may override
       agents.build.steps = 12;
-      plugin = [
-        # Pinned: these run with your credentials, so upgrade deliberately.
-        "opencode-gemini-auth@2.0.1"
-        "opencode-anthropic-oauth@0.4.7"
-      ];
-      provider.google.options.projectId = "llmllm-489100";
+      # Ollama only: hides built-in cloud providers (anthropic, openai, google, ...).
+      # Machine configs may add more Ollama hosts (e.g. markv on framework).
+      enabled_providers = ["ollama" "markv" "inkling-markv"];
       providers.ollama = {
         name = "Ollama (desktop)";
         settings.baseURL = "http://127.0.0.1:11436/v1";

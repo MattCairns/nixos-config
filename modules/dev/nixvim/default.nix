@@ -121,6 +121,18 @@
         };
       })
 
+      # Amber (.ab) filetype detection + syntax highlighting
+      (pkgs.vimUtils.buildVimPlugin {
+        name = "amber-vim";
+        doCheck = false;
+        src = pkgs.fetchFromGitHub {
+          owner = "amber-lang";
+          repo = "amber-vim";
+          rev = "0cd0acda4e3d168ac7a3d1a8fa6a361e37bbb6bc";
+          hash = "sha256-eQV2YUs7brdSC1g4tsm4pRlXQaqZl8d4BJEi3xBR3kI=";
+        };
+      })
+
       (pkgs.vimUtils.buildVimPlugin {
         name = "codereview-nvim";
         doCheck = false;

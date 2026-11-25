@@ -41,13 +41,6 @@ in {
           "exec npx -y mcp-remote@0.16.0 \"$(cat ${config.sops.secrets."ha-mcp-url".path})\" --allow-http"
         ];
       };
-      drawio = {
-        command = "npx";
-        args = [
-          "-y"
-          "@drawio/mcp@1.10.1"
-        ];
-      };
       playwright = {
         command = lib.getExe pkgs.playwright-mcp;
         args = [];

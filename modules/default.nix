@@ -10,6 +10,7 @@
     ./dev/claude-code
     ./dev/hypruse
     ./dev/actual-mcp
+    ./dev/blender-mcp
     ./dev/executor
     ./dev/opencode
     ./dev/cargo-warp

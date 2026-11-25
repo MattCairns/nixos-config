@@ -165,6 +165,7 @@ in {
         # Dev tools
         pre-commit
         lazygit
+        tuicr
         wrappedGlab
         qwen-code
         antigravity-cli
@@ -186,7 +187,6 @@ in {
         dfu-util
         dfu-programmer
 
-        blender
         codex
 
         # Sharing
