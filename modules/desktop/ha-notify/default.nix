@@ -3,8 +3,7 @@
   pkgs,
   ...
 }: let
-  # Run by ntfy per message. Shows any attached snapshot as a large preview (patched Noctalia, see
-  # modules/desktop/noctalia/image-preview.patch), with a "View" action to open it full size.
+  # Run by ntfy per message. Shows any attached snapshot as the notification image, with a "View" action to open it full size.
   show = pkgs.writeShellScript "ha-notify-show" ''
     dir="$XDG_RUNTIME_DIR/ha-notify"
     mkdir -p "$dir"
@@ -17,7 +16,7 @@
     # Wait for the action in the background so later messages aren't held up.
     (
       action=$(${pkgs.libnotify}/bin/notify-send -u critical -a "Home Assistant" \
-        -h "string:image-path:$img" -c x-noctalia.image-preview -A view=View "$NTFY_TITLE" "$NTFY_MESSAGE")
+        -h "string:image-path:$img" -A view=View "$NTFY_TITLE" "$NTFY_MESSAGE")
       [ "$action" = view ] && ${pkgs.xdg-utils}/bin/xdg-open "$img"
     ) &
   '';
