@@ -2,6 +2,7 @@
   lib,
   pkgs,
   config,
+  user,
   ...
 }: {
   imports = [
@@ -13,7 +14,31 @@
   ];
 
   networking.hostName = "desktop";
-  networking.firewall.interfaces.enp34s0.allowedTCPPorts = [8080];
+  networking.firewall.interfaces.enp34s0 = {
+    allowedTCPPorts = [
+      8080
+      # Sunshine: HTTPS, HTTP, web UI, RTSP
+      47984
+      47989
+      47990
+      48010
+    ];
+    # Sunshine: video, control, audio, mic
+    allowedUDPPorts = [47998 47999 48000 48002 48010];
+  };
+
+  # Sunshine needs a live graphical session to capture, so log in automatically
+  # (the disk is LUKS-encrypted) and force a virtual display since none is plugged in.
+  services.displayManager.autoLogin = {
+    enable = true;
+    inherit user;
+  };
+  boot.kernelParams = ["video=HDMI-A-1:1920x1080@60e"];
+  services.sunshine = {
+    enable = true;
+    autoStart = true;
+    capSysAdmin = true; # KMS capture
+  };
 
   # Fill in after running nixos-generate-config on the hardware, or set manually.
   # Common NVMe modules: ["nvme" "xhci_pci" "ahci" "usb_storage" "sd_mod" "usbhid"]

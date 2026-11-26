@@ -29,13 +29,21 @@
             output = 8192;
           };
         };
+        models."qwen3.8:27b-abliterated-64k" = {
+          name = "Qwen 3.8 27B Abliterated 64K (markv)";
+          capabilities.tools = true;
+          limit = {
+            context = 65536;
+            output = 8192;
+          };
+        };
       };
 
       providers.inkling-markv = {
         name = "Inkling 2 Mini (markv)";
         package = "@opencode/ai/providers/openai-compatible";
-        settings.baseURL = "http://100.77.5.87:11435/v1";
-        models.inkling-2-mini = {
+        settings.baseURL = "http://100.77.5.87:11437/v1";
+        models."inkling-2-mini:iq4_NL" = {
           name = "Inkling 2 Mini (markv)";
           capabilities.tools = true;
           limit = {
