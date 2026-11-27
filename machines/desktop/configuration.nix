@@ -14,6 +14,26 @@
   ];
 
   networking.hostName = "desktop";
+
+  # Static home-LAN address (outside the router's DHCP pool) behind the laptop's
+  # dock port. The laptop proxy-ARPs 192.168.1.30 and the gateway on its wifi, so
+  # the desktop sits directly on 192.168.1.0/24. 10.42.0.232 stays as a static
+  # management address on the laptop's dock link (10.42.0.1/24, no NAT/DHCP).
+  networking.networkmanager.ensureProfiles.profiles.dock-lan = {
+    connection = {
+      id = "dock-lan";
+      type = "ethernet";
+      interface-name = "enp34s0";
+      autoconnect-priority = "100";
+    };
+    ipv4 = {
+      method = "manual";
+      address1 = "192.168.1.30/24,192.168.1.1";
+      address2 = "10.42.0.232/24";
+      dns = "192.168.1.1;";
+    };
+    ipv6.method = "auto";
+  };
   networking.firewall.interfaces.enp34s0 = {
     allowedTCPPorts = [
       8080

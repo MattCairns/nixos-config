@@ -102,23 +102,46 @@
     firewall.extraCommands = ''
       iptables -A nixos-fw -p tcp -s 192.168.1.10 -m mac --mac-source 70:85:c2:6c:b0:b0 --dport 11435 -j ACCEPT
       iptables -A nixos-fw -p tcp -s 192.168.1.10 -m mac --mac-source 70:85:c2:6c:b0:b0 --dport 11436 -j ACCEPT
+      # Forward only the desktop's traffic (the dock may meet untrusted devices).
+      for rule in "-s 192.168.1.30" "-d 192.168.1.30"; do
+        iptables -C FORWARD $rule -j ACCEPT 2>/dev/null || iptables -I FORWARD $rule -j ACCEPT
+      done
     '';
-    # Dock ethernet, used to share wifi: NetworkManager "shared" mode needs DHCP/DNS in.
-    # Only those ports, since the dock may also be plugged into untrusted networks.
-    firewall.interfaces.enp195s0f3u1u1 = {
-      allowedUDPPorts = [53 67];
-      allowedTCPPorts = [53];
+    firewall.extraStopCommands = ''
+      for rule in "-s 192.168.1.30" "-d 192.168.1.30"; do
+        iptables -D FORWARD $rule -j ACCEPT 2>/dev/null || true
+      done
+    '';
+    networkmanager = {
+      wifi.powersave = false;
+      ensureProfiles.profiles.dock-desktop = {
+        connection = {
+          id = "dock-desktop";
+          type = "ethernet";
+          interface-name = "enp195s0f3u1u1";
+        };
+        ipv4 = {
+          method = "manual";
+          address1 = "10.42.0.1/24";
+          route1 = "192.168.1.30/32";
+          never-default = "true";
+        };
+        ipv6.method = "ignore";
+      };
     };
-    networkmanager.wifi.powersave = false;
   };
 
-  # Pin "desktop" (Ollama box on the shared dock link) to one address. It runs two
-  # DHCP clients on one NIC (initrd networkd for the LUKS-unlock SSH, then
-  # NetworkManager) with different client IDs, so it got two leases and the initrd
-  # one (previously .232) lapsed after the 1h lease time. id:* matches on MAC only.
-  environment.etc."NetworkManager/dnsmasq-shared.d/desktop.conf".text = ''
-    dhcp-host=4c:cc:6a:f9:47:3c,id:*,10.42.0.232,desktop
-  '';
+  # Put "desktop" (GPU box on the dock ethernet) on the home LAN as 192.168.1.30.
+  # Wifi can't be bridged, so proxy-ARP instead: this laptop answers ARP for
+  # 192.168.1.30 (and the gateway, towards the desktop) and routes between wifi and
+  # the dock. The desktop is static (see machines/desktop); 10.42.0.1/24 here is
+  # just a management link, so `ssh sun` (10.42.0.232) keeps working. No NAT or
+  # DHCP on the dock, and not NetworkManager "shared" mode: its nft rules reject
+  # forwarded traffic to/from addresses outside 10.42.0.0/24.
+  boot.kernel.sysctl = {
+    "net.ipv4.ip_forward" = 1;
+    "net.ipv4.conf.all.proxy_arp" = 1;
+  };
 
   hardware = {
     graphics.enable = true;
